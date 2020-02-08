@@ -4,15 +4,72 @@
 
 %token DIGIT
 %token IDENTIFIER
+%token BOOLEAN
+%token ABSTRACT
+%token ASSERT
+%token BREAK
+%token BYTE
+%token CASE
+%token CATCH
+%token CHAR
+%token CLASS
+%token CONTINUE
+%token DEFAULT
+%token DO
+%token DOUBLE
+%token ELSE
+%token ENUM
+%token EXTENDS
+%token FINALLY
+%token FINAL
+%token FLOAT
+%token FOR
+%token IF
+%token IMPLEMENTS
+%token IMPORT
+%token INSTANCEOF
+%token INT 
+%token INTERFACE 
+%token LONG
+%token NATIVE
+%token NEW
+%token PACKAGE
+%token PRIVATE
+%token PROTECTED
+%token PUBLIC
+%token RETURN
+%token SHORT
+%token STATIC
+%token STRICTFP
+%token SUPER
+%token SWITCH
+%token SYNCHRONIZED
+%token THIS
+%token THROWS
+%token THROW
+%token TRANSIENT
+%token TRY
+%token VOID
+%token VOLATILE
+%token WHILE
+
+
 
 %%
 ===========================BLOCK 2 BEGINS §4 (Types, Values, and Variables)========================
+
+Identifier  :  IDENTIFIER
+			;
+
+Literal  :  LITERAL
+		 ;
+
 Type  :  PrimitiveType
 	  |	 ReferenceType
 	  ;
 
 PrimitiveType  :  AnnotationRec NumericType
-			   |  AnnotationRec "boolean"
+			   |  AnnotationRec BOOLEAN
 			   ;
 
 AnnotationRec  :  
@@ -23,15 +80,15 @@ NumericType  :  IntegralType
 			 |  FloatingPointType
 			 ;
 
-IntegralType  :  "byte"
-			  |  "short"
-			  |  "int"
-			  |  "char"
-			  |  "long"
+IntegralType  :  BYTE
+			  |  SHORT
+			  |  INT
+			  |  CHAR
+			  |  LONG
 			  ;
 
-FloatingPointType  :  "float"
-			  	   |  "double"
+FloatingPointType  :  FLOAT
+			  	   |  DOUBLE
 			  	   ;
 
 ReferenceType  :  ClassOrInterfaceType
@@ -83,8 +140,8 @@ TypeBoundQues  :
 TypeParameterModifier  :  Annotation
 					   ;
 
-TypeBound  :  "extends" TypeVariable
-		   |  "extends" ClassOrInterfaceType AdditionalBoundRec
+TypeBound  :  EXTENDS TypeVariable
+		   |  EXTENDS ClassOrInterfaceType AdditionalBoundRec
 		   ;
 
 AdditionalBoundRec  :  
@@ -118,8 +175,8 @@ WildCardBoundsQues  :
 					|  WildCardBounds
 					;
 
-WildCardBounds  :  "extends" ReferenceType
-				|  "super" ReferenceType
+WildCardBounds  :  EXTENDS ReferenceType
+				|  SUPER ReferenceType
 				;
 ===========================BLOCK 2 ENDS========================
 
@@ -167,7 +224,7 @@ TypeDeclarationRec  :
 					|  TypeDeclaration TypeDeclarationRec
 					;
 
-PackageDeclaration  :  PackageModifierRec "package" Identifier IdentifierDotRec ';'
+PackageDeclaration  :  PackageModifierRec PACKAGE Identifier IdentifierDotRec ';'
 					;
 
 IdentifierDot  :  '.' Identifier
@@ -190,16 +247,16 @@ ImportDeclaration  :  SingleTypeImportDeclaration
 				   |  StaticImportOnDemandDeclaration
 				   ;
 
-SingleTypeImportDeclaration  :  "import" TypeName ';'
+SingleTypeImportDeclaration  :  IMPORT TypeName ';'
 							   ;
 
-TypeImportOnDemandDeclaration  :  "import" PackageOrTypeName ".*" ';'
+TypeImportOnDemandDeclaration  :  IMPORT PackageOrTypeName ".*" ';'
 							   ;
 
-SingleStaticImportDeclaration  :  "import" "static" TypeName '.' Identifier ';'
+SingleStaticImportDeclaration  :  IMPORT STATIC TypeName '.' Identifier ';'
 							   ;
 
-StaticImportOnDemandDeclaration  :  "import" "static" TypeName ".*" ';'
+StaticImportOnDemandDeclaration  :  IMPORT STATIC TypeName ".*" ';'
 								 ;
 
 TypeDeclaration  :  ClassDeclaration 
@@ -216,26 +273,30 @@ ClassDeclaration  :  NormalClassDeclaration
 				  |  EnumDeclaration
 				  ;
 
-NormalClassDeclaration  :  ClassModifierRec "class" Identifier TypeParametersQues SuperClassQues
-						|  SuperClassQues ClassBody
+NormalClassDeclaration  :  ClassModifierRec CLASS Identifier TypeParametersQues SuperClassQues SuperinterfacesQues
+						| ClassBody
 						;
+
+SuperinterfacesQues  :  
+					 |  Superinterfaces
+					 ;
 
 ClassModifierRec  :
 				  |  ClassModifier ClassModifierRec
 				  ;
 
 ClassModifier  :  Annotation
-			   |  "public"
-			   |  "protected"
-			   |  "private"
-			   |  "abstract"
-			   |  "static"
-			   |  "final"
-			   |  "strictfp"
+			   |  PUBLIC
+			   |  PROTECTED
+			   |  PRIVATE
+			   |  ABSTRACT
+			   |  STATIC
+			   |  FINAL
+			   |  STRICTFP
 			   ;
 
 TypeParametersQues  :  
-				  |  TypeParameter
+				  |  TypeParameters
 			   	  ;
 
 TypeParameterList  :  TypeParameter TypeParameterCommaRec
@@ -248,17 +309,17 @@ TypeParameterCommaRec  :
 TypeParameterComma  :  ',' TypeParameter
 					;
 
-TypeParameters  :  "<" TypeParameterList ">"
+TypeParameters  :  '<' TypeParameterList '>'
 			   ;
 
 SuperClassQues  :  
 				|  SuperClass
 				;
 
-SuperClass  :  "extends" ClassType
+SuperClass  :  EXTENDS ClassType
 			;
 
-SuperInterface  :  "implements" InterfaceTypeList
+Superinterfaces  :  IMPLEMENTS InterfaceTypeList
 				;
 
 InterfaceTypeList  :  InterfaceType InterfaceTypeCommaRec
@@ -268,13 +329,13 @@ InterfaceTypeCommaRec  :
 					   | InterfaceTypeComma InterfaceTypeCommaRec
 					   ;
 
-InterfaceTypeComma  :  "," InterfaceType
+InterfaceTypeComma  :  ',' InterfaceType
 
-ClassBody  :  "{" ClassBodyRec "}"
+ClassBody  :  '{' ClassBodyDeclarationRec '}'
 		   ;
 
-ClassBodyRec  :
-			  |  ClassBody ClassBodyRec
+ClassBodyDeclarationRec  :
+			  |  ClassBodyDeclaration ClassBodyDeclarationRec
 			  ;
 
 ClassBodyDeclaration  :  ClassMemberDeclaration
@@ -287,9 +348,10 @@ ClassMemberDeclaration  :  FieldDeclaration
 						|  MethodDeclaration
 						|  ClassDeclaration
 						| InterfaceDeclaration
+						| ';'
 						;
 
-FieldDeclaration  :  FieldModifierRec UnannType VariableDeclaratorList
+FieldDeclaration  :  FieldModifierRec UnannType VariableDeclaratorList ';'
 				  ;
 
 FieldModifierRec  :
@@ -297,21 +359,24 @@ FieldModifierRec  :
 				  ;
 
 FieldModifier  :  Annotation
-			   |  "public"
-			   |  "protected"
-			   |  "private"
-			   |  "static"
-			   |  "final"
-			   |  "transient"
-			   |  "volatile"
+			   |  PUBLIC
+			   |  PROTECTED
+			   |  PRIVATE
+			   |  STATIC
+			   |  FINAL
+			   |  TRANSIENT
+			   |  VOLATILE
 			   ;
 
 VariableDeclaratorList  :  VariableDeclarator VariableDeclaratorCommaRec
 						 ;
 
 VariableDeclaratorCommaRec  :  
-							|  VariableDeclarator VariableDeclaratorCommaRec
+							|  VariableDeclaratorComma VariableDeclaratorCommaRec
 							;
+
+VariableDeclaratorComma  :  ',' VariableDeclarator
+						 ;
 
 VariableDeclarator  :  VariableDeclaratorId VariableInitializerEqualQues
 					;
@@ -323,11 +388,11 @@ VariableInitializerEqualQues  :
 							  |  VariableInitializerEqual
 							  ;
 
-VariableInitializerEqual  :  "=" VariableInitializer
+VariableInitializerEqual  :  '=' VariableInitializer
 						  ;
 
 VariableInitializer  :  Expression
-					 |  ArrayType
+					 |  ArrayInitializer
 					 ;
 
 UnannType  :  UnannPrimitiveType
@@ -335,7 +400,7 @@ UnannType  :  UnannPrimitiveType
 		   ;
 
 UnannPrimitiveType  :  NumericType
-					|  boolean
+					|  BOOLEAN
 					;
 
 UnannReferenceType  :  UnannClassOrInterfaceType
@@ -348,7 +413,12 @@ UnannClassOrInterfaceType  :  UnannClassType
 						   ;
 
 UnannClassType  :  Identifier TypeArgumentsQues
+				|  UnannClassOrInterfaceType '.' AnnotationRec Identifier TypeArgumentsQues
 				;
+
+TypeArgumentsQues  :  
+				   |  TypeArguments
+				   ;
 
 UnannInterfaceType  :  UnannClassType
 					;
@@ -369,15 +439,15 @@ MethodModifierRec  :
 				   ;
 
 MethodModifier  :  Annotation
-				|  "public"
-				|  "protected"
-				|  "private"
-				|  "abstract"
-				|  "static"
-				|  "final"
-				|  "synchronized"
-				|  "native"
-				|  "strictfp"
+				|  PUBLIC
+				|  PROTECTED
+				|  PRIVATE
+				|  ABSTRACT
+				|  STATIC
+				|  FINAL
+				|  SYNCHRONIZED
+				|  NATIVE
+				|  STRICTFP
 				;
 
 MethodHeader  :  Result MethodDeclarator ThrowsQues
@@ -385,18 +455,18 @@ MethodHeader  :  Result MethodDeclarator ThrowsQues
 			  ;
 
 Result  :  UnannType
-		|  "void"
+		|  VOID
 		;
 
-MethodDeclarator  :  Identifier "(" FormalParameterListQues ")" DimsQues
+MethodDeclarator  :  Identifier '(' FormalParameterListQues ')' DimsQues
 				  ;
 
 FormalParameterListQues  :  
-						 |  FormalParameterList FormalParameterListQues
+						 |  FormalParameterList 
 						 ;
 
 FormalParameterList  :  ReceiverParameter
-					 |  FormalParameters "," LastFormalParameter
+					 |  FormalParameters ',' LastFormalParameter
 					 |  LastFormalParameter
 					 ;
 
@@ -408,7 +478,7 @@ FormalParameterCommaRec  :
 						 |  FormalParameterComma FormalParameterCommaRec
 						 ;
 
-FormalParameterComma  :  "," FormalParameter
+FormalParameterComma  :  ',' FormalParameter
 					  ;
 
 FormalParameter  :  VariableModifierRec UnannType VariableDeclaratorId 
@@ -419,7 +489,7 @@ VariableModifierRec  :
 					 ;
 
 VariableModifier  :  Annotation
-				  |  "final"
+				  |  FINAL
 				  ;
 
 LastFormalParameter  :  VariableModifierRec UnannType AnnotationRec ThreeDots VariableDeclaratorId
@@ -433,14 +503,14 @@ IdentifierDotQues  :
 				   | IdentifierDot
 				   ;
 
-ReceiverParameter  :  AnnotationRec UnannType IdentifierDotQues "this"
+ReceiverParameter  :  AnnotationRec UnannType IdentifierDotQues THIS
 				  ;
 
 ThrowsQues  :  
 			|  Throws
 			;
 
-Throws  :   "throws" ExceptionTypeList
+Throws  :   THROWS ExceptionTypeList
 		;
 
 ExceptionTypeList  :  ExceptionType ExceptionTypeCommaRec
@@ -458,13 +528,13 @@ ExceptionType  :  ClassType
 			   ;
 
 MethodBody  :  Block
-			| ";"
+			| ';'
 			;
 
 InstanceInitializer  :  Block
 					;
 
-StaticInitializer  :  "static" Block
+StaticInitializer  :  STATIC Block
 				   ;
 
 ConstructorDeclaration  :  ConstructorModifierRec ConstructorDeclarator ThrowsQues ConstructorBody
@@ -475,18 +545,22 @@ ConstructorModifierRec  :
 						;
 
 ConstructorModifier  :  Annotation
-					 |  "public"
-					 |  "protected"
-					 |  "Private"
+					 |  PUBLIC
+					 |  PROTECTED
+					 |  PRIVATE
 					 ;
 
-ConstructorDeclarator  :  TypeParametersQues SimpleTypeName "(" FormalParameterListQues ")"
+ConstructorDeclarator  :  TypeParametersQues SimpleTypeName '(' FormalParameterListQues ')'
 					   ;
+
+FormalParameterListQues  : 
+						 |  FormalParameterList
+						 ;
 
 SimpleTypeName  :  Identifier
 				;
 
-ConstructorBody  :  "{" ExplicitConstructorInvocationQues BlockStatementsQues "}"
+ConstructorBody  :  '{' ExplicitConstructorInvocationQues BlockStatementsQues '}'
 				 ;
 
 ExplicitConstructorInvocationQues  : 
@@ -497,20 +571,20 @@ BlockStatementsQues  :
 					 |  BlockStatements
 					 ;
 
-ExplicitConstructorInvocation  :  TypeArgumentsQues "this" "(" ArgumentListQues ")" ";"
-							  |  TypeArgumentsQues "super" "(" ArgumentListQues ")" ";"
-							  |  ExpressionName "." TypeArgumentsQues "super" "(" ArgumentListQues ")" ";"
-							  |  Primary "." TypeArgumentsQues "super" "(" ArgumentListQues ")" ";"
+ExplicitConstructorInvocation  :  TypeArgumentsQues THIS '(' ArgumentListQues ')' ';'
+							  |  TypeArgumentsQues SUPER '(' ArgumentListQues ')' ';'
+							  |  ExpressionName '.' TypeArgumentsQues SUPER '(' ArgumentListQues ')' ';'
+							  |  Primary '.' TypeArgumentsQues SUPER '(' ArgumentListQues ')' ';'
 							  ;
 
-EnumDeclaration  :  ClassModifierRec "enum" Identifier SuperInterfacesQues EnumBody
+EnumDeclaration  :  ClassModifierRec ENUM Identifier SuperinterfacesQues EnumBody
 				 ;
 
-SuperInterfacesQues  :  
-					 | SuperInterface
+SuperinterfacesQues  :  
+					 | Superinterfaces
 					 ;
 
-EnumBody  :  "{" EnumConstantListQues CommaQues EnumBodyDeclarationQues "}"
+EnumBody  :  '{' EnumConstantListQues CommaQues EnumBodyDeclarationQues '}'
 		  ;
 
 EnumConstantListQues  :  
@@ -528,11 +602,15 @@ EnumConstantCommaRec  :
 					  |  EnumConstantComma EnumConstantCommaRec
 					  ;
 
-EnumConstantComma  :  "," EnumConstant
+EnumConstantComma  :  ',' EnumConstant
 				   ;
 
 EnumConstant  :  EnumConstantModifierRec Identifier ArgumentListQuesBracQues ClassBodyQues
 			  ;
+
+ClassBodyQues  :  
+			   |  ClassBody
+			   ;
 
 
 EnumConstantModifierRec  :  
@@ -543,7 +621,7 @@ ArgumentListQuesBracQues  :
 						  | ArgumentListQuesBrac
 						  ;
 
-ArgumentListQuesBrac  :  "(" ArgumentListQues ")"
+ArgumentListQuesBrac  :  '(' ArgumentListQues ')'
 					  ;
 
 ArgumentListQues  :  
@@ -553,7 +631,7 @@ ArgumentListQues  :
 EnumConstantModifier  :  Annotation
 					  ;
 
-EnumBodyDeclaration  :  ";" ClassBodyDeclarationRec
+EnumBodyDeclaration  :  ';' ClassBodyDeclarationRec
 					 ;
 
 ClassBodyDeclarationRec  : 
@@ -573,7 +651,7 @@ InterfaceDeclaration  :  NormalInterfaceDeclaration
 					  |  AnnotationTypeDeclaration
 					  ;
 
-NormalInterfaceDeclaration  :  InterfaceModifierRec "interface" Identifier TypeParametersQues ExtendsInterfacesQues 
+NormalInterfaceDeclaration  :  InterfaceModifierRec INTERFACE Identifier TypeParametersQues ExtendsInterfacesQues 
 							|  InterfaceBody
 							;
 
@@ -589,11 +667,16 @@ ExtendsInterfacesQues  :
 					   |  ExtendsInterfaces
 					   ;
 
-InterfaceModifier  :  Annotation "public" "protected" "private"
-				   |  "abstract" "static" "strictfp"
+InterfaceModifier  :  Annotation
+				   |  ABSTRACT 
+				   |  STATIC
+				   |  STRICTFP
+				   |  PUBLIC
+				   |  PROTECTED
+				   |  PRIVATE
 				   ;
 
-ExtendsInterfaces  :  "extends" InterfaceTypeList
+ExtendsInterfaces  :  EXTENDS InterfaceTypeList
 				   ;
 
 InterfaceBody  :  '{' InterfaceMemberDeclarationRec '}'
@@ -617,8 +700,10 @@ ConstantModifierRec  :
 					 |  ConstantModifier ConstantModifierRec
 					 ;
 
-ConstantModifier  :  Annotation "public"
-				  |  "static" "final"
+ConstantModifier  :  Annotation 
+				  |  STATIC
+				  |  FINAL
+				  |  PUBLIC
 				  ;
 
 InterfaceMethodDeclaration  :  InterfaceMethodModifierRec MethodHeader MethodBody
@@ -628,8 +713,12 @@ InterfaceMethodModifierRec  :
 							|  InterfaceMethodModifier InterfaceMethodModifierRec
 							;
 
-InterfaceMethodModifier  :  Annotation "public"
-						 |  "abstract" "default" "static" "strictfp"
+InterfaceMethodModifier  :  Annotation 
+						 |  ABSTRACT
+						 |  DEFAULT
+						 |  STATIC
+						 |  STRICTFP
+						 |  PUBLIC
 						 ;
 
 AnnotationTypeDeclaration  :  InterfaceModifierRec '@' Identifier AnnotationTypeBody
@@ -651,6 +740,7 @@ AnnotationTypeMemberDeclaration  :  AnnotationTypeElementDeclaration
 								 |  ClassDeclaration
 								 |  InterfaceDeclaration
 								 |  ';'
+								 ;
 
 AnnotationTypeElementDeclaration  :  AnnotationTypeElementModifierRec UnannType Identifier '(' ')' DimsQues DefaultValueQues ';'
 								  ;
@@ -667,10 +757,12 @@ DefaultValueQues  :
 				  |  DefaultValue
 				  ;
 
-AnnotationTypeElementModifier  :  Annotation "public"
-							   |  "abstract"
+AnnotationTypeElementModifier  :  Annotation
+							   |  ABSTRACT
+							   |  PUBLIC
+							   ;
 
-DefaultValue  :  "default" ElementValue
+DefaultValue  :  DEFAULT ElementValue
 			  ;
 
 Annotation  :  NormalAnnotation
@@ -707,7 +799,7 @@ ElementValueArrayInitializer  :  '{' ElementValueListQues CommaQues '}'
 							  ;
 
 ElementValueListQues  :  
-					  |  ElementValueList ElementValueListQues
+					  |  ElementValueList
 					  ;
 
 CommaQues  :  
@@ -777,6 +869,10 @@ LocalVariableDeclarationStatement : LocalVariableDeclaration ';'
 LocalVariableDeclaration : VariableModifierRec UnannType VariableDeclaratorList
 						 ;
 
+VariableModifierRec  :
+					 |  VariableModifier VariableModifierRec
+					 ;
+
 Statement : StatementWithoutTrailingSubstatement
 		  | LabeledStatement
 		  | IfThenStatement
@@ -826,20 +922,20 @@ StatementExpression : Assignment
 					| ClassInstanceCreationExpression
 					;
 
-IfThenStatement : "if" '(' Expression ')' Statement
+IfThenStatement : IF '(' Expression ')' Statement
 				;
 
-IfThenElseStatement : "if" '(' Expression ')' StatementNoShortIf "else" Statement
+IfThenElseStatement : IF '(' Expression ')' StatementNoShortIf ELSE Statement
 					;
 
-IfThenElseStatementNoShortIf : "if" '(' Expression ')' StatementNoShortIf "else" StatementNoShortIf
+IfThenElseStatementNoShortIf : IF '(' Expression ')' StatementNoShortIf ELSE StatementNoShortIf
 							 ;
 
-AssertStatement : "assert" Expression ';'
-				| "assert" Expression ':' Expression ';'
+AssertStatement : ASSERT Expression ';'
+				| ASSERT Expression ':' Expression ';'
 				;
 
-SwitchStatement : "switch" '(' Expression ')' SwitchBlock
+SwitchStatement : SWITCH '(' Expression ')' SwitchBlock
 				;
 
 SwitchBlock : '{' SwitchBlockStatementGroupRec SwitchLabelRec '}'
@@ -859,21 +955,21 @@ SwitchBlockStatementGroup : SwitchLabels BlockStatements
 SwitchLabels : SwitchLabel SwitchLabelRec
 			 ;
 
-SwitchLabel : "case" ConstantExpression ':'
-			| "case" EnumConstantName ':'
-			| "default" ':'
+SwitchLabel : CASE ConstantExpression ':'
+			| CASE EnumConstantName ':'
+			| DEFAULT ':'
 			;
 
 EnumConstantName : Identifier
 				 ;
 
-WhileStatement : "while" '(' Expression ')' Statement
+WhileStatement : WHILE '(' Expression ')' Statement
 			   ;
 
-WhileStatementNoShortIf : "while" '(' Expression ')' StatementNoShortIf
+WhileStatementNoShortIf : WHILE '(' Expression ')' StatementNoShortIf
 						;
 
-DoStatement : "do" Statement "while" '(' Expression ')' ';'
+DoStatement : DO Statement WHILE '(' Expression ')' ';'
 			;
 
 ForStatement : BasicForStatement
@@ -884,10 +980,10 @@ ForStatementNoShortIf : BasicForStatementNoShortIf
 					  | EnhancedForStatementNoShortIf
 					  ;
 
-BasicForStatement : "for" '(' ForInitQues ';' ExpressionQues ';' ForUpdateques ')' Statement
+BasicForStatement : FOR '(' ForInitQues ';' ExpressionQues ';' ForUpdateques ')' Statement
 				  ;
 
-BasicForStatementNoShortIf : "for" '(' ForInitQues ';' ExpressionQues ';' ForUpdateques ')' StatementNoShortIf
+BasicForStatementNoShortIf : FOR '(' ForInitQues ';' ExpressionQues ';' ForUpdateques ')' StatementNoShortIf
 						   ;
 
 ForInitQues  :  
@@ -919,33 +1015,33 @@ StatementExpressionCommaRec  :
 StatementExpressionComma  :  ',' StatementExpression
 						  ;
 
-EnhancedForStatement : "for" '(' VariableModifierRec UnannType VariableDeclaratorId ':' Expression ')' Statement
+EnhancedForStatement : FOR '(' VariableModifierRec UnannType VariableDeclaratorId ':' Expression ')' Statement
 					 ;
 
-EnhancedForStatementNoShortIf : "for" '(' VariableModifierRec UnannType VariableDeclaratorId ':' Expression ')' StatementNoShortIf
+EnhancedForStatementNoShortIf : FOR '(' VariableModifierRec UnannType VariableDeclaratorId ':' Expression ')' StatementNoShortIf
 							  ;
 
-BreakStatement : "break" IdentifierQues ';'
+BreakStatement : BREAK IdentifierQues ';'
 			   ;
 
 IdentifierQues  :  
 				|  Identifier
 				;
 
-ContinueStatement : "continue" IdentifierQues ';'
+ContinueStatement : CONTINUE IdentifierQues ';'
 				  ;
 
-ReturnStatement : "return" ExpressionQues ';'
+ReturnStatement : RETURN ExpressionQues ';'
 				;
 
-ThrowStatement : "throw" Expression ';'
+ThrowStatement : THROW Expression ';'
 			   ;
 
-SynchronizedStatement : "synchronized" '(' Expression ')' Block
+SynchronizedStatement : SYNCHRONIZED '(' Expression ')' Block
 					  ;
 
-TryStatement : "try" Block Catches
-			 | "try" Block CatchesQues Finally
+TryStatement : TRY Block Catches
+			 | TRY Block CatchesQues Finally
 			 | TryWithResourcesStatement
 			 ;
 
@@ -960,7 +1056,7 @@ CatchClauseRec  :
 Catches : CatchClause CatchClauseRec
 		;
 
-CatchClause  :  "catch" '(' CatchFormalParameter ')' Block
+CatchClause  :  CATCH '(' CatchFormalParameter ')' Block
 			 ;
 
 CatchFormalParameter : VariableModifierRec CatchType VariableDeclaratorId
@@ -976,10 +1072,10 @@ ClassTypeVersepRec  :
 ClassTypeVersep  : '|' ClassType
 					;
 
-Finally : "finally" Block
+Finally : FINALLY Block
 		;
 
-TryWithResourcesStatement : "try" ResourceSpecification Block CatchesQues FinallyQues
+TryWithResourcesStatement : TRY ResourceSpecification Block CatchesQues FinallyQues
 						  ;
 
 FinallyQues  :  
@@ -1020,8 +1116,8 @@ Primary : PrimaryNoNewArray
 
 PrimaryNoNewArray : Literal
 				  | ClassLiteral
-				  | "this"
-				  | TypeName '.' "this"
+				  | THIS
+				  | TypeName '.' THIS
 				  |	'(' Expression ')'
 				  | ClassInstanceCreationExpression
 				  | FieldAccess
@@ -1030,17 +1126,17 @@ PrimaryNoNewArray : Literal
 				  | MethodReference
 				  ;
 
-ClassLiteral : TypeName SqaureBracketRec '.' "class"
-			 | NumericType SqaureBracketRec '.' "class"
-			 | "boolean" SqaureBracketRec '.' "class"
-			 | "void" '.' "class"
+ClassLiteral : TypeName SqaureBracketRec '.' CLASS
+			 | NumericType SqaureBracketRec '.' CLASS
+			 | BOOLEAN SqaureBracketRec '.' CLASS
+			 | VOID '.' CLASS
 			 ;
 
 SqaureBracketRec  :  
 				  |  SqaureBracket SqaureBracketRec
 				  ;
 
-SqaureBracket : "[" "]"
+SqaureBracket : '[' ']'
 			  ;
 
 ClassInstanceCreationExpression : UnqualifiedClassInstanceCreationExpression
@@ -1048,7 +1144,7 @@ ClassInstanceCreationExpression : UnqualifiedClassInstanceCreationExpression
 								| Primary '.' UnqualifiedClassInstanceCreationExpression
 								;
 
-UnqualifiedClassInstanceCreationExpression : "new" TypeArgumentsQues ClassOrInterfaceTypeToInstantiate '(' ArgumentListQues ')' ClassBodyQues
+UnqualifiedClassInstanceCreationExpression : NEW TypeArgumentsQues ClassOrInterfaceTypeToInstantiate '(' ArgumentListQues ')' ClassBodyQues
 										   ;
 
 ClassOrInterfaceTypeToInstantiate : AnnotationRec Identifier AnnotationRecDotIdentifierRec TypeArgumentsOrDiamondQues
@@ -1073,8 +1169,8 @@ TypeArgumentsOrDiamond : TypeArguments
 					   ;
 
 FieldAccess : Primary '.' Identifier
-			| "super" '.' Identifier
-			| TypeName '.' "super" '.' Identifier
+			| SUPER '.' Identifier
+			| TypeName '.' SUPER '.' Identifier
 			;
 
 ArrayAccess : ExpressionName '[' Expression ']'
@@ -1085,8 +1181,8 @@ MethodInvocation : MethodName '(' ArgumentListQues ')'
 				 | TypeName '.' TypeArgumentsQues Identifier '(' ArgumentListQues ')'
 				 | ExpressionName '.' TypeArgumentsQues Identifier '(' ArgumentListQues ')'
 				 | Primary '.' TypeArgumentsQues Identifier '(' ArgumentListQues ')'
-				 | "super" '.' TypeArgumentsQues Identifier '(' ArgumentListQues ')'
-				 | TypeName '.' "super" '.' TypeArgumentsQues Identifier '(' ArgumentListQues ')'
+				 | SUPER '.' TypeArgumentsQues Identifier '(' ArgumentListQues ')'
+				 | TypeName '.' SUPER '.' TypeArgumentsQues Identifier '(' ArgumentListQues ')'
 				 ;
 
 ArgumentList : Expression ExpressionCommaRec
@@ -1099,19 +1195,25 @@ ExpressionCommaRec  :
 ExpressionComma  :  ',' Expression
 				 ;
 
-MethodReference : ExpressionName "::" TypeArgumentsQues Identifier
-				| ReferenceType "::" TypeArgumentsQues Identifier
-				| Primary "::" TypeArgumentsQues Identifier
-				| "super" "::" TypeArgumentsQues Identifier
-				| TypeName '.' "super" "::" TypeArgumentsQues Identifier
-				| ClassType "::" TypeArgumentsQues "new"
-				| ArrayType "::" "new"
+MethodReference : ExpressionName DoubleColon TypeArgumentsQues Identifier
+				| ReferenceType DoubleColon TypeArgumentsQues Identifier
+				| Primary DoubleColon TypeArgumentsQues Identifier
+				| SUPER DoubleColon TypeArgumentsQues Identifier
+				| TypeName '.' SUPER DoubleColon TypeArgumentsQues Identifier
+				| ClassType DoubleColon TypeArgumentsQues NEW
+				| ArrayType DoubleColon NEW
 				;
 
-ArrayCreationExpression : "new" PrimitiveType DimExprs DimsQues
-						| "new" ClassOrInterfaceType DimExprs DimsQues
-						| "new" PrimitiveType Dims ArrayInitializer
-						| "new" ClassOrInterfaceType Dims ArrayInitializer
+DoubleColon  :  Colon Colon
+			 ;
+
+Colon  :  ':'
+	   ;
+
+ArrayCreationExpression : NEW PrimitiveType DimExprs DimsQues
+						| NEW ClassOrInterfaceType DimExprs DimsQues
+						| NEW PrimitiveType Dims ArrayInitializer
+						| NEW ClassOrInterfaceType Dims ArrayInitializer
 						;
 
 DimExprs : DimExpr DimExprRec
@@ -1128,8 +1230,17 @@ Expression : LambdaExpression
 		   | AssignmentExpression
 		   ;
 
-LambdaExpression : LambdaParameters '-''>' LambdaBody
+LambdaExpression : LambdaParameters Arrow LambdaBody
 				 ;
+
+Arrow  :  Dash GreaterThan
+	   ;
+
+Dash  :  '-'
+	  ;
+
+GreaterThan  :  '>'
+			 ;
 
 LambdaParameters : Identifier
 				 | '(' FormalParameterListQues ')'
@@ -1163,93 +1274,172 @@ LeftHandSide  :  ExpressionName
 			  |  ArrayAccess
 			  ;
 
-===doubt here===
-AssignmentOperator  :  "="
-					|  "*="
-					|  "/=" 
-					|  "%="
-					|  "+=" 
-					|  "-="
-					|  "<<="
-					|  ">>="
-					|  ">>>="
-					|  "&="
-					|  "^="
-					|  "|="
+MultiplyEquaTo  :  '*' EqualTo
+				;
+
+DivideEqualTo  :  '/' EqualTo
+			   ;
+
+ModuloEqualTo  :  '%' EqualTo
+			   ;
+
+AddEqualTo  :  '+' EqualTo
+			;
+
+SubtractEqualTo  :  '-' EqualTo
+				 ;
+
+DoubleLessEqualTo  :  '<' LessEqualTo
+				   ;
+
+LessEqualTo  :  '<' EqualTo
+			 ;
+
+DoubleGreaterEqualTo  :  '>' GreaterEqualTo
+				   ;
+
+GreaterEqualTo  :  '>' EqualTo
+			 ;
+
+TripleGreaterEqualTo  :  '>' DoubleGreaterEqualTo
+					  ;
+
+AmpressandEqualTo  :  '&' EqualTo
+				   ;
+
+CaratEqualTo  :  '^' EqualTo
+			  ;
+
+OrEqualTo  :  '|' EqualTo
+		   ;
+
+AssignmentOperator  :  EqualTo
+					|  MultiplyEquaTo
+					|  DivideEqualTo
+					|  ModuloEqualTo
+					|  AddEqualTo
+					|  SubtractEqualTo
+					|  DoubleLessEqualTo
+					|  DoubleGreaterEqualTo
+					|  TripleGreaterEqualTo
+					|  AmpressandEqualTo
+					|  CaratEqualTo
+					|  OrEqualTo
 					;
-===doubt here===
 
 ConditionalExpression : ConditionalOrExpression
-					  | ConditionalOrExpression '\?' Expression ':' ConditionalExpression
-					  | ConditionalOrExpression '\?' Expression ':' LambdaExpression
+					  | ConditionalOrExpression '?' Expression ':' ConditionalExpression
+					  | ConditionalOrExpression '?' Expression ':' LambdaExpression
 					  ;
 
 ConditionalOrExpression : ConditionalAndExpression
-						| ConditionalOrExpression '\|''\|' ConditionalAndExpression
+						| ConditionalOrExpression DoubleOr ConditionalAndExpression
 						;
 
+DoubleOr  :  Or Or
+		  ;
+
+Or  :  '|'
+	;
+
 ConditionalAndExpression : InclusiveOrExpression
-						 | ConditionalAndExpression '\&''\&' InclusiveOrExpression
+						 | ConditionalAndExpression DoubleAnd InclusiveOrExpression
 						 ;
 
+DoubleAnd  :  And And
+		  ;
+
+And  :  '&'
+	;
+
 InclusiveOrExpression : ExclusiveOrExpression
-					  | InclusiveOrExpression '\|' ExclusiveOrExpression
+					  | InclusiveOrExpression Or ExclusiveOrExpression
 					  ;
 
 ExclusiveOrExpression : AndExpression
-					  | ExclusiveOrExpression '\^' AndExpression
+					  | ExclusiveOrExpression Carat AndExpression
 					  ;
 
+Carat  :  '^'
+	   ;
+
+EqualTo  :  '='
+		 ;
+
+GreaterThan  :  '>'
+			 ;
+
+LessThan  :  '<'
+		  ;
+
+Not  :  '!'
+	 ;	   
+
 AndExpression : EqualityExpression
-			  | AndExpression '\&' EqualityExpression
+			  | AndExpression And EqualityExpression
 			  ;
 			  
 EqualityExpression : RelationalExpression
-				   | EqualityExpression '=''=' RelationalExpression
-				   | EqualityExpression '\!''=' RelationalExpression
+				   | EqualityExpression DoubleEqualTo RelationalExpression
+				   | EqualityExpression Not EqualTo RelationalExpression
 				   ;
 
+DoubleEqualTo  :  EqualTo EqualTo
+			   ;
+
 RelationalExpression : ShiftExpression
-					 | RelationalExpression '<' ShiftExpression
-					 | RelationalExpression '>' ShiftExpression
-					 | RelationalExpression '<''=' ShiftExpression
-					 | RelationalExpression '>''=' ShiftExpression
-					 | RelationalExpression instanceof ReferenceType
+					 | RelationalExpression LessThan ShiftExpression
+					 | RelationalExpression GreaterThan ShiftExpression
+					 | RelationalExpression LessThan EqualTo ShiftExpression
+					 | RelationalExpression GreaterThan EqualTo ShiftExpression
+					 | RelationalExpression INSTANCEOF ReferenceType
 					 ;
 
 ShiftExpression : AdditiveExpression
-				| ShiftExpression '<''<' AdditiveExpression
-				| ShiftExpression '>''>' AdditiveExpression
-				| ShiftExpression '>''>''>' AdditiveExpression
+				| ShiftExpression LessThan LessThan AdditiveExpression
+				| ShiftExpression GreaterThan GreaterThan AdditiveExpression
+				| ShiftExpression GreaterThan GreaterThan GreaterThan AdditiveExpression
 				;
 
 AdditiveExpression : MultiplicativeExpression
-				   | AdditiveExpression '\+' MultiplicativeExpression
+				   | AdditiveExpression '+' MultiplicativeExpression
 				   | AdditiveExpression '-' MultiplicativeExpression
 				   ;
 
 MultiplicativeExpression : UnaryExpression
-						 | MultiplicativeExpression '\*' UnaryExpression
-						 | MultiplicativeExpression '\/' UnaryExpression
-						 | MultiplicativeExpression '\%' UnaryExpression
+						 | MultiplicativeExpression '*' UnaryExpression
+						 | MultiplicativeExpression '/' UnaryExpression
+						 | MultiplicativeExpression '%' UnaryExpression
 						 ;
 
 UnaryExpression : PreIncrementExpression
 				| PreDecrementExpression
-				| '\+' UnaryExpression
+				| '+' UnaryExpression
 				| '-' UnaryExpression
 				| UnaryExpressionNotPlusMinus
 				;
 
-PreIncrementExpression : '\+''\+' UnaryExpression
+Add  :  '+'
+	 ;
+
+Subtract  :  '-'
+		  ;
+
+DoubleAdd  :  Add Add
+		   ;
+
+DoubleSubtract  :  Subtract Subtract
+				;
+
+PreIncrementExpression : DoubleAdd UnaryExpression
 					   ;
 
-PreDecrementExpression : '-''-' UnaryExpression
+PreDecrementExpression : DoubleSubtract UnaryExpression
 					   ;
 
 UnaryExpressionNotPlusMinus : PostfixExpression
-							| '\~' UnaryExpression
-							| '\!' UnaryExpression
+							| '~' UnaryExpression
+							| '!' UnaryExpression
 							| CastExpression
 							;
 
@@ -1259,10 +1449,10 @@ PostfixExpression : Primary
                   | PostDecrementExpression
                   ;
 
-PostIncrementExpression : PostfixExpression '\+''\+'
+PostIncrementExpression : PostfixExpression DoubleAdd
 						;
 
-PostDecrementExpression : PostfixExpression '-''-'
+PostDecrementExpression : PostfixExpression DoubleSubtract
 						;
 
 CastExpression : '(' PrimitiveType ')' UnaryExpression
