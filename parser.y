@@ -134,7 +134,7 @@ PackageOrTypeName  :  Identifier
 				   ;
 
 ExpressionName  :  Identifier
-				|  AmbiguosName '.' Identifier
+				|  AmbiguousName '.' Identifier
 				;
 
 MethodName  :  Identifier
@@ -190,7 +190,7 @@ ImportDeclaration  :  SingleTypeImportDeclaration
 				   |  StaticImportOnDemandDeclaration
 				   ;
 
-SingleStaticImportDeclaration  :  "import" TypeName ';'
+SingleTypeImportDeclaration  :  "import" TypeName ';'
 							   ;
 
 TypeImportOnDemandDeclaration  :  "import" PackageOrTypeName ".*" ';'
@@ -216,7 +216,7 @@ ClassDeclaration  :  NormalClassDeclaration
 				  |  EnumDeclaration
 				  ;
 
-NormalClassDeclaration  :  ClassModifierRec "class" Identifier TypeParameterQues SuperClassQues
+NormalClassDeclaration  :  ClassModifierRec "class" Identifier TypeParametersQues SuperClassQues
 						|  SuperClassQues ClassBody
 						;
 
@@ -234,7 +234,7 @@ ClassModifier  :  Annotation
 			   |  "strictfp"
 			   ;
 
-TypeParameterQue  :  
+TypeParametersQues  :  
 				  |  TypeParameter
 			   	  ;
 
@@ -248,7 +248,7 @@ TypeParameterCommaRec  :
 TypeParameterComma  :  ',' TypeParameter
 					;
 
-TypeParameter  :  "<" TypeParameterList ">"
+TypeParameters  :  "<" TypeParameterList ">"
 			   ;
 
 SuperClassQues  :  
@@ -278,7 +278,7 @@ ClassBodyRec  :
 			  ;
 
 ClassBodyDeclaration  :  ClassMemberDeclaration
-					  |  IntanceInitializer
+					  |  InstanceInitializer
 					  |  StaticInitializer
 					  |  ConstructorDeclaration
 					  ;
@@ -289,14 +289,14 @@ ClassMemberDeclaration  :  FieldDeclaration
 						| InterfaceDeclaration
 						;
 
-FieldDeclaration  :  FeildModifierRec UnannType VariableDeclarationList
+FieldDeclaration  :  FieldModifierRec UnannType VariableDeclaratorList
 				  ;
 
-FeildModifierRec  :
-				  | FeildModifier FeildModifierRec
+FieldModifierRec  :
+				  | FieldModifier FieldModifierRec
 				  ;
 
-FeildModifier  :  Annotation
+FieldModifier  :  Annotation
 			   |  "public"
 			   |  "protected"
 			   |  "private"
@@ -306,7 +306,7 @@ FeildModifier  :  Annotation
 			   |  "volatile"
 			   ;
 
-VariableDeclarationList  :  VariableDeclarator VariableDeclaratorCommaRec
+VariableDeclaratorList  :  VariableDeclarator VariableDeclaratorCommaRec
 						 ;
 
 VariableDeclaratorCommaRec  :  
@@ -315,6 +315,9 @@ VariableDeclaratorCommaRec  :
 
 VariableDeclarator  :  VariableDeclaratorId VariableInitializerEqualQues
 					;
+
+VariableDeclaratorId  :  Identifier DimsQues
+					  ;
 
 VariableInitializerEqualQues  :  
 							  |  VariableInitializerEqual
@@ -337,6 +340,7 @@ UnannPrimitiveType  :  NumericType
 
 UnannReferenceType  :  UnannClassOrInterfaceType
 					|  UnannTypeVariable
+					|  UnannArrayType
 					;
 
 UnannClassOrInterfaceType  :  UnannClassType
@@ -377,7 +381,7 @@ MethodModifier  :  Annotation
 				;
 
 MethodHeader  :  Result MethodDeclarator ThrowsQues
-			  |  TypeParameter AnnotationRec Result MethodDeclarator ThrowsQues
+			  |  TypeParameters AnnotationRec Result MethodDeclarator ThrowsQues
 			  ;
 
 Result  :  UnannType
@@ -391,13 +395,13 @@ FormalParameterListQues  :
 						 |  FormalParameterList FormalParameterListQues
 						 ;
 
-FormalParameterList  :  ReceiverParamter
-					 |  FormalParameters "," LastFormalParamter
-					 |  LastFormalParamter
+FormalParameterList  :  ReceiverParameter
+					 |  FormalParameters "," LastFormalParameter
+					 |  LastFormalParameter
 					 ;
 
 FormalParameters  :  FormalParameter FormalParameterCommaRec
-				  |  ReceiverParamter FormalParameterCommaRec
+				  |  ReceiverParameter FormalParameterCommaRec
 				  ;
 
 FormalParameterCommaRec  :  
@@ -407,7 +411,7 @@ FormalParameterCommaRec  :
 FormalParameterComma  :  "," FormalParameter
 					  ;
 
-FormalParameter  :  VariableModifierRec UnannType VariableDeclarationId 
+FormalParameter  :  VariableModifierRec UnannType VariableDeclaratorId 
 				 ;
 
 VariableModifierRec  :  
@@ -418,15 +422,18 @@ VariableModifier  :  Annotation
 				  |  "final"
 				  ;
 
-LastFormalParamter  :  VariableModifierRec UnannType IdentifierDotQues "this"
+LastFormalParameter  :  VariableModifierRec UnannType AnnotationRec ThreeDots VariableDeclaratorId
 					|  FormalParameter
 					;
+
+ThreeDots  :  '.' '.' '.'
+		   ;
 
 IdentifierDotQues  :  
 				   | IdentifierDot
 				   ;
 
-ReceiverParamter  :  AnnotationRec UnannType IdentifierDotQues "this"
+ReceiverParameter  :  AnnotationRec UnannType IdentifierDotQues "this"
 				  ;
 
 ThrowsQues  :  
@@ -439,6 +446,13 @@ Throws  :   "throws" ExceptionTypeList
 ExceptionTypeList  :  ExceptionType ExceptionTypeCommaRec
 				   ;
 
+ExceptionTypeCommaRec  :  
+					   |  ExceptionTypeComma ExceptionTypeCommaRec
+					   ;
+
+ExceptionTypeComma  :  ',' ExceptionType
+					;
+
 ExceptionType  :  ClassType
 			   |  TypeVariable
 			   ;
@@ -447,7 +461,7 @@ MethodBody  :  Block
 			| ";"
 			;
 
-InstanceIntializer  :  Block
+InstanceInitializer  :  Block
 					;
 
 StaticInitializer  :  "static" Block
@@ -472,18 +486,18 @@ ConstructorDeclarator  :  TypeParametersQues SimpleTypeName "(" FormalParameterL
 SimpleTypeName  :  Identifier
 				;
 
-ConstructorBody  :  "{" ExplicitContructorInvocationQues BlockStatementsQues "}"
+ConstructorBody  :  "{" ExplicitConstructorInvocationQues BlockStatementsQues "}"
 				 ;
 
-ExplicitContructorInvocationQues  : 
-								  |  ExplicitContructorInvocation
+ExplicitConstructorInvocationQues  : 
+								  |  ExplicitConstructorInvocation
 								  ;
 
 BlockStatementsQues  :  
 					 |  BlockStatements
 					 ;
 
-ExplicitContructorInvocation  :  TypeArgumentsQues "this" "(" ArgumentListQues ")" ";"
+ExplicitConstructorInvocation  :  TypeArgumentsQues "this" "(" ArgumentListQues ")" ";"
 							  |  TypeArgumentsQues "super" "(" ArgumentListQues ")" ";"
 							  |  ExpressionName "." TypeArgumentsQues "super" "(" ArgumentListQues ")" ";"
 							  |  Primary "." TypeArgumentsQues "super" "(" ArgumentListQues ")" ";"
@@ -542,9 +556,9 @@ EnumConstantModifier  :  Annotation
 EnumBodyDeclaration  :  ";" ClassBodyDeclarationRec
 					 ;
 
-ClassBodyDeclaration  : 
-					  |  ClassBodyDeclaration ClassBodyDeclarationRec
-					  ;
+ClassBodyDeclarationRec  : 
+					     |  ClassBodyDeclaration ClassBodyDeclarationRec
+					     ;
 
 ClassBodyQues  :  
 			   |  ClassBody
@@ -596,7 +610,7 @@ InterfaceMemberDeclaration  :  ConstantDeclaration
 							|  ';'
 							;
 
-ConstantDeclaration  :  ConstantModifierRec UnannType VariableDeclarationList ';'
+ConstantDeclaration  :  ConstantModifierRec UnannType VariableDeclaratorList ';'
 					 ;
 
 ConstantModifierRec  :  
@@ -775,7 +789,7 @@ StatementNoShortIf : StatementWithoutTrailingSubstatement
 				   | LabeledStatementNoShortIf
 				   | IfThenElseStatementNoShortIf
 				   | WhileStatementNoShortIf
-				   | ForStatementNoShortIF
+				   | ForStatementNoShortIf
 				   ;
 
 StatementWithoutTrailingSubstatement : Block
@@ -946,6 +960,9 @@ CatchClauseRec  :
 Catches : CatchClause CatchClauseRec
 		;
 
+CatchClause  :  "catch" '(' CatchFormalParameter ')' Block
+			 ;
+
 CatchFormalParameter : VariableModifierRec CatchType VariableDeclaratorId
 					 ;
 
@@ -956,7 +973,7 @@ ClassTypeVersepRec  :
 					|  ClassTypeVersep ClassTypeVersepRec
 					;
 
-ClassTypeVersepRec  : '|' ClassType
+ClassTypeVersep  : '|' ClassType
 					;
 
 Finally : "finally" Block
@@ -965,8 +982,19 @@ Finally : "finally" Block
 TryWithResourcesStatement : "try" ResourceSpecification Block CatchesQues FinallyQues
 						  ;
 
-ResourceSpecification : '(' ResourceList [';'] ')'
+FinallyQues  :  
+			 |  Finally
+			 ;
+
+ResourceSpecification : '(' ResourceList SemicolonQues ')'
 					  ;
+
+SemicolonQues  :  
+			   |  Semicolon
+			   ;
+
+Semicolon  :  ';'
+		   ;
 
 ResourceList : Resource ResourceSemicolonRec
 			 ;
@@ -1071,13 +1099,13 @@ ExpressionCommaRec  :
 ExpressionComma  :  ',' Expression
 				 ;
 
-MethodReference : ExpressionName '::' TypeArgumentsQues Identifier
-				| ReferenceType '::' TypeArgumentsQues Identifier
-				| Primary '::' TypeArgumentsQues Identifier
-				| "super" '::' TypeArgumentsQues Identifier
-				| TypeName '.' "super" '::' TypeArgumentsQues Identifier
-				| ClassType '::' TypeArgumentsQues "new"
-				| ArrayType '::' "new"
+MethodReference : ExpressionName "::" TypeArgumentsQues Identifier
+				| ReferenceType "::" TypeArgumentsQues Identifier
+				| Primary "::" TypeArgumentsQues Identifier
+				| "super" "::" TypeArgumentsQues Identifier
+				| TypeName '.' "super" "::" TypeArgumentsQues Identifier
+				| ClassType "::" TypeArgumentsQues "new"
+				| ArrayType "::" "new"
 				;
 
 ArrayCreationExpression : "new" PrimitiveType DimExprs DimsQues
