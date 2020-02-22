@@ -1,5 +1,4 @@
 %{
-#include "java_scanner.h"
 int lineno=1;
 %}
 Keyword_set1			"abstract"|"continue"|"for"|"new"|"switch"|"assert"|"default"|"if"|"package"|"synchronized"|"boolean"
