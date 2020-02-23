@@ -345,3 +345,7 @@ Error					[^{Keyword}{Separator}{Operator}{Comment}{Literal}{Identifier}]
 {Error}					{return ERROR;}
 
 %%
+
+int yywrap(){
+	return 1;
+}

@@ -14,7 +14,6 @@ public class Exercise3 {
      // prints character before index1 in string
      System.out.println("Character(unicode point) = " + val1);
      // prints character before index9 in string
-     System.out.println("Character
-     (unicode point) = " + val2);
+     System.out.println("Character(unicode point) = " + val2);
    }
  }
