@@ -1,0 +1,31 @@
+digraph ATN {
+rankdir=LR;
+s15[fontsize=11, label="15", shape=doublecircle, fixedsize=true, width=.6];
+s512[fontsize=11,label="&larr;\n512", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s513[fontsize=11,label="513", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s514[fontsize=11,label="514", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s515[fontsize=11,label="{&rarr;\n515*\nd=7|{<p0>|<p1>}}", shape=record, fixedsize=false, peripheries=1];
+s516[fontsize=11,label="&larr;\n516", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s517[fontsize=11,label="{517*\nd=8|{<p0>|<p1>}}", shape=record, fixedsize=false, peripheries=1];
+s518[fontsize=11,label="518", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s519[fontsize=11,label="519*", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s14[fontsize=11,label="14", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s509[fontsize=11,label="509", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s510[fontsize=11,label="510", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s511[fontsize=11,label="{&rarr;\n511\nd=6|{<p0>|<p1>}}", shape=record, fixedsize=false, peripheries=1];
+s14 -> s511 [fontname="Times-Italic", label="&epsilon;"];
+s511:p0 -> s509 [fontname="Times-Italic", label="&epsilon;"];
+s511:p1 -> s510 [fontname="Times-Italic", label="&epsilon;"];
+s509 -> s512 [fontsize=11, fontname="Courier", arrowsize=.7, label = "<classType_lfno_classOrInterfaceType>", arrowhead = normal];
+s510 -> s512 [fontsize=11, fontname="Courier", arrowsize=.7, label = "<interfaceType_lfno_classOrInterfaceType>", arrowhead = normal];
+s512 -> s517 [fontname="Times-Italic", label="&epsilon;"];
+s517:p0 -> s515 [fontname="Times-Italic", label="&epsilon;"];
+s517:p1 -> s518 [fontname="Times-Italic", label="&epsilon;"];
+s515:p0 -> s513 [fontname="Times-Italic", label="&epsilon;"];
+s515:p1 -> s514 [fontname="Times-Italic", label="&epsilon;"];
+s518 -> s15 [fontname="Times-Italic", label="&epsilon;"];
+s513 -> s516 [fontsize=11, fontname="Courier", arrowsize=.7, label = "<classType_lf_classOrInterfaceType>", arrowhead = normal];
+s514 -> s516 [fontsize=11, fontname="Courier", arrowsize=.7, label = "<interfaceType_lf_classOrInterfaceType>", arrowhead = normal];
+s516 -> s519 [fontname="Times-Italic", label="&epsilon;"];
+s519 -> s517 [fontname="Times-Italic", label="&epsilon;", style="dashed"];
+}

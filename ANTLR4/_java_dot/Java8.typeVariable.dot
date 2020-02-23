@@ -1,0 +1,23 @@
+digraph ATN {
+rankdir=LR;
+s29[fontsize=11, label="29", shape=doublecircle, fixedsize=true, width=.6];
+s576[fontsize=11,label="576*", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s577[fontsize=11,label="577", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s578[fontsize=11,label="578", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s571[fontsize=11,label="571", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s28[fontsize=11,label="28", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s572[fontsize=11,label="&rarr;\n572*", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s573[fontsize=11,label="&larr;\n573", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s574[fontsize=11,label="{574*\nd=18|{<p0>|<p1>}}", shape=record, fixedsize=false, peripheries=1];
+s575[fontsize=11,label="575", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s28 -> s574 [fontname="Times-Italic", label="&epsilon;"];
+s574:p0 -> s572 [fontname="Times-Italic", label="&epsilon;"];
+s574:p1 -> s575 [fontname="Times-Italic", label="&epsilon;"];
+s572 -> s571 [fontname="Times-Italic", label="&epsilon;"];
+s575 -> s577 [fontname="Times-Italic", label="&epsilon;"];
+s571 -> s573 [fontsize=11, fontname="Courier", arrowsize=.7, label = "<annotation>", arrowhead = normal];
+s577 -> s578 [fontsize=11, fontname="Courier", arrowsize=.7, label = "Identifier", arrowhead = normal];
+s573 -> s576 [fontname="Times-Italic", label="&epsilon;"];
+s578 -> s29 [fontname="Times-Italic", label="&epsilon;"];
+s576 -> s574 [fontname="Times-Italic", label="&epsilon;", style="dashed"];
+}

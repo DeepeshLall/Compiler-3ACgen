@@ -1,0 +1,18 @@
+digraph ATN {
+rankdir=LR;
+s257[fontsize=11, label="257", shape=doublecircle, fixedsize=true, width=.6];
+s256[fontsize=11,label="256", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s1504[fontsize=11,label="{&rarr;\n1504\nd=155|{<p0>|<p1>|<p2>}}", shape=record, fixedsize=false, peripheries=1];
+s1505[fontsize=11,label="&larr;\n1505", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s1501[fontsize=11,label="1501", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s1502[fontsize=11,label="1502", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s1503[fontsize=11,label="1503", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s256 -> s1504 [fontname="Times-Italic", label="&epsilon;"];
+s1504:p0 -> s1501 [fontname="Times-Italic", label="&epsilon;"];
+s1504:p1 -> s1502 [fontname="Times-Italic", label="&epsilon;"];
+s1504:p2 -> s1503 [fontname="Times-Italic", label="&epsilon;"];
+s1501 -> s1505 [fontsize=11, fontname="Courier", arrowsize=.7, label = "<localVariableDeclarationStatement>", arrowhead = normal];
+s1502 -> s1505 [fontsize=11, fontname="Courier", arrowsize=.7, label = "<classDeclaration>", arrowhead = normal];
+s1503 -> s1505 [fontsize=11, fontname="Courier", arrowsize=.7, label = "<statement>", arrowhead = normal];
+s1505 -> s257 [fontname="Times-Italic", label="&epsilon;"];
+}

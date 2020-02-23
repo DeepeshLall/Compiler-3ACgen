@@ -1,0 +1,30 @@
+digraph ATN {
+rankdir=LR;
+s19[fontsize=11, label="19", shape=doublecircle, fixedsize=true, width=.6];
+s544[fontsize=11,label="544", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s545[fontsize=11,label="545", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s546[fontsize=11,label="&rarr;\n546*", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s547[fontsize=11,label="&larr;\n547", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s548[fontsize=11,label="{548*\nd=14|{<p0>|<p1>}}", shape=record, fixedsize=false, peripheries=1];
+s549[fontsize=11,label="549", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s550[fontsize=11,label="550*", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s551[fontsize=11,label="551", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s552[fontsize=11,label="552", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s553[fontsize=11,label="{&rarr;\n553\nd=15|{<p0>|<p1>}}", shape=record, fixedsize=false, peripheries=1];
+s554[fontsize=11,label="&larr;\n554", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s18[fontsize=11,label="18", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s18 -> s544 [fontname="Times-Italic", label="&epsilon;"];
+s544 -> s548 [fontsize=11, fontname="Courier", arrowsize=.7, label = "'.'", arrowhead = normal];
+s548:p0 -> s546 [fontname="Times-Italic", label="&epsilon;"];
+s548:p1 -> s549 [fontname="Times-Italic", label="&epsilon;"];
+s546 -> s545 [fontname="Times-Italic", label="&epsilon;"];
+s549 -> s551 [fontname="Times-Italic", label="&epsilon;"];
+s545 -> s547 [fontsize=11, fontname="Courier", arrowsize=.7, label = "<annotation>", arrowhead = normal];
+s551 -> s553 [fontsize=11, fontname="Courier", arrowsize=.7, label = "Identifier", arrowhead = normal];
+s547 -> s550 [fontname="Times-Italic", label="&epsilon;"];
+s553:p0 -> s552 [fontname="Times-Italic", label="&epsilon;"];
+s553:p1 -> s554 [fontname="Times-Italic", label="&epsilon;"];
+s550 -> s548 [fontname="Times-Italic", label="&epsilon;", style="dashed"];
+s552 -> s554 [fontsize=11, fontname="Courier", arrowsize=.7, label = "<typeArguments>", arrowhead = normal];
+s554 -> s19 [fontname="Times-Italic", label="&epsilon;"];
+}

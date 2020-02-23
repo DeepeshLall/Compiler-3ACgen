@@ -1,0 +1,30 @@
+digraph ATN {
+rankdir=LR;
+s31[fontsize=11, label="31", shape=doublecircle, fixedsize=true, width=.6];
+s579[fontsize=11,label="579", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s580[fontsize=11,label="580", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s581[fontsize=11,label="581", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s582[fontsize=11,label="582", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s583[fontsize=11,label="583", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s584[fontsize=11,label="584", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s585[fontsize=11,label="585", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s586[fontsize=11,label="586", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s587[fontsize=11,label="587", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s588[fontsize=11,label="{&rarr;\n588\nd=19|{<p0>|<p1>|<p2>}}", shape=record, fixedsize=false, peripheries=1];
+s589[fontsize=11,label="&larr;\n589", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s30[fontsize=11,label="30", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s30 -> s588 [fontname="Times-Italic", label="&epsilon;"];
+s588:p0 -> s579 [fontname="Times-Italic", label="&epsilon;"];
+s588:p1 -> s582 [fontname="Times-Italic", label="&epsilon;"];
+s588:p2 -> s585 [fontname="Times-Italic", label="&epsilon;"];
+s579 -> s580 [fontsize=11, fontname="Courier", arrowsize=.7, label = "<primitiveType>", arrowhead = normal];
+s582 -> s583 [fontsize=11, fontname="Courier", arrowsize=.7, label = "<classOrInterfaceType>", arrowhead = normal];
+s585 -> s586 [fontsize=11, fontname="Courier", arrowsize=.7, label = "<typeVariable>", arrowhead = normal];
+s580 -> s581 [fontsize=11, fontname="Courier", arrowsize=.7, label = "<dims>", arrowhead = normal];
+s583 -> s584 [fontsize=11, fontname="Courier", arrowsize=.7, label = "<dims>", arrowhead = normal];
+s586 -> s587 [fontsize=11, fontname="Courier", arrowsize=.7, label = "<dims>", arrowhead = normal];
+s581 -> s589 [fontname="Times-Italic", label="&epsilon;"];
+s584 -> s589 [fontname="Times-Italic", label="&epsilon;"];
+s587 -> s589 [fontname="Times-Italic", label="&epsilon;"];
+s589 -> s31 [fontname="Times-Italic", label="&epsilon;"];
+}
