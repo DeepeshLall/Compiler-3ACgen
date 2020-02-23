@@ -62,6 +62,18 @@ Node *new_nonTerminal_Node_4_NT(Node *child_A,Node *child_B,Node *child_C,Node *
     return temp;
 }
 
+Node *new_nonTerminal_Node_1_NT_1_T(string value,Node *child_A)
+{
+    Node *temp = new Node;
+    temp->key=value;
+    
+    // cout << value << " ";
+    
+    (temp->child).push_back(child_A);
+    return temp;
+}
+
+
 Node *new_nonTerminal_Node_2_NT_1_T(string value,Node *child_A,Node *child_C)
 {
     Node *temp = new Node;
