@@ -46,9 +46,15 @@ build_code() {
         echo "ERROR: Header file is not present!"
         exit -1
     fi
-    lex java_scanner.l
 
-    g++ -std=c++11 java_scanner.cpp lex.yy.c -o lexer
+    #### PUT YOUR TERMINAL CODE.
+    bison -dv parser.y
+
+    flex java_scanner.l
+
+    g++ -w -std=c++17 parser.tab.c lex.yy.c -lfl -o output
+
+    #Output file generated in "output" named exec.
 
 }
 
