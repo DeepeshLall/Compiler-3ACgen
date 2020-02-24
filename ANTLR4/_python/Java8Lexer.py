@@ -1,13 +1,11 @@
-# Generated from Java8.g4 by ANTLR 4.7.1
+# Generated from Java8.g4 by ANTLR 4.5.1
 from antlr4 import *
 from io import StringIO
-from typing.io import TextIO
-import sys
 
 
 def serializedATN():
     with StringIO() as buf:
-        buf.write("\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\2m")
+        buf.write("\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\2m")
         buf.write("\u0444\b\1\4\2\t\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7")
         buf.write("\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t\13\4\f\t\f\4\r\t\r")
         buf.write("\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22\4\23")
@@ -122,7 +120,7 @@ def serializedATN():
         buf.write("DDdd\3\2\62\63\4\2GGgg\4\2--//\6\2FFHHffhh\4\2RRrr\4\2")
         buf.write("))^^\4\2$$^^\n\2$$))^^ddhhppttvv\3\2\62\65\6\2&&C\\aa")
         buf.write("c|\4\2\2\u0081\ud802\udc01\3\2\ud802\udc01\3\2\udc02\ue001")
-        buf.write("\7\2&&\62;C\\aac|\5\2\13\f\16\17\"\"\4\2\f\f\17\17\2\u0452")
+        buf.write("\7\2&&\62;C\\aac|\5\2\13\f\16\17\"\"\4\2\f\f\17\17\u0452")
         buf.write("\2\3\3\2\2\2\2\5\3\2\2\2\2\7\3\2\2\2\2\t\3\2\2\2\2\13")
         buf.write("\3\2\2\2\2\r\3\2\2\2\2\17\3\2\2\2\2\21\3\2\2\2\2\23\3")
         buf.write("\2\2\2\2\25\3\2\2\2\2\27\3\2\2\2\2\31\3\2\2\2\2\33\3\2")
@@ -514,6 +512,7 @@ class Java8Lexer(Lexer):
 
     decisionsToDFA = [ DFA(ds, i) for i, ds in enumerate(atn.decisionToState) ]
 
+
     ABSTRACT = 1
     ASSERT = 2
     BOOLEAN = 3
@@ -622,8 +621,6 @@ class Java8Lexer(Lexer):
     COMMENT = 106
     LINE_COMMENT = 107
 
-    channelNames = [ u"DEFAULT_TOKEN_CHANNEL", u"HIDDEN" ]
-
     modeNames = [ "DEFAULT_MODE" ]
 
     literalNames = [ "<INVALID>",
@@ -699,9 +696,9 @@ class Java8Lexer(Lexer):
 
     grammarFileName = "Java8.g4"
 
-    def __init__(self, input=None, output:TextIO = sys.stdout):
-        super().__init__(input, output)
-        self.checkVersion("4.7.1")
+    def __init__(self, input=None):
+        super().__init__(input)
+        self.checkVersion("4.5.1")
         self._interp = LexerATNSimulator(self, self.atn, self.decisionsToDFA, PredictionContextCache())
         self._actions = None
         self._predicates = None

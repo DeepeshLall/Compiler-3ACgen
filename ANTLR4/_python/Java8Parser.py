@@ -1,13 +1,11 @@
-# Generated from Java8.g4 by ANTLR 4.7.1
+# Generated from Java8.g4 by ANTLR 4.5.1
 # encoding: utf-8
 from antlr4 import *
 from io import StringIO
-from typing.io import TextIO
-import sys
 
 def serializedATN():
     with StringIO() as buf:
-        buf.write("\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3m")
+        buf.write("\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3m")
         buf.write("\u0b2c\4\2\t\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7")
         buf.write("\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t\13\4\f\t\f\4\r\t\r\4\16")
         buf.write("\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22\4\23\t\23")
@@ -397,9 +395,9 @@ def serializedATN():
         buf.write("\u01b4\u01b6\u01b8\u01ba\u01bc\u01be\u01c0\u01c2\u01c4")
         buf.write("\u01c6\u01c8\u01ca\u01cc\u01ce\u01d0\u01d2\u01d4\u01d6")
         buf.write("\u01d8\u01da\2\6\3\2\65:\7\2\7\7\n\n\35\35\37\37\'\'\4")
-        buf.write("\2\20\20\26\26\4\2DD]g\2\u0c1d\2\u01dc\3\2\2\2\4\u01e0")
-        buf.write("\3\2\2\2\6\u01f0\3\2\2\2\b\u01f4\3\2\2\2\n\u01f6\3\2\2")
-        buf.write("\2\f\u01f8\3\2\2\2\16\u01fd\3\2\2\2\20\u0201\3\2\2\2\22")
+        buf.write("\2\20\20\26\26\4\2DD]g\u0c1d\2\u01dc\3\2\2\2\4\u01e0\3")
+        buf.write("\2\2\2\6\u01f0\3\2\2\2\b\u01f4\3\2\2\2\n\u01f6\3\2\2\2")
+        buf.write("\f\u01f8\3\2\2\2\16\u01fd\3\2\2\2\20\u0201\3\2\2\2\22")
         buf.write("\u0220\3\2\2\2\24\u0222\3\2\2\2\26\u0230\3\2\2\2\30\u0237")
         buf.write("\3\2\2\2\32\u0239\3\2\2\2\34\u023b\3\2\2\2\36\u0240\3")
         buf.write("\2\2\2 \u024e\3\2\2\2\"\u0253\3\2\2\2$\u0268\3\2\2\2&")
@@ -2089,9 +2087,9 @@ class Java8Parser ( Parser ):
     COMMENT=106
     LINE_COMMENT=107
 
-    def __init__(self, input:TokenStream, output:TextIO = sys.stdout):
-        super().__init__(input, output)
-        self.checkVersion("4.7.1")
+    def __init__(self, input:TokenStream):
+        super().__init__(input)
+        self.checkVersion("4.5.1")
         self._interp = ParserATNSimulator(self, self.atn, self.decisionsToDFA, self.sharedContextCache)
         self._predicates = None
 
@@ -2153,7 +2151,6 @@ class Java8Parser ( Parser ):
             if not((((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << Java8Parser.IntegerLiteral) | (1 << Java8Parser.FloatingPointLiteral) | (1 << Java8Parser.BooleanLiteral) | (1 << Java8Parser.CharacterLiteral) | (1 << Java8Parser.StringLiteral) | (1 << Java8Parser.NullLiteral))) != 0)):
                 self._errHandler.recoverInline(self)
             else:
-                self._errHandler.reportMatch(self)
                 self.consume()
         except RecognitionException as re:
             localctx.exception = re
@@ -2203,7 +2200,6 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 2, self.RULE_type_1)
         try:
             self.state = 478
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,0,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
@@ -2270,7 +2266,6 @@ class Java8Parser ( Parser ):
         self._la = 0 # Token type
         try:
             self.state = 494
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,3,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
@@ -2353,18 +2348,17 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 6, self.RULE_numericType)
         try:
             self.state = 498
-            self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [Java8Parser.BYTE, Java8Parser.CHAR, Java8Parser.INT, Java8Parser.LONG, Java8Parser.SHORT]:
                 self.enterOuterAlt(localctx, 1)
                 self.state = 496
                 self.integralType()
-                pass
+
             elif token in [Java8Parser.DOUBLE, Java8Parser.FLOAT]:
                 self.enterOuterAlt(localctx, 2)
                 self.state = 497
                 self.floatingPointType()
-                pass
+
             else:
                 raise NoViableAltException(self)
 
@@ -2415,7 +2409,6 @@ class Java8Parser ( Parser ):
             if not((((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << Java8Parser.BYTE) | (1 << Java8Parser.CHAR) | (1 << Java8Parser.INT) | (1 << Java8Parser.LONG) | (1 << Java8Parser.SHORT))) != 0)):
                 self._errHandler.recoverInline(self)
             else:
-                self._errHandler.reportMatch(self)
                 self.consume()
         except RecognitionException as re:
             localctx.exception = re
@@ -2464,7 +2457,6 @@ class Java8Parser ( Parser ):
             if not(_la==Java8Parser.DOUBLE or _la==Java8Parser.FLOAT):
                 self._errHandler.recoverInline(self)
             else:
-                self._errHandler.reportMatch(self)
                 self.consume()
         except RecognitionException as re:
             localctx.exception = re
@@ -2518,7 +2510,6 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 12, self.RULE_referenceType)
         try:
             self.state = 507
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,5,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
@@ -2602,7 +2593,6 @@ class Java8Parser ( Parser ):
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 511
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,6,self._ctx)
             if la_ == 1:
                 self.state = 509
@@ -2621,7 +2611,6 @@ class Java8Parser ( Parser ):
             while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
                 if _alt==1:
                     self.state = 515
-                    self._errHandler.sync(self)
                     la_ = self._interp.adaptivePredict(self._input,7,self._ctx)
                     if la_ == 1:
                         self.state = 513
@@ -2697,7 +2686,6 @@ class Java8Parser ( Parser ):
         self._la = 0 # Token type
         try:
             self.state = 542
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,13,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
@@ -2714,7 +2702,6 @@ class Java8Parser ( Parser ):
                 self.state = 526
                 self.match(Java8Parser.Identifier)
                 self.state = 528
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if _la==Java8Parser.LT:
                     self.state = 527
@@ -2742,7 +2729,6 @@ class Java8Parser ( Parser ):
                 self.state = 538
                 self.match(Java8Parser.Identifier)
                 self.state = 540
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if _la==Java8Parser.LT:
                     self.state = 539
@@ -2822,7 +2808,6 @@ class Java8Parser ( Parser ):
             self.state = 551
             self.match(Java8Parser.Identifier)
             self.state = 553
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,15,self._ctx)
             if la_ == 1:
                 self.state = 552
@@ -2897,7 +2882,6 @@ class Java8Parser ( Parser ):
             self.state = 561
             self.match(Java8Parser.Identifier)
             self.state = 563
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,17,self._ctx)
             if la_ == 1:
                 self.state = 562
@@ -3161,7 +3145,6 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 30, self.RULE_arrayType)
         try:
             self.state = 588
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,19,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
@@ -3341,7 +3324,6 @@ class Java8Parser ( Parser ):
             self.state = 617
             self.match(Java8Parser.Identifier)
             self.state = 619
-            self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==Java8Parser.EXTENDS:
                 self.state = 618
@@ -3450,7 +3432,6 @@ class Java8Parser ( Parser ):
         self._la = 0 # Token type
         try:
             self.state = 633
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,26,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
@@ -3687,7 +3668,6 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 46, self.RULE_typeArgument)
         try:
             self.state = 652
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,28,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
@@ -3767,7 +3747,6 @@ class Java8Parser ( Parser ):
             self.state = 660
             self.match(Java8Parser.QUESTION)
             self.state = 662
-            self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==Java8Parser.EXTENDS or _la==Java8Parser.SUPER:
                 self.state = 661
@@ -3818,7 +3797,6 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 50, self.RULE_wildcardBounds)
         try:
             self.state = 668
-            self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [Java8Parser.EXTENDS]:
                 self.enterOuterAlt(localctx, 1)
@@ -3826,14 +3804,14 @@ class Java8Parser ( Parser ):
                 self.match(Java8Parser.EXTENDS)
                 self.state = 665
                 self.referenceType()
-                pass
+
             elif token in [Java8Parser.SUPER]:
                 self.enterOuterAlt(localctx, 2)
                 self.state = 666
                 self.match(Java8Parser.SUPER)
                 self.state = 667
                 self.referenceType()
-                pass
+
             else:
                 raise NoViableAltException(self)
 
@@ -3958,7 +3936,6 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 54, self.RULE_typeName)
         try:
             self.state = 686
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,33,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
@@ -4098,7 +4075,6 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 58, self.RULE_expressionName)
         try:
             self.state = 704
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,35,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
@@ -4299,7 +4275,6 @@ class Java8Parser ( Parser ):
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 720
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,37,self._ctx)
             if la_ == 1:
                 self.state = 719
@@ -4512,7 +4487,6 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 70, self.RULE_importDeclaration)
         try:
             self.state = 759
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,42,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
@@ -4806,7 +4780,6 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 80, self.RULE_typeDeclaration)
         try:
             self.state = 788
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,43,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
@@ -4875,7 +4848,6 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 82, self.RULE_classDeclaration)
         try:
             self.state = 792
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,44,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
@@ -4972,7 +4944,6 @@ class Java8Parser ( Parser ):
             self.state = 801
             self.match(Java8Parser.Identifier)
             self.state = 803
-            self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==Java8Parser.LT:
                 self.state = 802
@@ -4980,7 +4951,6 @@ class Java8Parser ( Parser ):
 
 
             self.state = 806
-            self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==Java8Parser.EXTENDS:
                 self.state = 805
@@ -4988,7 +4958,6 @@ class Java8Parser ( Parser ):
 
 
             self.state = 809
-            self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==Java8Parser.IMPLEMENTS:
                 self.state = 808
@@ -5041,48 +5010,47 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 86, self.RULE_classModifier)
         try:
             self.state = 821
-            self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [Java8Parser.AT]:
                 self.enterOuterAlt(localctx, 1)
                 self.state = 813
                 self.annotation()
-                pass
+
             elif token in [Java8Parser.PUBLIC]:
                 self.enterOuterAlt(localctx, 2)
                 self.state = 814
                 self.match(Java8Parser.PUBLIC)
-                pass
+
             elif token in [Java8Parser.PROTECTED]:
                 self.enterOuterAlt(localctx, 3)
                 self.state = 815
                 self.match(Java8Parser.PROTECTED)
-                pass
+
             elif token in [Java8Parser.PRIVATE]:
                 self.enterOuterAlt(localctx, 4)
                 self.state = 816
                 self.match(Java8Parser.PRIVATE)
-                pass
+
             elif token in [Java8Parser.ABSTRACT]:
                 self.enterOuterAlt(localctx, 5)
                 self.state = 817
                 self.match(Java8Parser.ABSTRACT)
-                pass
+
             elif token in [Java8Parser.STATIC]:
                 self.enterOuterAlt(localctx, 6)
                 self.state = 818
                 self.match(Java8Parser.STATIC)
-                pass
+
             elif token in [Java8Parser.FINAL]:
                 self.enterOuterAlt(localctx, 7)
                 self.state = 819
                 self.match(Java8Parser.FINAL)
-                pass
+
             elif token in [Java8Parser.STRICTFP]:
                 self.enterOuterAlt(localctx, 8)
                 self.state = 820
                 self.match(Java8Parser.STRICTFP)
-                pass
+
             else:
                 raise NoViableAltException(self)
 
@@ -5474,7 +5442,6 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 100, self.RULE_classBodyDeclaration)
         try:
             self.state = 862
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,53,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
@@ -5557,7 +5524,6 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 102, self.RULE_classMemberDeclaration)
         try:
             self.state = 869
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,54,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
@@ -5706,48 +5672,47 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 106, self.RULE_fieldModifier)
         try:
             self.state = 889
-            self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [Java8Parser.AT]:
                 self.enterOuterAlt(localctx, 1)
                 self.state = 881
                 self.annotation()
-                pass
+
             elif token in [Java8Parser.PUBLIC]:
                 self.enterOuterAlt(localctx, 2)
                 self.state = 882
                 self.match(Java8Parser.PUBLIC)
-                pass
+
             elif token in [Java8Parser.PROTECTED]:
                 self.enterOuterAlt(localctx, 3)
                 self.state = 883
                 self.match(Java8Parser.PROTECTED)
-                pass
+
             elif token in [Java8Parser.PRIVATE]:
                 self.enterOuterAlt(localctx, 4)
                 self.state = 884
                 self.match(Java8Parser.PRIVATE)
-                pass
+
             elif token in [Java8Parser.STATIC]:
                 self.enterOuterAlt(localctx, 5)
                 self.state = 885
                 self.match(Java8Parser.STATIC)
-                pass
+
             elif token in [Java8Parser.FINAL]:
                 self.enterOuterAlt(localctx, 6)
                 self.state = 886
                 self.match(Java8Parser.FINAL)
-                pass
+
             elif token in [Java8Parser.TRANSIENT]:
                 self.enterOuterAlt(localctx, 7)
                 self.state = 887
                 self.match(Java8Parser.TRANSIENT)
-                pass
+
             elif token in [Java8Parser.VOLATILE]:
                 self.enterOuterAlt(localctx, 8)
                 self.state = 888
                 self.match(Java8Parser.VOLATILE)
-                pass
+
             else:
                 raise NoViableAltException(self)
 
@@ -5865,7 +5830,6 @@ class Java8Parser ( Parser ):
             self.state = 899
             self.variableDeclaratorId()
             self.state = 902
-            self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==Java8Parser.ASSIGN:
                 self.state = 900
@@ -5925,7 +5889,6 @@ class Java8Parser ( Parser ):
             self.state = 904
             self.match(Java8Parser.Identifier)
             self.state = 906
-            self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==Java8Parser.LBRACK or _la==Java8Parser.AT:
                 self.state = 905
@@ -5980,18 +5943,17 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 114, self.RULE_variableInitializer)
         try:
             self.state = 910
-            self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [Java8Parser.BOOLEAN, Java8Parser.BYTE, Java8Parser.CHAR, Java8Parser.DOUBLE, Java8Parser.FLOAT, Java8Parser.INT, Java8Parser.LONG, Java8Parser.NEW, Java8Parser.SHORT, Java8Parser.SUPER, Java8Parser.THIS, Java8Parser.VOID, Java8Parser.IntegerLiteral, Java8Parser.FloatingPointLiteral, Java8Parser.BooleanLiteral, Java8Parser.CharacterLiteral, Java8Parser.StringLiteral, Java8Parser.NullLiteral, Java8Parser.LPAREN, Java8Parser.BANG, Java8Parser.TILDE, Java8Parser.INC, Java8Parser.DEC, Java8Parser.ADD, Java8Parser.SUB, Java8Parser.Identifier, Java8Parser.AT]:
                 self.enterOuterAlt(localctx, 1)
                 self.state = 908
                 self.expression()
-                pass
+
             elif token in [Java8Parser.LBRACE]:
                 self.enterOuterAlt(localctx, 2)
                 self.state = 909
                 self.arrayInitializer()
-                pass
+
             else:
                 raise NoViableAltException(self)
 
@@ -6043,7 +6005,6 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 116, self.RULE_unannType)
         try:
             self.state = 914
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,61,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
@@ -6102,18 +6063,17 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 118, self.RULE_unannPrimitiveType)
         try:
             self.state = 918
-            self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [Java8Parser.BYTE, Java8Parser.CHAR, Java8Parser.DOUBLE, Java8Parser.FLOAT, Java8Parser.INT, Java8Parser.LONG, Java8Parser.SHORT]:
                 self.enterOuterAlt(localctx, 1)
                 self.state = 916
                 self.numericType()
-                pass
+
             elif token in [Java8Parser.BOOLEAN]:
                 self.enterOuterAlt(localctx, 2)
                 self.state = 917
                 self.match(Java8Parser.BOOLEAN)
-                pass
+
             else:
                 raise NoViableAltException(self)
 
@@ -6169,7 +6129,6 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 120, self.RULE_unannReferenceType)
         try:
             self.state = 923
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,63,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
@@ -6253,7 +6212,6 @@ class Java8Parser ( Parser ):
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 927
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,64,self._ctx)
             if la_ == 1:
                 self.state = 925
@@ -6272,7 +6230,6 @@ class Java8Parser ( Parser ):
             while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
                 if _alt==1:
                     self.state = 931
-                    self._errHandler.sync(self)
                     la_ = self._interp.adaptivePredict(self._input,65,self._ctx)
                     if la_ == 1:
                         self.state = 929
@@ -6348,14 +6305,12 @@ class Java8Parser ( Parser ):
         self._la = 0 # Token type
         try:
             self.state = 952
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,70,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
                 self.state = 936
                 self.match(Java8Parser.Identifier)
                 self.state = 938
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if _la==Java8Parser.LT:
                     self.state = 937
@@ -6383,7 +6338,6 @@ class Java8Parser ( Parser ):
                 self.state = 948
                 self.match(Java8Parser.Identifier)
                 self.state = 950
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if _la==Java8Parser.LT:
                     self.state = 949
@@ -6463,7 +6417,6 @@ class Java8Parser ( Parser ):
             self.state = 961
             self.match(Java8Parser.Identifier)
             self.state = 963
-            self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==Java8Parser.LT:
                 self.state = 962
@@ -6521,7 +6474,6 @@ class Java8Parser ( Parser ):
             self.state = 965
             self.match(Java8Parser.Identifier)
             self.state = 967
-            self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==Java8Parser.LT:
                 self.state = 966
@@ -6767,7 +6719,6 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 138, self.RULE_unannArrayType)
         try:
             self.state = 986
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,74,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
@@ -6908,58 +6859,57 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 142, self.RULE_methodModifier)
         try:
             self.state = 1007
-            self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [Java8Parser.AT]:
                 self.enterOuterAlt(localctx, 1)
                 self.state = 997
                 self.annotation()
-                pass
+
             elif token in [Java8Parser.PUBLIC]:
                 self.enterOuterAlt(localctx, 2)
                 self.state = 998
                 self.match(Java8Parser.PUBLIC)
-                pass
+
             elif token in [Java8Parser.PROTECTED]:
                 self.enterOuterAlt(localctx, 3)
                 self.state = 999
                 self.match(Java8Parser.PROTECTED)
-                pass
+
             elif token in [Java8Parser.PRIVATE]:
                 self.enterOuterAlt(localctx, 4)
                 self.state = 1000
                 self.match(Java8Parser.PRIVATE)
-                pass
+
             elif token in [Java8Parser.ABSTRACT]:
                 self.enterOuterAlt(localctx, 5)
                 self.state = 1001
                 self.match(Java8Parser.ABSTRACT)
-                pass
+
             elif token in [Java8Parser.STATIC]:
                 self.enterOuterAlt(localctx, 6)
                 self.state = 1002
                 self.match(Java8Parser.STATIC)
-                pass
+
             elif token in [Java8Parser.FINAL]:
                 self.enterOuterAlt(localctx, 7)
                 self.state = 1003
                 self.match(Java8Parser.FINAL)
-                pass
+
             elif token in [Java8Parser.SYNCHRONIZED]:
                 self.enterOuterAlt(localctx, 8)
                 self.state = 1004
                 self.match(Java8Parser.SYNCHRONIZED)
-                pass
+
             elif token in [Java8Parser.NATIVE]:
                 self.enterOuterAlt(localctx, 9)
                 self.state = 1005
                 self.match(Java8Parser.NATIVE)
-                pass
+
             elif token in [Java8Parser.STRICTFP]:
                 self.enterOuterAlt(localctx, 10)
                 self.state = 1006
                 self.match(Java8Parser.STRICTFP)
-                pass
+
             else:
                 raise NoViableAltException(self)
 
@@ -7027,7 +6977,6 @@ class Java8Parser ( Parser ):
         self._la = 0 # Token type
         try:
             self.state = 1026
-            self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [Java8Parser.BOOLEAN, Java8Parser.BYTE, Java8Parser.CHAR, Java8Parser.DOUBLE, Java8Parser.FLOAT, Java8Parser.INT, Java8Parser.LONG, Java8Parser.SHORT, Java8Parser.VOID, Java8Parser.Identifier]:
                 self.enterOuterAlt(localctx, 1)
@@ -7036,14 +6985,13 @@ class Java8Parser ( Parser ):
                 self.state = 1010
                 self.methodDeclarator()
                 self.state = 1012
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if _la==Java8Parser.THROWS:
                     self.state = 1011
                     self.throws_()
 
 
-                pass
+
             elif token in [Java8Parser.LT]:
                 self.enterOuterAlt(localctx, 2)
                 self.state = 1014
@@ -7063,14 +7011,13 @@ class Java8Parser ( Parser ):
                 self.state = 1022
                 self.methodDeclarator()
                 self.state = 1024
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if _la==Java8Parser.THROWS:
                     self.state = 1023
                     self.throws_()
 
 
-                pass
+
             else:
                 raise NoViableAltException(self)
 
@@ -7118,18 +7065,17 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 146, self.RULE_result)
         try:
             self.state = 1030
-            self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [Java8Parser.BOOLEAN, Java8Parser.BYTE, Java8Parser.CHAR, Java8Parser.DOUBLE, Java8Parser.FLOAT, Java8Parser.INT, Java8Parser.LONG, Java8Parser.SHORT, Java8Parser.Identifier]:
                 self.enterOuterAlt(localctx, 1)
                 self.state = 1028
                 self.unannType()
-                pass
+
             elif token in [Java8Parser.VOID]:
                 self.enterOuterAlt(localctx, 2)
                 self.state = 1029
                 self.match(Java8Parser.VOID)
-                pass
+
             else:
                 raise NoViableAltException(self)
 
@@ -7190,7 +7136,6 @@ class Java8Parser ( Parser ):
             self.state = 1033
             self.match(Java8Parser.LPAREN)
             self.state = 1035
-            self._errHandler.sync(self)
             _la = self._input.LA(1)
             if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << Java8Parser.BOOLEAN) | (1 << Java8Parser.BYTE) | (1 << Java8Parser.CHAR) | (1 << Java8Parser.DOUBLE) | (1 << Java8Parser.FINAL) | (1 << Java8Parser.FLOAT) | (1 << Java8Parser.INT) | (1 << Java8Parser.LONG) | (1 << Java8Parser.SHORT))) != 0) or _la==Java8Parser.Identifier or _la==Java8Parser.AT:
                 self.state = 1034
@@ -7200,7 +7145,6 @@ class Java8Parser ( Parser ):
             self.state = 1037
             self.match(Java8Parser.RPAREN)
             self.state = 1039
-            self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==Java8Parser.LBRACK or _la==Java8Parser.AT:
                 self.state = 1038
@@ -7255,7 +7199,6 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 150, self.RULE_formalParameterList)
         try:
             self.state = 1046
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,84,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
@@ -7325,7 +7268,6 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 152, self.RULE_formalParameters)
         try:
             self.state = 1064
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,87,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
@@ -7480,18 +7422,17 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 156, self.RULE_variableModifier)
         try:
             self.state = 1077
-            self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [Java8Parser.AT]:
                 self.enterOuterAlt(localctx, 1)
                 self.state = 1075
                 self.annotation()
-                pass
+
             elif token in [Java8Parser.FINAL]:
                 self.enterOuterAlt(localctx, 2)
                 self.state = 1076
                 self.match(Java8Parser.FINAL)
-                pass
+
             else:
                 raise NoViableAltException(self)
 
@@ -7562,7 +7503,6 @@ class Java8Parser ( Parser ):
         self._la = 0 # Token type
         try:
             self.state = 1096
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,92,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
@@ -7669,7 +7609,6 @@ class Java8Parser ( Parser ):
             self.state = 1104
             self.unannType()
             self.state = 1107
-            self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==Java8Parser.Identifier:
                 self.state = 1105
@@ -7838,7 +7777,6 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 166, self.RULE_exceptionType)
         try:
             self.state = 1124
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,96,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
@@ -7897,18 +7835,17 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 168, self.RULE_methodBody)
         try:
             self.state = 1128
-            self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [Java8Parser.LBRACE]:
                 self.enterOuterAlt(localctx, 1)
                 self.state = 1126
                 self.block()
-                pass
+
             elif token in [Java8Parser.SEMI]:
                 self.enterOuterAlt(localctx, 2)
                 self.state = 1127
                 self.match(Java8Parser.SEMI)
-                pass
+
             else:
                 raise NoViableAltException(self)
 
@@ -8079,7 +8016,6 @@ class Java8Parser ( Parser ):
             self.state = 1141
             self.constructorDeclarator()
             self.state = 1143
-            self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==Java8Parser.THROWS:
                 self.state = 1142
@@ -8132,28 +8068,27 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 176, self.RULE_constructorModifier)
         try:
             self.state = 1151
-            self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [Java8Parser.AT]:
                 self.enterOuterAlt(localctx, 1)
                 self.state = 1147
                 self.annotation()
-                pass
+
             elif token in [Java8Parser.PUBLIC]:
                 self.enterOuterAlt(localctx, 2)
                 self.state = 1148
                 self.match(Java8Parser.PUBLIC)
-                pass
+
             elif token in [Java8Parser.PROTECTED]:
                 self.enterOuterAlt(localctx, 3)
                 self.state = 1149
                 self.match(Java8Parser.PROTECTED)
-                pass
+
             elif token in [Java8Parser.PRIVATE]:
                 self.enterOuterAlt(localctx, 4)
                 self.state = 1150
                 self.match(Java8Parser.PRIVATE)
-                pass
+
             else:
                 raise NoViableAltException(self)
 
@@ -8211,7 +8146,6 @@ class Java8Parser ( Parser ):
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 1154
-            self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==Java8Parser.LT:
                 self.state = 1153
@@ -8223,7 +8157,6 @@ class Java8Parser ( Parser ):
             self.state = 1157
             self.match(Java8Parser.LPAREN)
             self.state = 1159
-            self._errHandler.sync(self)
             _la = self._input.LA(1)
             if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << Java8Parser.BOOLEAN) | (1 << Java8Parser.BYTE) | (1 << Java8Parser.CHAR) | (1 << Java8Parser.DOUBLE) | (1 << Java8Parser.FINAL) | (1 << Java8Parser.FLOAT) | (1 << Java8Parser.INT) | (1 << Java8Parser.LONG) | (1 << Java8Parser.SHORT))) != 0) or _la==Java8Parser.Identifier or _la==Java8Parser.AT:
                 self.state = 1158
@@ -8329,7 +8262,6 @@ class Java8Parser ( Parser ):
             self.state = 1165
             self.match(Java8Parser.LBRACE)
             self.state = 1167
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,103,self._ctx)
             if la_ == 1:
                 self.state = 1166
@@ -8337,7 +8269,6 @@ class Java8Parser ( Parser ):
 
 
             self.state = 1170
-            self._errHandler.sync(self)
             _la = self._input.LA(1)
             if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << Java8Parser.ABSTRACT) | (1 << Java8Parser.ASSERT) | (1 << Java8Parser.BOOLEAN) | (1 << Java8Parser.BREAK) | (1 << Java8Parser.BYTE) | (1 << Java8Parser.CHAR) | (1 << Java8Parser.CLASS) | (1 << Java8Parser.CONTINUE) | (1 << Java8Parser.DO) | (1 << Java8Parser.DOUBLE) | (1 << Java8Parser.ENUM) | (1 << Java8Parser.FINAL) | (1 << Java8Parser.FLOAT) | (1 << Java8Parser.FOR) | (1 << Java8Parser.IF) | (1 << Java8Parser.INT) | (1 << Java8Parser.LONG) | (1 << Java8Parser.NEW) | (1 << Java8Parser.PRIVATE) | (1 << Java8Parser.PROTECTED) | (1 << Java8Parser.PUBLIC) | (1 << Java8Parser.RETURN) | (1 << Java8Parser.SHORT) | (1 << Java8Parser.STATIC) | (1 << Java8Parser.STRICTFP) | (1 << Java8Parser.SUPER) | (1 << Java8Parser.SWITCH) | (1 << Java8Parser.SYNCHRONIZED) | (1 << Java8Parser.THIS) | (1 << Java8Parser.THROW) | (1 << Java8Parser.TRY) | (1 << Java8Parser.VOID) | (1 << Java8Parser.WHILE) | (1 << Java8Parser.IntegerLiteral) | (1 << Java8Parser.FloatingPointLiteral) | (1 << Java8Parser.BooleanLiteral) | (1 << Java8Parser.CharacterLiteral) | (1 << Java8Parser.StringLiteral) | (1 << Java8Parser.NullLiteral) | (1 << Java8Parser.LPAREN) | (1 << Java8Parser.LBRACE) | (1 << Java8Parser.SEMI))) != 0) or ((((_la - 79)) & ~0x3f) == 0 and ((1 << (_la - 79)) & ((1 << (Java8Parser.INC - 79)) | (1 << (Java8Parser.DEC - 79)) | (1 << (Java8Parser.Identifier - 79)) | (1 << (Java8Parser.AT - 79)))) != 0):
                 self.state = 1169
@@ -8403,12 +8334,10 @@ class Java8Parser ( Parser ):
         self._la = 0 # Token type
         try:
             self.state = 1220
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,113,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
                 self.state = 1175
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if _la==Java8Parser.LT:
                     self.state = 1174
@@ -8420,7 +8349,6 @@ class Java8Parser ( Parser ):
                 self.state = 1178
                 self.match(Java8Parser.LPAREN)
                 self.state = 1180
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << Java8Parser.BOOLEAN) | (1 << Java8Parser.BYTE) | (1 << Java8Parser.CHAR) | (1 << Java8Parser.DOUBLE) | (1 << Java8Parser.FLOAT) | (1 << Java8Parser.INT) | (1 << Java8Parser.LONG) | (1 << Java8Parser.NEW) | (1 << Java8Parser.SHORT) | (1 << Java8Parser.SUPER) | (1 << Java8Parser.THIS) | (1 << Java8Parser.VOID) | (1 << Java8Parser.IntegerLiteral) | (1 << Java8Parser.FloatingPointLiteral) | (1 << Java8Parser.BooleanLiteral) | (1 << Java8Parser.CharacterLiteral) | (1 << Java8Parser.StringLiteral) | (1 << Java8Parser.NullLiteral) | (1 << Java8Parser.LPAREN))) != 0) or ((((_la - 69)) & ~0x3f) == 0 and ((1 << (_la - 69)) & ((1 << (Java8Parser.BANG - 69)) | (1 << (Java8Parser.TILDE - 69)) | (1 << (Java8Parser.INC - 69)) | (1 << (Java8Parser.DEC - 69)) | (1 << (Java8Parser.ADD - 69)) | (1 << (Java8Parser.SUB - 69)) | (1 << (Java8Parser.Identifier - 69)) | (1 << (Java8Parser.AT - 69)))) != 0):
                     self.state = 1179
@@ -8436,7 +8364,6 @@ class Java8Parser ( Parser ):
             elif la_ == 2:
                 self.enterOuterAlt(localctx, 2)
                 self.state = 1185
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if _la==Java8Parser.LT:
                     self.state = 1184
@@ -8448,7 +8375,6 @@ class Java8Parser ( Parser ):
                 self.state = 1188
                 self.match(Java8Parser.LPAREN)
                 self.state = 1190
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << Java8Parser.BOOLEAN) | (1 << Java8Parser.BYTE) | (1 << Java8Parser.CHAR) | (1 << Java8Parser.DOUBLE) | (1 << Java8Parser.FLOAT) | (1 << Java8Parser.INT) | (1 << Java8Parser.LONG) | (1 << Java8Parser.NEW) | (1 << Java8Parser.SHORT) | (1 << Java8Parser.SUPER) | (1 << Java8Parser.THIS) | (1 << Java8Parser.VOID) | (1 << Java8Parser.IntegerLiteral) | (1 << Java8Parser.FloatingPointLiteral) | (1 << Java8Parser.BooleanLiteral) | (1 << Java8Parser.CharacterLiteral) | (1 << Java8Parser.StringLiteral) | (1 << Java8Parser.NullLiteral) | (1 << Java8Parser.LPAREN))) != 0) or ((((_la - 69)) & ~0x3f) == 0 and ((1 << (_la - 69)) & ((1 << (Java8Parser.BANG - 69)) | (1 << (Java8Parser.TILDE - 69)) | (1 << (Java8Parser.INC - 69)) | (1 << (Java8Parser.DEC - 69)) | (1 << (Java8Parser.ADD - 69)) | (1 << (Java8Parser.SUB - 69)) | (1 << (Java8Parser.Identifier - 69)) | (1 << (Java8Parser.AT - 69)))) != 0):
                     self.state = 1189
@@ -8468,7 +8394,6 @@ class Java8Parser ( Parser ):
                 self.state = 1195
                 self.match(Java8Parser.DOT)
                 self.state = 1197
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if _la==Java8Parser.LT:
                     self.state = 1196
@@ -8480,7 +8405,6 @@ class Java8Parser ( Parser ):
                 self.state = 1200
                 self.match(Java8Parser.LPAREN)
                 self.state = 1202
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << Java8Parser.BOOLEAN) | (1 << Java8Parser.BYTE) | (1 << Java8Parser.CHAR) | (1 << Java8Parser.DOUBLE) | (1 << Java8Parser.FLOAT) | (1 << Java8Parser.INT) | (1 << Java8Parser.LONG) | (1 << Java8Parser.NEW) | (1 << Java8Parser.SHORT) | (1 << Java8Parser.SUPER) | (1 << Java8Parser.THIS) | (1 << Java8Parser.VOID) | (1 << Java8Parser.IntegerLiteral) | (1 << Java8Parser.FloatingPointLiteral) | (1 << Java8Parser.BooleanLiteral) | (1 << Java8Parser.CharacterLiteral) | (1 << Java8Parser.StringLiteral) | (1 << Java8Parser.NullLiteral) | (1 << Java8Parser.LPAREN))) != 0) or ((((_la - 69)) & ~0x3f) == 0 and ((1 << (_la - 69)) & ((1 << (Java8Parser.BANG - 69)) | (1 << (Java8Parser.TILDE - 69)) | (1 << (Java8Parser.INC - 69)) | (1 << (Java8Parser.DEC - 69)) | (1 << (Java8Parser.ADD - 69)) | (1 << (Java8Parser.SUB - 69)) | (1 << (Java8Parser.Identifier - 69)) | (1 << (Java8Parser.AT - 69)))) != 0):
                     self.state = 1201
@@ -8500,7 +8424,6 @@ class Java8Parser ( Parser ):
                 self.state = 1208
                 self.match(Java8Parser.DOT)
                 self.state = 1210
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if _la==Java8Parser.LT:
                     self.state = 1209
@@ -8512,7 +8435,6 @@ class Java8Parser ( Parser ):
                 self.state = 1213
                 self.match(Java8Parser.LPAREN)
                 self.state = 1215
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << Java8Parser.BOOLEAN) | (1 << Java8Parser.BYTE) | (1 << Java8Parser.CHAR) | (1 << Java8Parser.DOUBLE) | (1 << Java8Parser.FLOAT) | (1 << Java8Parser.INT) | (1 << Java8Parser.LONG) | (1 << Java8Parser.NEW) | (1 << Java8Parser.SHORT) | (1 << Java8Parser.SUPER) | (1 << Java8Parser.THIS) | (1 << Java8Parser.VOID) | (1 << Java8Parser.IntegerLiteral) | (1 << Java8Parser.FloatingPointLiteral) | (1 << Java8Parser.BooleanLiteral) | (1 << Java8Parser.CharacterLiteral) | (1 << Java8Parser.StringLiteral) | (1 << Java8Parser.NullLiteral) | (1 << Java8Parser.LPAREN))) != 0) or ((((_la - 69)) & ~0x3f) == 0 and ((1 << (_la - 69)) & ((1 << (Java8Parser.BANG - 69)) | (1 << (Java8Parser.TILDE - 69)) | (1 << (Java8Parser.INC - 69)) | (1 << (Java8Parser.DEC - 69)) | (1 << (Java8Parser.ADD - 69)) | (1 << (Java8Parser.SUB - 69)) | (1 << (Java8Parser.Identifier - 69)) | (1 << (Java8Parser.AT - 69)))) != 0):
                     self.state = 1214
@@ -8600,7 +8522,6 @@ class Java8Parser ( Parser ):
             self.state = 1229
             self.match(Java8Parser.Identifier)
             self.state = 1231
-            self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==Java8Parser.IMPLEMENTS:
                 self.state = 1230
@@ -8661,7 +8582,6 @@ class Java8Parser ( Parser ):
             self.state = 1235
             self.match(Java8Parser.LBRACE)
             self.state = 1237
-            self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==Java8Parser.Identifier or _la==Java8Parser.AT:
                 self.state = 1236
@@ -8669,7 +8589,6 @@ class Java8Parser ( Parser ):
 
 
             self.state = 1240
-            self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==Java8Parser.COMMA:
                 self.state = 1239
@@ -8677,7 +8596,6 @@ class Java8Parser ( Parser ):
 
 
             self.state = 1243
-            self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==Java8Parser.SEMI:
                 self.state = 1242
@@ -8820,13 +8738,11 @@ class Java8Parser ( Parser ):
             self.state = 1261
             self.match(Java8Parser.Identifier)
             self.state = 1267
-            self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==Java8Parser.LPAREN:
                 self.state = 1262
                 self.match(Java8Parser.LPAREN)
                 self.state = 1264
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << Java8Parser.BOOLEAN) | (1 << Java8Parser.BYTE) | (1 << Java8Parser.CHAR) | (1 << Java8Parser.DOUBLE) | (1 << Java8Parser.FLOAT) | (1 << Java8Parser.INT) | (1 << Java8Parser.LONG) | (1 << Java8Parser.NEW) | (1 << Java8Parser.SHORT) | (1 << Java8Parser.SUPER) | (1 << Java8Parser.THIS) | (1 << Java8Parser.VOID) | (1 << Java8Parser.IntegerLiteral) | (1 << Java8Parser.FloatingPointLiteral) | (1 << Java8Parser.BooleanLiteral) | (1 << Java8Parser.CharacterLiteral) | (1 << Java8Parser.StringLiteral) | (1 << Java8Parser.NullLiteral) | (1 << Java8Parser.LPAREN))) != 0) or ((((_la - 69)) & ~0x3f) == 0 and ((1 << (_la - 69)) & ((1 << (Java8Parser.BANG - 69)) | (1 << (Java8Parser.TILDE - 69)) | (1 << (Java8Parser.INC - 69)) | (1 << (Java8Parser.DEC - 69)) | (1 << (Java8Parser.ADD - 69)) | (1 << (Java8Parser.SUB - 69)) | (1 << (Java8Parser.Identifier - 69)) | (1 << (Java8Parser.AT - 69)))) != 0):
                     self.state = 1263
@@ -8838,7 +8754,6 @@ class Java8Parser ( Parser ):
 
 
             self.state = 1270
-            self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==Java8Parser.LBRACE:
                 self.state = 1269
@@ -8999,7 +8914,6 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 198, self.RULE_interfaceDeclaration)
         try:
             self.state = 1283
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,125,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
@@ -9092,7 +9006,6 @@ class Java8Parser ( Parser ):
             self.state = 1292
             self.match(Java8Parser.Identifier)
             self.state = 1294
-            self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==Java8Parser.LT:
                 self.state = 1293
@@ -9100,7 +9013,6 @@ class Java8Parser ( Parser ):
 
 
             self.state = 1297
-            self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==Java8Parser.EXTENDS:
                 self.state = 1296
@@ -9153,43 +9065,42 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 202, self.RULE_interfaceModifier)
         try:
             self.state = 1308
-            self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [Java8Parser.AT]:
                 self.enterOuterAlt(localctx, 1)
                 self.state = 1301
                 self.annotation()
-                pass
+
             elif token in [Java8Parser.PUBLIC]:
                 self.enterOuterAlt(localctx, 2)
                 self.state = 1302
                 self.match(Java8Parser.PUBLIC)
-                pass
+
             elif token in [Java8Parser.PROTECTED]:
                 self.enterOuterAlt(localctx, 3)
                 self.state = 1303
                 self.match(Java8Parser.PROTECTED)
-                pass
+
             elif token in [Java8Parser.PRIVATE]:
                 self.enterOuterAlt(localctx, 4)
                 self.state = 1304
                 self.match(Java8Parser.PRIVATE)
-                pass
+
             elif token in [Java8Parser.ABSTRACT]:
                 self.enterOuterAlt(localctx, 5)
                 self.state = 1305
                 self.match(Java8Parser.ABSTRACT)
-                pass
+
             elif token in [Java8Parser.STATIC]:
                 self.enterOuterAlt(localctx, 6)
                 self.state = 1306
                 self.match(Java8Parser.STATIC)
-                pass
+
             elif token in [Java8Parser.STRICTFP]:
                 self.enterOuterAlt(localctx, 7)
                 self.state = 1307
                 self.match(Java8Parser.STRICTFP)
-                pass
+
             else:
                 raise NoViableAltException(self)
 
@@ -9359,7 +9270,6 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 208, self.RULE_interfaceMemberDeclaration)
         try:
             self.state = 1327
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,131,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
@@ -9508,28 +9418,27 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 212, self.RULE_constantModifier)
         try:
             self.state = 1343
-            self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [Java8Parser.AT]:
                 self.enterOuterAlt(localctx, 1)
                 self.state = 1339
                 self.annotation()
-                pass
+
             elif token in [Java8Parser.PUBLIC]:
                 self.enterOuterAlt(localctx, 2)
                 self.state = 1340
                 self.match(Java8Parser.PUBLIC)
-                pass
+
             elif token in [Java8Parser.STATIC]:
                 self.enterOuterAlt(localctx, 3)
                 self.state = 1341
                 self.match(Java8Parser.STATIC)
-                pass
+
             elif token in [Java8Parser.FINAL]:
                 self.enterOuterAlt(localctx, 4)
                 self.state = 1342
                 self.match(Java8Parser.FINAL)
-                pass
+
             else:
                 raise NoViableAltException(self)
 
@@ -9647,38 +9556,37 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 216, self.RULE_interfaceMethodModifier)
         try:
             self.state = 1360
-            self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [Java8Parser.AT]:
                 self.enterOuterAlt(localctx, 1)
                 self.state = 1354
                 self.annotation()
-                pass
+
             elif token in [Java8Parser.PUBLIC]:
                 self.enterOuterAlt(localctx, 2)
                 self.state = 1355
                 self.match(Java8Parser.PUBLIC)
-                pass
+
             elif token in [Java8Parser.ABSTRACT]:
                 self.enterOuterAlt(localctx, 3)
                 self.state = 1356
                 self.match(Java8Parser.ABSTRACT)
-                pass
+
             elif token in [Java8Parser.DEFAULT]:
                 self.enterOuterAlt(localctx, 4)
                 self.state = 1357
                 self.match(Java8Parser.DEFAULT)
-                pass
+
             elif token in [Java8Parser.STATIC]:
                 self.enterOuterAlt(localctx, 5)
                 self.state = 1358
                 self.match(Java8Parser.STATIC)
-                pass
+
             elif token in [Java8Parser.STRICTFP]:
                 self.enterOuterAlt(localctx, 6)
                 self.state = 1359
                 self.match(Java8Parser.STRICTFP)
-                pass
+
             else:
                 raise NoViableAltException(self)
 
@@ -9873,7 +9781,6 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 222, self.RULE_annotationTypeMemberDeclaration)
         try:
             self.state = 1387
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,138,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
@@ -9988,7 +9895,6 @@ class Java8Parser ( Parser ):
             self.state = 1398
             self.match(Java8Parser.RPAREN)
             self.state = 1400
-            self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==Java8Parser.LBRACK or _la==Java8Parser.AT:
                 self.state = 1399
@@ -9996,7 +9902,6 @@ class Java8Parser ( Parser ):
 
 
             self.state = 1403
-            self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==Java8Parser.DEFAULT:
                 self.state = 1402
@@ -10049,23 +9954,22 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 226, self.RULE_annotationTypeElementModifier)
         try:
             self.state = 1410
-            self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [Java8Parser.AT]:
                 self.enterOuterAlt(localctx, 1)
                 self.state = 1407
                 self.annotation()
-                pass
+
             elif token in [Java8Parser.PUBLIC]:
                 self.enterOuterAlt(localctx, 2)
                 self.state = 1408
                 self.match(Java8Parser.PUBLIC)
-                pass
+
             elif token in [Java8Parser.ABSTRACT]:
                 self.enterOuterAlt(localctx, 3)
                 self.state = 1409
                 self.match(Java8Parser.ABSTRACT)
-                pass
+
             else:
                 raise NoViableAltException(self)
 
@@ -10169,7 +10073,6 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 230, self.RULE_annotation)
         try:
             self.state = 1418
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,143,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
@@ -10246,7 +10149,6 @@ class Java8Parser ( Parser ):
             self.state = 1422
             self.match(Java8Parser.LPAREN)
             self.state = 1424
-            self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==Java8Parser.Identifier:
                 self.state = 1423
@@ -10422,7 +10324,6 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 238, self.RULE_elementValue)
         try:
             self.state = 1443
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,146,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
@@ -10491,7 +10392,6 @@ class Java8Parser ( Parser ):
             self.state = 1445
             self.match(Java8Parser.LBRACE)
             self.state = 1447
-            self._errHandler.sync(self)
             _la = self._input.LA(1)
             if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << Java8Parser.BOOLEAN) | (1 << Java8Parser.BYTE) | (1 << Java8Parser.CHAR) | (1 << Java8Parser.DOUBLE) | (1 << Java8Parser.FLOAT) | (1 << Java8Parser.INT) | (1 << Java8Parser.LONG) | (1 << Java8Parser.NEW) | (1 << Java8Parser.SHORT) | (1 << Java8Parser.SUPER) | (1 << Java8Parser.THIS) | (1 << Java8Parser.VOID) | (1 << Java8Parser.IntegerLiteral) | (1 << Java8Parser.FloatingPointLiteral) | (1 << Java8Parser.BooleanLiteral) | (1 << Java8Parser.CharacterLiteral) | (1 << Java8Parser.StringLiteral) | (1 << Java8Parser.NullLiteral) | (1 << Java8Parser.LPAREN) | (1 << Java8Parser.LBRACE))) != 0) or ((((_la - 69)) & ~0x3f) == 0 and ((1 << (_la - 69)) & ((1 << (Java8Parser.BANG - 69)) | (1 << (Java8Parser.TILDE - 69)) | (1 << (Java8Parser.INC - 69)) | (1 << (Java8Parser.DEC - 69)) | (1 << (Java8Parser.ADD - 69)) | (1 << (Java8Parser.SUB - 69)) | (1 << (Java8Parser.Identifier - 69)) | (1 << (Java8Parser.AT - 69)))) != 0):
                 self.state = 1446
@@ -10499,7 +10399,6 @@ class Java8Parser ( Parser ):
 
 
             self.state = 1450
-            self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==Java8Parser.COMMA:
                 self.state = 1449
@@ -10724,7 +10623,6 @@ class Java8Parser ( Parser ):
             self.state = 1471
             self.match(Java8Parser.LBRACE)
             self.state = 1473
-            self._errHandler.sync(self)
             _la = self._input.LA(1)
             if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << Java8Parser.BOOLEAN) | (1 << Java8Parser.BYTE) | (1 << Java8Parser.CHAR) | (1 << Java8Parser.DOUBLE) | (1 << Java8Parser.FLOAT) | (1 << Java8Parser.INT) | (1 << Java8Parser.LONG) | (1 << Java8Parser.NEW) | (1 << Java8Parser.SHORT) | (1 << Java8Parser.SUPER) | (1 << Java8Parser.THIS) | (1 << Java8Parser.VOID) | (1 << Java8Parser.IntegerLiteral) | (1 << Java8Parser.FloatingPointLiteral) | (1 << Java8Parser.BooleanLiteral) | (1 << Java8Parser.CharacterLiteral) | (1 << Java8Parser.StringLiteral) | (1 << Java8Parser.NullLiteral) | (1 << Java8Parser.LPAREN) | (1 << Java8Parser.LBRACE))) != 0) or ((((_la - 69)) & ~0x3f) == 0 and ((1 << (_la - 69)) & ((1 << (Java8Parser.BANG - 69)) | (1 << (Java8Parser.TILDE - 69)) | (1 << (Java8Parser.INC - 69)) | (1 << (Java8Parser.DEC - 69)) | (1 << (Java8Parser.ADD - 69)) | (1 << (Java8Parser.SUB - 69)) | (1 << (Java8Parser.Identifier - 69)) | (1 << (Java8Parser.AT - 69)))) != 0):
                 self.state = 1472
@@ -10732,7 +10630,6 @@ class Java8Parser ( Parser ):
 
 
             self.state = 1476
-            self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==Java8Parser.COMMA:
                 self.state = 1475
@@ -10851,7 +10748,6 @@ class Java8Parser ( Parser ):
             self.state = 1488
             self.match(Java8Parser.LBRACE)
             self.state = 1490
-            self._errHandler.sync(self)
             _la = self._input.LA(1)
             if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << Java8Parser.ABSTRACT) | (1 << Java8Parser.ASSERT) | (1 << Java8Parser.BOOLEAN) | (1 << Java8Parser.BREAK) | (1 << Java8Parser.BYTE) | (1 << Java8Parser.CHAR) | (1 << Java8Parser.CLASS) | (1 << Java8Parser.CONTINUE) | (1 << Java8Parser.DO) | (1 << Java8Parser.DOUBLE) | (1 << Java8Parser.ENUM) | (1 << Java8Parser.FINAL) | (1 << Java8Parser.FLOAT) | (1 << Java8Parser.FOR) | (1 << Java8Parser.IF) | (1 << Java8Parser.INT) | (1 << Java8Parser.LONG) | (1 << Java8Parser.NEW) | (1 << Java8Parser.PRIVATE) | (1 << Java8Parser.PROTECTED) | (1 << Java8Parser.PUBLIC) | (1 << Java8Parser.RETURN) | (1 << Java8Parser.SHORT) | (1 << Java8Parser.STATIC) | (1 << Java8Parser.STRICTFP) | (1 << Java8Parser.SUPER) | (1 << Java8Parser.SWITCH) | (1 << Java8Parser.SYNCHRONIZED) | (1 << Java8Parser.THIS) | (1 << Java8Parser.THROW) | (1 << Java8Parser.TRY) | (1 << Java8Parser.VOID) | (1 << Java8Parser.WHILE) | (1 << Java8Parser.IntegerLiteral) | (1 << Java8Parser.FloatingPointLiteral) | (1 << Java8Parser.BooleanLiteral) | (1 << Java8Parser.CharacterLiteral) | (1 << Java8Parser.StringLiteral) | (1 << Java8Parser.NullLiteral) | (1 << Java8Parser.LPAREN) | (1 << Java8Parser.LBRACE) | (1 << Java8Parser.SEMI))) != 0) or ((((_la - 79)) & ~0x3f) == 0 and ((1 << (_la - 79)) & ((1 << (Java8Parser.INC - 79)) | (1 << (Java8Parser.DEC - 79)) | (1 << (Java8Parser.Identifier - 79)) | (1 << (Java8Parser.AT - 79)))) != 0):
                 self.state = 1489
@@ -10972,7 +10868,6 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 256, self.RULE_blockStatement)
         try:
             self.state = 1504
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,155,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
@@ -11175,7 +11070,6 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 262, self.RULE_statement)
         try:
             self.state = 1524
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,157,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
@@ -11274,7 +11168,6 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 264, self.RULE_statementNoShortIf)
         try:
             self.state = 1531
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,158,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
@@ -11395,68 +11288,67 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 266, self.RULE_statementWithoutTrailingSubstatement)
         try:
             self.state = 1545
-            self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [Java8Parser.LBRACE]:
                 self.enterOuterAlt(localctx, 1)
                 self.state = 1533
                 self.block()
-                pass
+
             elif token in [Java8Parser.SEMI]:
                 self.enterOuterAlt(localctx, 2)
                 self.state = 1534
                 self.emptyStatement()
-                pass
+
             elif token in [Java8Parser.BOOLEAN, Java8Parser.BYTE, Java8Parser.CHAR, Java8Parser.DOUBLE, Java8Parser.FLOAT, Java8Parser.INT, Java8Parser.LONG, Java8Parser.NEW, Java8Parser.SHORT, Java8Parser.SUPER, Java8Parser.THIS, Java8Parser.VOID, Java8Parser.IntegerLiteral, Java8Parser.FloatingPointLiteral, Java8Parser.BooleanLiteral, Java8Parser.CharacterLiteral, Java8Parser.StringLiteral, Java8Parser.NullLiteral, Java8Parser.LPAREN, Java8Parser.INC, Java8Parser.DEC, Java8Parser.Identifier, Java8Parser.AT]:
                 self.enterOuterAlt(localctx, 3)
                 self.state = 1535
                 self.expressionStatement()
-                pass
+
             elif token in [Java8Parser.ASSERT]:
                 self.enterOuterAlt(localctx, 4)
                 self.state = 1536
                 self.assertStatement()
-                pass
+
             elif token in [Java8Parser.SWITCH]:
                 self.enterOuterAlt(localctx, 5)
                 self.state = 1537
                 self.switchStatement()
-                pass
+
             elif token in [Java8Parser.DO]:
                 self.enterOuterAlt(localctx, 6)
                 self.state = 1538
                 self.doStatement()
-                pass
+
             elif token in [Java8Parser.BREAK]:
                 self.enterOuterAlt(localctx, 7)
                 self.state = 1539
                 self.breakStatement()
-                pass
+
             elif token in [Java8Parser.CONTINUE]:
                 self.enterOuterAlt(localctx, 8)
                 self.state = 1540
                 self.continueStatement()
-                pass
+
             elif token in [Java8Parser.RETURN]:
                 self.enterOuterAlt(localctx, 9)
                 self.state = 1541
                 self.returnStatement()
-                pass
+
             elif token in [Java8Parser.SYNCHRONIZED]:
                 self.enterOuterAlt(localctx, 10)
                 self.state = 1542
                 self.synchronizedStatement()
-                pass
+
             elif token in [Java8Parser.THROW]:
                 self.enterOuterAlt(localctx, 11)
                 self.state = 1543
                 self.throwStatement()
-                pass
+
             elif token in [Java8Parser.TRY]:
                 self.enterOuterAlt(localctx, 12)
                 self.state = 1544
                 self.tryStatement()
-                pass
+
             else:
                 raise NoViableAltException(self)
 
@@ -11725,7 +11617,6 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 276, self.RULE_statementExpression)
         try:
             self.state = 1567
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,160,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
@@ -12006,7 +11897,6 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 284, self.RULE_assertStatement)
         try:
             self.state = 1601
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,161,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
@@ -12331,7 +12221,6 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 294, self.RULE_switchLabel)
         try:
             self.state = 1644
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,165,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
@@ -12633,7 +12522,6 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 304, self.RULE_forStatement)
         try:
             self.state = 1670
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,166,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
@@ -12696,7 +12584,6 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 306, self.RULE_forStatementNoShortIf)
         try:
             self.state = 1674
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,167,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
@@ -12773,7 +12660,6 @@ class Java8Parser ( Parser ):
             self.state = 1677
             self.match(Java8Parser.LPAREN)
             self.state = 1679
-            self._errHandler.sync(self)
             _la = self._input.LA(1)
             if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << Java8Parser.BOOLEAN) | (1 << Java8Parser.BYTE) | (1 << Java8Parser.CHAR) | (1 << Java8Parser.DOUBLE) | (1 << Java8Parser.FINAL) | (1 << Java8Parser.FLOAT) | (1 << Java8Parser.INT) | (1 << Java8Parser.LONG) | (1 << Java8Parser.NEW) | (1 << Java8Parser.SHORT) | (1 << Java8Parser.SUPER) | (1 << Java8Parser.THIS) | (1 << Java8Parser.VOID) | (1 << Java8Parser.IntegerLiteral) | (1 << Java8Parser.FloatingPointLiteral) | (1 << Java8Parser.BooleanLiteral) | (1 << Java8Parser.CharacterLiteral) | (1 << Java8Parser.StringLiteral) | (1 << Java8Parser.NullLiteral) | (1 << Java8Parser.LPAREN))) != 0) or ((((_la - 79)) & ~0x3f) == 0 and ((1 << (_la - 79)) & ((1 << (Java8Parser.INC - 79)) | (1 << (Java8Parser.DEC - 79)) | (1 << (Java8Parser.Identifier - 79)) | (1 << (Java8Parser.AT - 79)))) != 0):
                 self.state = 1678
@@ -12783,7 +12669,6 @@ class Java8Parser ( Parser ):
             self.state = 1681
             self.match(Java8Parser.SEMI)
             self.state = 1683
-            self._errHandler.sync(self)
             _la = self._input.LA(1)
             if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << Java8Parser.BOOLEAN) | (1 << Java8Parser.BYTE) | (1 << Java8Parser.CHAR) | (1 << Java8Parser.DOUBLE) | (1 << Java8Parser.FLOAT) | (1 << Java8Parser.INT) | (1 << Java8Parser.LONG) | (1 << Java8Parser.NEW) | (1 << Java8Parser.SHORT) | (1 << Java8Parser.SUPER) | (1 << Java8Parser.THIS) | (1 << Java8Parser.VOID) | (1 << Java8Parser.IntegerLiteral) | (1 << Java8Parser.FloatingPointLiteral) | (1 << Java8Parser.BooleanLiteral) | (1 << Java8Parser.CharacterLiteral) | (1 << Java8Parser.StringLiteral) | (1 << Java8Parser.NullLiteral) | (1 << Java8Parser.LPAREN))) != 0) or ((((_la - 69)) & ~0x3f) == 0 and ((1 << (_la - 69)) & ((1 << (Java8Parser.BANG - 69)) | (1 << (Java8Parser.TILDE - 69)) | (1 << (Java8Parser.INC - 69)) | (1 << (Java8Parser.DEC - 69)) | (1 << (Java8Parser.ADD - 69)) | (1 << (Java8Parser.SUB - 69)) | (1 << (Java8Parser.Identifier - 69)) | (1 << (Java8Parser.AT - 69)))) != 0):
                 self.state = 1682
@@ -12793,7 +12678,6 @@ class Java8Parser ( Parser ):
             self.state = 1685
             self.match(Java8Parser.SEMI)
             self.state = 1687
-            self._errHandler.sync(self)
             _la = self._input.LA(1)
             if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << Java8Parser.BOOLEAN) | (1 << Java8Parser.BYTE) | (1 << Java8Parser.CHAR) | (1 << Java8Parser.DOUBLE) | (1 << Java8Parser.FLOAT) | (1 << Java8Parser.INT) | (1 << Java8Parser.LONG) | (1 << Java8Parser.NEW) | (1 << Java8Parser.SHORT) | (1 << Java8Parser.SUPER) | (1 << Java8Parser.THIS) | (1 << Java8Parser.VOID) | (1 << Java8Parser.IntegerLiteral) | (1 << Java8Parser.FloatingPointLiteral) | (1 << Java8Parser.BooleanLiteral) | (1 << Java8Parser.CharacterLiteral) | (1 << Java8Parser.StringLiteral) | (1 << Java8Parser.NullLiteral) | (1 << Java8Parser.LPAREN))) != 0) or ((((_la - 79)) & ~0x3f) == 0 and ((1 << (_la - 79)) & ((1 << (Java8Parser.INC - 79)) | (1 << (Java8Parser.DEC - 79)) | (1 << (Java8Parser.Identifier - 79)) | (1 << (Java8Parser.AT - 79)))) != 0):
                 self.state = 1686
@@ -12866,7 +12750,6 @@ class Java8Parser ( Parser ):
             self.state = 1693
             self.match(Java8Parser.LPAREN)
             self.state = 1695
-            self._errHandler.sync(self)
             _la = self._input.LA(1)
             if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << Java8Parser.BOOLEAN) | (1 << Java8Parser.BYTE) | (1 << Java8Parser.CHAR) | (1 << Java8Parser.DOUBLE) | (1 << Java8Parser.FINAL) | (1 << Java8Parser.FLOAT) | (1 << Java8Parser.INT) | (1 << Java8Parser.LONG) | (1 << Java8Parser.NEW) | (1 << Java8Parser.SHORT) | (1 << Java8Parser.SUPER) | (1 << Java8Parser.THIS) | (1 << Java8Parser.VOID) | (1 << Java8Parser.IntegerLiteral) | (1 << Java8Parser.FloatingPointLiteral) | (1 << Java8Parser.BooleanLiteral) | (1 << Java8Parser.CharacterLiteral) | (1 << Java8Parser.StringLiteral) | (1 << Java8Parser.NullLiteral) | (1 << Java8Parser.LPAREN))) != 0) or ((((_la - 79)) & ~0x3f) == 0 and ((1 << (_la - 79)) & ((1 << (Java8Parser.INC - 79)) | (1 << (Java8Parser.DEC - 79)) | (1 << (Java8Parser.Identifier - 79)) | (1 << (Java8Parser.AT - 79)))) != 0):
                 self.state = 1694
@@ -12876,7 +12759,6 @@ class Java8Parser ( Parser ):
             self.state = 1697
             self.match(Java8Parser.SEMI)
             self.state = 1699
-            self._errHandler.sync(self)
             _la = self._input.LA(1)
             if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << Java8Parser.BOOLEAN) | (1 << Java8Parser.BYTE) | (1 << Java8Parser.CHAR) | (1 << Java8Parser.DOUBLE) | (1 << Java8Parser.FLOAT) | (1 << Java8Parser.INT) | (1 << Java8Parser.LONG) | (1 << Java8Parser.NEW) | (1 << Java8Parser.SHORT) | (1 << Java8Parser.SUPER) | (1 << Java8Parser.THIS) | (1 << Java8Parser.VOID) | (1 << Java8Parser.IntegerLiteral) | (1 << Java8Parser.FloatingPointLiteral) | (1 << Java8Parser.BooleanLiteral) | (1 << Java8Parser.CharacterLiteral) | (1 << Java8Parser.StringLiteral) | (1 << Java8Parser.NullLiteral) | (1 << Java8Parser.LPAREN))) != 0) or ((((_la - 69)) & ~0x3f) == 0 and ((1 << (_la - 69)) & ((1 << (Java8Parser.BANG - 69)) | (1 << (Java8Parser.TILDE - 69)) | (1 << (Java8Parser.INC - 69)) | (1 << (Java8Parser.DEC - 69)) | (1 << (Java8Parser.ADD - 69)) | (1 << (Java8Parser.SUB - 69)) | (1 << (Java8Parser.Identifier - 69)) | (1 << (Java8Parser.AT - 69)))) != 0):
                 self.state = 1698
@@ -12886,7 +12768,6 @@ class Java8Parser ( Parser ):
             self.state = 1701
             self.match(Java8Parser.SEMI)
             self.state = 1703
-            self._errHandler.sync(self)
             _la = self._input.LA(1)
             if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << Java8Parser.BOOLEAN) | (1 << Java8Parser.BYTE) | (1 << Java8Parser.CHAR) | (1 << Java8Parser.DOUBLE) | (1 << Java8Parser.FLOAT) | (1 << Java8Parser.INT) | (1 << Java8Parser.LONG) | (1 << Java8Parser.NEW) | (1 << Java8Parser.SHORT) | (1 << Java8Parser.SUPER) | (1 << Java8Parser.THIS) | (1 << Java8Parser.VOID) | (1 << Java8Parser.IntegerLiteral) | (1 << Java8Parser.FloatingPointLiteral) | (1 << Java8Parser.BooleanLiteral) | (1 << Java8Parser.CharacterLiteral) | (1 << Java8Parser.StringLiteral) | (1 << Java8Parser.NullLiteral) | (1 << Java8Parser.LPAREN))) != 0) or ((((_la - 79)) & ~0x3f) == 0 and ((1 << (_la - 79)) & ((1 << (Java8Parser.INC - 79)) | (1 << (Java8Parser.DEC - 79)) | (1 << (Java8Parser.Identifier - 79)) | (1 << (Java8Parser.AT - 79)))) != 0):
                 self.state = 1702
@@ -12945,7 +12826,6 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 312, self.RULE_forInit)
         try:
             self.state = 1710
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,174,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
@@ -13295,7 +13175,6 @@ class Java8Parser ( Parser ):
             self.state = 1752
             self.match(Java8Parser.BREAK)
             self.state = 1754
-            self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==Java8Parser.Identifier:
                 self.state = 1753
@@ -13351,7 +13230,6 @@ class Java8Parser ( Parser ):
             self.state = 1758
             self.match(Java8Parser.CONTINUE)
             self.state = 1760
-            self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==Java8Parser.Identifier:
                 self.state = 1759
@@ -13408,7 +13286,6 @@ class Java8Parser ( Parser ):
             self.state = 1764
             self.match(Java8Parser.RETURN)
             self.state = 1766
-            self._errHandler.sync(self)
             _la = self._input.LA(1)
             if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << Java8Parser.BOOLEAN) | (1 << Java8Parser.BYTE) | (1 << Java8Parser.CHAR) | (1 << Java8Parser.DOUBLE) | (1 << Java8Parser.FLOAT) | (1 << Java8Parser.INT) | (1 << Java8Parser.LONG) | (1 << Java8Parser.NEW) | (1 << Java8Parser.SHORT) | (1 << Java8Parser.SUPER) | (1 << Java8Parser.THIS) | (1 << Java8Parser.VOID) | (1 << Java8Parser.IntegerLiteral) | (1 << Java8Parser.FloatingPointLiteral) | (1 << Java8Parser.BooleanLiteral) | (1 << Java8Parser.CharacterLiteral) | (1 << Java8Parser.StringLiteral) | (1 << Java8Parser.NullLiteral) | (1 << Java8Parser.LPAREN))) != 0) or ((((_la - 69)) & ~0x3f) == 0 and ((1 << (_la - 69)) & ((1 << (Java8Parser.BANG - 69)) | (1 << (Java8Parser.TILDE - 69)) | (1 << (Java8Parser.INC - 69)) | (1 << (Java8Parser.DEC - 69)) | (1 << (Java8Parser.ADD - 69)) | (1 << (Java8Parser.SUB - 69)) | (1 << (Java8Parser.Identifier - 69)) | (1 << (Java8Parser.AT - 69)))) != 0):
                 self.state = 1765
@@ -13582,7 +13459,6 @@ class Java8Parser ( Parser ):
         self._la = 0 # Token type
         try:
             self.state = 1792
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,182,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
@@ -13601,7 +13477,6 @@ class Java8Parser ( Parser ):
                 self.state = 1785
                 self.block()
                 self.state = 1787
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if _la==Java8Parser.CATCH:
                     self.state = 1786
@@ -13985,7 +13860,6 @@ class Java8Parser ( Parser ):
             self.state = 1829
             self.block()
             self.state = 1831
-            self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==Java8Parser.CATCH:
                 self.state = 1830
@@ -13993,7 +13867,6 @@ class Java8Parser ( Parser ):
 
 
             self.state = 1834
-            self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==Java8Parser.FINALLY:
                 self.state = 1833
@@ -14050,7 +13923,6 @@ class Java8Parser ( Parser ):
             self.state = 1837
             self.resourceList()
             self.state = 1839
-            self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==Java8Parser.SEMI:
                 self.state = 1838
@@ -14255,7 +14127,6 @@ class Java8Parser ( Parser ):
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 1864
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,191,self._ctx)
             if la_ == 1:
                 self.state = 1862
@@ -14352,7 +14223,6 @@ class Java8Parser ( Parser ):
         self._la = 0 # Token type
         try:
             self.state = 1901
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,194,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
@@ -14560,7 +14430,6 @@ class Java8Parser ( Parser ):
         self._la = 0 # Token type
         try:
             self.state = 1933
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,196,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
@@ -14711,7 +14580,6 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 360, self.RULE_primaryNoNewArray_lf_primary)
         try:
             self.state = 1940
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,197,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
@@ -14842,7 +14710,6 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 364, self.RULE_primaryNoNewArray_lf_primary_lfno_arrayAccess_lf_primary)
         try:
             self.state = 1948
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,198,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
@@ -14946,7 +14813,6 @@ class Java8Parser ( Parser ):
         self._la = 0 # Token type
         try:
             self.state = 1990
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,201,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
@@ -15180,7 +15046,6 @@ class Java8Parser ( Parser ):
         self._la = 0 # Token type
         try:
             self.state = 2033
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,204,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
@@ -15371,14 +15236,12 @@ class Java8Parser ( Parser ):
         self._la = 0 # Token type
         try:
             self.state = 2118
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,222,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
                 self.state = 2035
                 self.match(Java8Parser.NEW)
                 self.state = 2037
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if _la==Java8Parser.LT:
                     self.state = 2036
@@ -15420,7 +15283,6 @@ class Java8Parser ( Parser ):
                     _la = self._input.LA(1)
 
                 self.state = 2060
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if _la==Java8Parser.LT:
                     self.state = 2059
@@ -15430,7 +15292,6 @@ class Java8Parser ( Parser ):
                 self.state = 2062
                 self.match(Java8Parser.LPAREN)
                 self.state = 2064
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << Java8Parser.BOOLEAN) | (1 << Java8Parser.BYTE) | (1 << Java8Parser.CHAR) | (1 << Java8Parser.DOUBLE) | (1 << Java8Parser.FLOAT) | (1 << Java8Parser.INT) | (1 << Java8Parser.LONG) | (1 << Java8Parser.NEW) | (1 << Java8Parser.SHORT) | (1 << Java8Parser.SUPER) | (1 << Java8Parser.THIS) | (1 << Java8Parser.VOID) | (1 << Java8Parser.IntegerLiteral) | (1 << Java8Parser.FloatingPointLiteral) | (1 << Java8Parser.BooleanLiteral) | (1 << Java8Parser.CharacterLiteral) | (1 << Java8Parser.StringLiteral) | (1 << Java8Parser.NullLiteral) | (1 << Java8Parser.LPAREN))) != 0) or ((((_la - 69)) & ~0x3f) == 0 and ((1 << (_la - 69)) & ((1 << (Java8Parser.BANG - 69)) | (1 << (Java8Parser.TILDE - 69)) | (1 << (Java8Parser.INC - 69)) | (1 << (Java8Parser.DEC - 69)) | (1 << (Java8Parser.ADD - 69)) | (1 << (Java8Parser.SUB - 69)) | (1 << (Java8Parser.Identifier - 69)) | (1 << (Java8Parser.AT - 69)))) != 0):
                     self.state = 2063
@@ -15440,7 +15301,6 @@ class Java8Parser ( Parser ):
                 self.state = 2066
                 self.match(Java8Parser.RPAREN)
                 self.state = 2068
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if _la==Java8Parser.LBRACE:
                     self.state = 2067
@@ -15458,7 +15318,6 @@ class Java8Parser ( Parser ):
                 self.state = 2072
                 self.match(Java8Parser.NEW)
                 self.state = 2074
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if _la==Java8Parser.LT:
                     self.state = 2073
@@ -15478,7 +15337,6 @@ class Java8Parser ( Parser ):
                 self.state = 2082
                 self.match(Java8Parser.Identifier)
                 self.state = 2084
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if _la==Java8Parser.LT:
                     self.state = 2083
@@ -15488,7 +15346,6 @@ class Java8Parser ( Parser ):
                 self.state = 2086
                 self.match(Java8Parser.LPAREN)
                 self.state = 2088
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << Java8Parser.BOOLEAN) | (1 << Java8Parser.BYTE) | (1 << Java8Parser.CHAR) | (1 << Java8Parser.DOUBLE) | (1 << Java8Parser.FLOAT) | (1 << Java8Parser.INT) | (1 << Java8Parser.LONG) | (1 << Java8Parser.NEW) | (1 << Java8Parser.SHORT) | (1 << Java8Parser.SUPER) | (1 << Java8Parser.THIS) | (1 << Java8Parser.VOID) | (1 << Java8Parser.IntegerLiteral) | (1 << Java8Parser.FloatingPointLiteral) | (1 << Java8Parser.BooleanLiteral) | (1 << Java8Parser.CharacterLiteral) | (1 << Java8Parser.StringLiteral) | (1 << Java8Parser.NullLiteral) | (1 << Java8Parser.LPAREN))) != 0) or ((((_la - 69)) & ~0x3f) == 0 and ((1 << (_la - 69)) & ((1 << (Java8Parser.BANG - 69)) | (1 << (Java8Parser.TILDE - 69)) | (1 << (Java8Parser.INC - 69)) | (1 << (Java8Parser.DEC - 69)) | (1 << (Java8Parser.ADD - 69)) | (1 << (Java8Parser.SUB - 69)) | (1 << (Java8Parser.Identifier - 69)) | (1 << (Java8Parser.AT - 69)))) != 0):
                     self.state = 2087
@@ -15498,7 +15355,6 @@ class Java8Parser ( Parser ):
                 self.state = 2090
                 self.match(Java8Parser.RPAREN)
                 self.state = 2092
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if _la==Java8Parser.LBRACE:
                     self.state = 2091
@@ -15516,7 +15372,6 @@ class Java8Parser ( Parser ):
                 self.state = 2096
                 self.match(Java8Parser.NEW)
                 self.state = 2098
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if _la==Java8Parser.LT:
                     self.state = 2097
@@ -15536,7 +15391,6 @@ class Java8Parser ( Parser ):
                 self.state = 2106
                 self.match(Java8Parser.Identifier)
                 self.state = 2108
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if _la==Java8Parser.LT:
                     self.state = 2107
@@ -15546,7 +15400,6 @@ class Java8Parser ( Parser ):
                 self.state = 2110
                 self.match(Java8Parser.LPAREN)
                 self.state = 2112
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << Java8Parser.BOOLEAN) | (1 << Java8Parser.BYTE) | (1 << Java8Parser.CHAR) | (1 << Java8Parser.DOUBLE) | (1 << Java8Parser.FLOAT) | (1 << Java8Parser.INT) | (1 << Java8Parser.LONG) | (1 << Java8Parser.NEW) | (1 << Java8Parser.SHORT) | (1 << Java8Parser.SUPER) | (1 << Java8Parser.THIS) | (1 << Java8Parser.VOID) | (1 << Java8Parser.IntegerLiteral) | (1 << Java8Parser.FloatingPointLiteral) | (1 << Java8Parser.BooleanLiteral) | (1 << Java8Parser.CharacterLiteral) | (1 << Java8Parser.StringLiteral) | (1 << Java8Parser.NullLiteral) | (1 << Java8Parser.LPAREN))) != 0) or ((((_la - 69)) & ~0x3f) == 0 and ((1 << (_la - 69)) & ((1 << (Java8Parser.BANG - 69)) | (1 << (Java8Parser.TILDE - 69)) | (1 << (Java8Parser.INC - 69)) | (1 << (Java8Parser.DEC - 69)) | (1 << (Java8Parser.ADD - 69)) | (1 << (Java8Parser.SUB - 69)) | (1 << (Java8Parser.Identifier - 69)) | (1 << (Java8Parser.AT - 69)))) != 0):
                     self.state = 2111
@@ -15556,7 +15409,6 @@ class Java8Parser ( Parser ):
                 self.state = 2114
                 self.match(Java8Parser.RPAREN)
                 self.state = 2116
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if _la==Java8Parser.LBRACE:
                     self.state = 2115
@@ -15638,7 +15490,6 @@ class Java8Parser ( Parser ):
             self.state = 2121
             self.match(Java8Parser.NEW)
             self.state = 2123
-            self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==Java8Parser.LT:
                 self.state = 2122
@@ -15658,7 +15509,6 @@ class Java8Parser ( Parser ):
             self.state = 2131
             self.match(Java8Parser.Identifier)
             self.state = 2133
-            self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==Java8Parser.LT:
                 self.state = 2132
@@ -15668,7 +15518,6 @@ class Java8Parser ( Parser ):
             self.state = 2135
             self.match(Java8Parser.LPAREN)
             self.state = 2137
-            self._errHandler.sync(self)
             _la = self._input.LA(1)
             if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << Java8Parser.BOOLEAN) | (1 << Java8Parser.BYTE) | (1 << Java8Parser.CHAR) | (1 << Java8Parser.DOUBLE) | (1 << Java8Parser.FLOAT) | (1 << Java8Parser.INT) | (1 << Java8Parser.LONG) | (1 << Java8Parser.NEW) | (1 << Java8Parser.SHORT) | (1 << Java8Parser.SUPER) | (1 << Java8Parser.THIS) | (1 << Java8Parser.VOID) | (1 << Java8Parser.IntegerLiteral) | (1 << Java8Parser.FloatingPointLiteral) | (1 << Java8Parser.BooleanLiteral) | (1 << Java8Parser.CharacterLiteral) | (1 << Java8Parser.StringLiteral) | (1 << Java8Parser.NullLiteral) | (1 << Java8Parser.LPAREN))) != 0) or ((((_la - 69)) & ~0x3f) == 0 and ((1 << (_la - 69)) & ((1 << (Java8Parser.BANG - 69)) | (1 << (Java8Parser.TILDE - 69)) | (1 << (Java8Parser.INC - 69)) | (1 << (Java8Parser.DEC - 69)) | (1 << (Java8Parser.ADD - 69)) | (1 << (Java8Parser.SUB - 69)) | (1 << (Java8Parser.Identifier - 69)) | (1 << (Java8Parser.AT - 69)))) != 0):
                 self.state = 2136
@@ -15678,7 +15527,6 @@ class Java8Parser ( Parser ):
             self.state = 2139
             self.match(Java8Parser.RPAREN)
             self.state = 2141
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,227,self._ctx)
             if la_ == 1:
                 self.state = 2140
@@ -15759,14 +15607,12 @@ class Java8Parser ( Parser ):
         self._la = 0 # Token type
         try:
             self.state = 2202
-            self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [Java8Parser.NEW]:
                 self.enterOuterAlt(localctx, 1)
                 self.state = 2143
                 self.match(Java8Parser.NEW)
                 self.state = 2145
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if _la==Java8Parser.LT:
                     self.state = 2144
@@ -15808,7 +15654,6 @@ class Java8Parser ( Parser ):
                     _la = self._input.LA(1)
 
                 self.state = 2168
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if _la==Java8Parser.LT:
                     self.state = 2167
@@ -15818,7 +15663,6 @@ class Java8Parser ( Parser ):
                 self.state = 2170
                 self.match(Java8Parser.LPAREN)
                 self.state = 2172
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << Java8Parser.BOOLEAN) | (1 << Java8Parser.BYTE) | (1 << Java8Parser.CHAR) | (1 << Java8Parser.DOUBLE) | (1 << Java8Parser.FLOAT) | (1 << Java8Parser.INT) | (1 << Java8Parser.LONG) | (1 << Java8Parser.NEW) | (1 << Java8Parser.SHORT) | (1 << Java8Parser.SUPER) | (1 << Java8Parser.THIS) | (1 << Java8Parser.VOID) | (1 << Java8Parser.IntegerLiteral) | (1 << Java8Parser.FloatingPointLiteral) | (1 << Java8Parser.BooleanLiteral) | (1 << Java8Parser.CharacterLiteral) | (1 << Java8Parser.StringLiteral) | (1 << Java8Parser.NullLiteral) | (1 << Java8Parser.LPAREN))) != 0) or ((((_la - 69)) & ~0x3f) == 0 and ((1 << (_la - 69)) & ((1 << (Java8Parser.BANG - 69)) | (1 << (Java8Parser.TILDE - 69)) | (1 << (Java8Parser.INC - 69)) | (1 << (Java8Parser.DEC - 69)) | (1 << (Java8Parser.ADD - 69)) | (1 << (Java8Parser.SUB - 69)) | (1 << (Java8Parser.Identifier - 69)) | (1 << (Java8Parser.AT - 69)))) != 0):
                     self.state = 2171
@@ -15828,14 +15672,13 @@ class Java8Parser ( Parser ):
                 self.state = 2174
                 self.match(Java8Parser.RPAREN)
                 self.state = 2176
-                self._errHandler.sync(self)
                 la_ = self._interp.adaptivePredict(self._input,234,self._ctx)
                 if la_ == 1:
                     self.state = 2175
                     self.classBody()
 
 
-                pass
+
             elif token in [Java8Parser.Identifier]:
                 self.enterOuterAlt(localctx, 2)
                 self.state = 2178
@@ -15845,7 +15688,6 @@ class Java8Parser ( Parser ):
                 self.state = 2180
                 self.match(Java8Parser.NEW)
                 self.state = 2182
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if _la==Java8Parser.LT:
                     self.state = 2181
@@ -15865,7 +15707,6 @@ class Java8Parser ( Parser ):
                 self.state = 2190
                 self.match(Java8Parser.Identifier)
                 self.state = 2192
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if _la==Java8Parser.LT:
                     self.state = 2191
@@ -15875,7 +15716,6 @@ class Java8Parser ( Parser ):
                 self.state = 2194
                 self.match(Java8Parser.LPAREN)
                 self.state = 2196
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << Java8Parser.BOOLEAN) | (1 << Java8Parser.BYTE) | (1 << Java8Parser.CHAR) | (1 << Java8Parser.DOUBLE) | (1 << Java8Parser.FLOAT) | (1 << Java8Parser.INT) | (1 << Java8Parser.LONG) | (1 << Java8Parser.NEW) | (1 << Java8Parser.SHORT) | (1 << Java8Parser.SUPER) | (1 << Java8Parser.THIS) | (1 << Java8Parser.VOID) | (1 << Java8Parser.IntegerLiteral) | (1 << Java8Parser.FloatingPointLiteral) | (1 << Java8Parser.BooleanLiteral) | (1 << Java8Parser.CharacterLiteral) | (1 << Java8Parser.StringLiteral) | (1 << Java8Parser.NullLiteral) | (1 << Java8Parser.LPAREN))) != 0) or ((((_la - 69)) & ~0x3f) == 0 and ((1 << (_la - 69)) & ((1 << (Java8Parser.BANG - 69)) | (1 << (Java8Parser.TILDE - 69)) | (1 << (Java8Parser.INC - 69)) | (1 << (Java8Parser.DEC - 69)) | (1 << (Java8Parser.ADD - 69)) | (1 << (Java8Parser.SUB - 69)) | (1 << (Java8Parser.Identifier - 69)) | (1 << (Java8Parser.AT - 69)))) != 0):
                     self.state = 2195
@@ -15885,14 +15725,13 @@ class Java8Parser ( Parser ):
                 self.state = 2198
                 self.match(Java8Parser.RPAREN)
                 self.state = 2200
-                self._errHandler.sync(self)
                 la_ = self._interp.adaptivePredict(self._input,239,self._ctx)
                 if la_ == 1:
                     self.state = 2199
                     self.classBody()
 
 
-                pass
+
             else:
                 raise NoViableAltException(self)
 
@@ -15940,7 +15779,6 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 378, self.RULE_typeArgumentsOrDiamond)
         try:
             self.state = 2207
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,241,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
@@ -16008,7 +15846,6 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 380, self.RULE_fieldAccess)
         try:
             self.state = 2222
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,242,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
@@ -16139,7 +15976,6 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 384, self.RULE_fieldAccess_lfno_primary)
         try:
             self.state = 2236
-            self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [Java8Parser.SUPER]:
                 self.enterOuterAlt(localctx, 1)
@@ -16149,7 +15985,7 @@ class Java8Parser ( Parser ):
                 self.match(Java8Parser.DOT)
                 self.state = 2229
                 self.match(Java8Parser.Identifier)
-                pass
+
             elif token in [Java8Parser.Identifier]:
                 self.enterOuterAlt(localctx, 2)
                 self.state = 2230
@@ -16162,7 +15998,7 @@ class Java8Parser ( Parser ):
                 self.match(Java8Parser.DOT)
                 self.state = 2234
                 self.match(Java8Parser.Identifier)
-                pass
+
             else:
                 raise NoViableAltException(self)
 
@@ -16230,7 +16066,6 @@ class Java8Parser ( Parser ):
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 2248
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,244,self._ctx)
             if la_ == 1:
                 self.state = 2238
@@ -16417,7 +16252,6 @@ class Java8Parser ( Parser ):
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 2285
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,247,self._ctx)
             if la_ == 1:
                 self.state = 2275
@@ -16527,7 +16361,6 @@ class Java8Parser ( Parser ):
         self._la = 0 # Token type
         try:
             self.state = 2365
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,260,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
@@ -16536,7 +16369,6 @@ class Java8Parser ( Parser ):
                 self.state = 2298
                 self.match(Java8Parser.LPAREN)
                 self.state = 2300
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << Java8Parser.BOOLEAN) | (1 << Java8Parser.BYTE) | (1 << Java8Parser.CHAR) | (1 << Java8Parser.DOUBLE) | (1 << Java8Parser.FLOAT) | (1 << Java8Parser.INT) | (1 << Java8Parser.LONG) | (1 << Java8Parser.NEW) | (1 << Java8Parser.SHORT) | (1 << Java8Parser.SUPER) | (1 << Java8Parser.THIS) | (1 << Java8Parser.VOID) | (1 << Java8Parser.IntegerLiteral) | (1 << Java8Parser.FloatingPointLiteral) | (1 << Java8Parser.BooleanLiteral) | (1 << Java8Parser.CharacterLiteral) | (1 << Java8Parser.StringLiteral) | (1 << Java8Parser.NullLiteral) | (1 << Java8Parser.LPAREN))) != 0) or ((((_la - 69)) & ~0x3f) == 0 and ((1 << (_la - 69)) & ((1 << (Java8Parser.BANG - 69)) | (1 << (Java8Parser.TILDE - 69)) | (1 << (Java8Parser.INC - 69)) | (1 << (Java8Parser.DEC - 69)) | (1 << (Java8Parser.ADD - 69)) | (1 << (Java8Parser.SUB - 69)) | (1 << (Java8Parser.Identifier - 69)) | (1 << (Java8Parser.AT - 69)))) != 0):
                     self.state = 2299
@@ -16554,7 +16386,6 @@ class Java8Parser ( Parser ):
                 self.state = 2305
                 self.match(Java8Parser.DOT)
                 self.state = 2307
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if _la==Java8Parser.LT:
                     self.state = 2306
@@ -16566,7 +16397,6 @@ class Java8Parser ( Parser ):
                 self.state = 2310
                 self.match(Java8Parser.LPAREN)
                 self.state = 2312
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << Java8Parser.BOOLEAN) | (1 << Java8Parser.BYTE) | (1 << Java8Parser.CHAR) | (1 << Java8Parser.DOUBLE) | (1 << Java8Parser.FLOAT) | (1 << Java8Parser.INT) | (1 << Java8Parser.LONG) | (1 << Java8Parser.NEW) | (1 << Java8Parser.SHORT) | (1 << Java8Parser.SUPER) | (1 << Java8Parser.THIS) | (1 << Java8Parser.VOID) | (1 << Java8Parser.IntegerLiteral) | (1 << Java8Parser.FloatingPointLiteral) | (1 << Java8Parser.BooleanLiteral) | (1 << Java8Parser.CharacterLiteral) | (1 << Java8Parser.StringLiteral) | (1 << Java8Parser.NullLiteral) | (1 << Java8Parser.LPAREN))) != 0) or ((((_la - 69)) & ~0x3f) == 0 and ((1 << (_la - 69)) & ((1 << (Java8Parser.BANG - 69)) | (1 << (Java8Parser.TILDE - 69)) | (1 << (Java8Parser.INC - 69)) | (1 << (Java8Parser.DEC - 69)) | (1 << (Java8Parser.ADD - 69)) | (1 << (Java8Parser.SUB - 69)) | (1 << (Java8Parser.Identifier - 69)) | (1 << (Java8Parser.AT - 69)))) != 0):
                     self.state = 2311
@@ -16584,7 +16414,6 @@ class Java8Parser ( Parser ):
                 self.state = 2317
                 self.match(Java8Parser.DOT)
                 self.state = 2319
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if _la==Java8Parser.LT:
                     self.state = 2318
@@ -16596,7 +16425,6 @@ class Java8Parser ( Parser ):
                 self.state = 2322
                 self.match(Java8Parser.LPAREN)
                 self.state = 2324
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << Java8Parser.BOOLEAN) | (1 << Java8Parser.BYTE) | (1 << Java8Parser.CHAR) | (1 << Java8Parser.DOUBLE) | (1 << Java8Parser.FLOAT) | (1 << Java8Parser.INT) | (1 << Java8Parser.LONG) | (1 << Java8Parser.NEW) | (1 << Java8Parser.SHORT) | (1 << Java8Parser.SUPER) | (1 << Java8Parser.THIS) | (1 << Java8Parser.VOID) | (1 << Java8Parser.IntegerLiteral) | (1 << Java8Parser.FloatingPointLiteral) | (1 << Java8Parser.BooleanLiteral) | (1 << Java8Parser.CharacterLiteral) | (1 << Java8Parser.StringLiteral) | (1 << Java8Parser.NullLiteral) | (1 << Java8Parser.LPAREN))) != 0) or ((((_la - 69)) & ~0x3f) == 0 and ((1 << (_la - 69)) & ((1 << (Java8Parser.BANG - 69)) | (1 << (Java8Parser.TILDE - 69)) | (1 << (Java8Parser.INC - 69)) | (1 << (Java8Parser.DEC - 69)) | (1 << (Java8Parser.ADD - 69)) | (1 << (Java8Parser.SUB - 69)) | (1 << (Java8Parser.Identifier - 69)) | (1 << (Java8Parser.AT - 69)))) != 0):
                     self.state = 2323
@@ -16614,7 +16442,6 @@ class Java8Parser ( Parser ):
                 self.state = 2329
                 self.match(Java8Parser.DOT)
                 self.state = 2331
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if _la==Java8Parser.LT:
                     self.state = 2330
@@ -16626,7 +16453,6 @@ class Java8Parser ( Parser ):
                 self.state = 2334
                 self.match(Java8Parser.LPAREN)
                 self.state = 2336
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << Java8Parser.BOOLEAN) | (1 << Java8Parser.BYTE) | (1 << Java8Parser.CHAR) | (1 << Java8Parser.DOUBLE) | (1 << Java8Parser.FLOAT) | (1 << Java8Parser.INT) | (1 << Java8Parser.LONG) | (1 << Java8Parser.NEW) | (1 << Java8Parser.SHORT) | (1 << Java8Parser.SUPER) | (1 << Java8Parser.THIS) | (1 << Java8Parser.VOID) | (1 << Java8Parser.IntegerLiteral) | (1 << Java8Parser.FloatingPointLiteral) | (1 << Java8Parser.BooleanLiteral) | (1 << Java8Parser.CharacterLiteral) | (1 << Java8Parser.StringLiteral) | (1 << Java8Parser.NullLiteral) | (1 << Java8Parser.LPAREN))) != 0) or ((((_la - 69)) & ~0x3f) == 0 and ((1 << (_la - 69)) & ((1 << (Java8Parser.BANG - 69)) | (1 << (Java8Parser.TILDE - 69)) | (1 << (Java8Parser.INC - 69)) | (1 << (Java8Parser.DEC - 69)) | (1 << (Java8Parser.ADD - 69)) | (1 << (Java8Parser.SUB - 69)) | (1 << (Java8Parser.Identifier - 69)) | (1 << (Java8Parser.AT - 69)))) != 0):
                     self.state = 2335
@@ -16644,7 +16470,6 @@ class Java8Parser ( Parser ):
                 self.state = 2341
                 self.match(Java8Parser.DOT)
                 self.state = 2343
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if _la==Java8Parser.LT:
                     self.state = 2342
@@ -16656,7 +16481,6 @@ class Java8Parser ( Parser ):
                 self.state = 2346
                 self.match(Java8Parser.LPAREN)
                 self.state = 2348
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << Java8Parser.BOOLEAN) | (1 << Java8Parser.BYTE) | (1 << Java8Parser.CHAR) | (1 << Java8Parser.DOUBLE) | (1 << Java8Parser.FLOAT) | (1 << Java8Parser.INT) | (1 << Java8Parser.LONG) | (1 << Java8Parser.NEW) | (1 << Java8Parser.SHORT) | (1 << Java8Parser.SUPER) | (1 << Java8Parser.THIS) | (1 << Java8Parser.VOID) | (1 << Java8Parser.IntegerLiteral) | (1 << Java8Parser.FloatingPointLiteral) | (1 << Java8Parser.BooleanLiteral) | (1 << Java8Parser.CharacterLiteral) | (1 << Java8Parser.StringLiteral) | (1 << Java8Parser.NullLiteral) | (1 << Java8Parser.LPAREN))) != 0) or ((((_la - 69)) & ~0x3f) == 0 and ((1 << (_la - 69)) & ((1 << (Java8Parser.BANG - 69)) | (1 << (Java8Parser.TILDE - 69)) | (1 << (Java8Parser.INC - 69)) | (1 << (Java8Parser.DEC - 69)) | (1 << (Java8Parser.ADD - 69)) | (1 << (Java8Parser.SUB - 69)) | (1 << (Java8Parser.Identifier - 69)) | (1 << (Java8Parser.AT - 69)))) != 0):
                     self.state = 2347
@@ -16678,7 +16502,6 @@ class Java8Parser ( Parser ):
                 self.state = 2354
                 self.match(Java8Parser.DOT)
                 self.state = 2356
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if _la==Java8Parser.LT:
                     self.state = 2355
@@ -16690,7 +16513,6 @@ class Java8Parser ( Parser ):
                 self.state = 2359
                 self.match(Java8Parser.LPAREN)
                 self.state = 2361
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << Java8Parser.BOOLEAN) | (1 << Java8Parser.BYTE) | (1 << Java8Parser.CHAR) | (1 << Java8Parser.DOUBLE) | (1 << Java8Parser.FLOAT) | (1 << Java8Parser.INT) | (1 << Java8Parser.LONG) | (1 << Java8Parser.NEW) | (1 << Java8Parser.SHORT) | (1 << Java8Parser.SUPER) | (1 << Java8Parser.THIS) | (1 << Java8Parser.VOID) | (1 << Java8Parser.IntegerLiteral) | (1 << Java8Parser.FloatingPointLiteral) | (1 << Java8Parser.BooleanLiteral) | (1 << Java8Parser.CharacterLiteral) | (1 << Java8Parser.StringLiteral) | (1 << Java8Parser.NullLiteral) | (1 << Java8Parser.LPAREN))) != 0) or ((((_la - 69)) & ~0x3f) == 0 and ((1 << (_la - 69)) & ((1 << (Java8Parser.BANG - 69)) | (1 << (Java8Parser.TILDE - 69)) | (1 << (Java8Parser.INC - 69)) | (1 << (Java8Parser.DEC - 69)) | (1 << (Java8Parser.ADD - 69)) | (1 << (Java8Parser.SUB - 69)) | (1 << (Java8Parser.Identifier - 69)) | (1 << (Java8Parser.AT - 69)))) != 0):
                     self.state = 2360
@@ -16757,7 +16579,6 @@ class Java8Parser ( Parser ):
             self.state = 2367
             self.match(Java8Parser.DOT)
             self.state = 2369
-            self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==Java8Parser.LT:
                 self.state = 2368
@@ -16769,7 +16590,6 @@ class Java8Parser ( Parser ):
             self.state = 2372
             self.match(Java8Parser.LPAREN)
             self.state = 2374
-            self._errHandler.sync(self)
             _la = self._input.LA(1)
             if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << Java8Parser.BOOLEAN) | (1 << Java8Parser.BYTE) | (1 << Java8Parser.CHAR) | (1 << Java8Parser.DOUBLE) | (1 << Java8Parser.FLOAT) | (1 << Java8Parser.INT) | (1 << Java8Parser.LONG) | (1 << Java8Parser.NEW) | (1 << Java8Parser.SHORT) | (1 << Java8Parser.SUPER) | (1 << Java8Parser.THIS) | (1 << Java8Parser.VOID) | (1 << Java8Parser.IntegerLiteral) | (1 << Java8Parser.FloatingPointLiteral) | (1 << Java8Parser.BooleanLiteral) | (1 << Java8Parser.CharacterLiteral) | (1 << Java8Parser.StringLiteral) | (1 << Java8Parser.NullLiteral) | (1 << Java8Parser.LPAREN))) != 0) or ((((_la - 69)) & ~0x3f) == 0 and ((1 << (_la - 69)) & ((1 << (Java8Parser.BANG - 69)) | (1 << (Java8Parser.TILDE - 69)) | (1 << (Java8Parser.INC - 69)) | (1 << (Java8Parser.DEC - 69)) | (1 << (Java8Parser.ADD - 69)) | (1 << (Java8Parser.SUB - 69)) | (1 << (Java8Parser.Identifier - 69)) | (1 << (Java8Parser.AT - 69)))) != 0):
                 self.state = 2373
@@ -16842,7 +16662,6 @@ class Java8Parser ( Parser ):
         self._la = 0 # Token type
         try:
             self.state = 2434
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,272,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
@@ -16851,7 +16670,6 @@ class Java8Parser ( Parser ):
                 self.state = 2379
                 self.match(Java8Parser.LPAREN)
                 self.state = 2381
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << Java8Parser.BOOLEAN) | (1 << Java8Parser.BYTE) | (1 << Java8Parser.CHAR) | (1 << Java8Parser.DOUBLE) | (1 << Java8Parser.FLOAT) | (1 << Java8Parser.INT) | (1 << Java8Parser.LONG) | (1 << Java8Parser.NEW) | (1 << Java8Parser.SHORT) | (1 << Java8Parser.SUPER) | (1 << Java8Parser.THIS) | (1 << Java8Parser.VOID) | (1 << Java8Parser.IntegerLiteral) | (1 << Java8Parser.FloatingPointLiteral) | (1 << Java8Parser.BooleanLiteral) | (1 << Java8Parser.CharacterLiteral) | (1 << Java8Parser.StringLiteral) | (1 << Java8Parser.NullLiteral) | (1 << Java8Parser.LPAREN))) != 0) or ((((_la - 69)) & ~0x3f) == 0 and ((1 << (_la - 69)) & ((1 << (Java8Parser.BANG - 69)) | (1 << (Java8Parser.TILDE - 69)) | (1 << (Java8Parser.INC - 69)) | (1 << (Java8Parser.DEC - 69)) | (1 << (Java8Parser.ADD - 69)) | (1 << (Java8Parser.SUB - 69)) | (1 << (Java8Parser.Identifier - 69)) | (1 << (Java8Parser.AT - 69)))) != 0):
                     self.state = 2380
@@ -16869,7 +16687,6 @@ class Java8Parser ( Parser ):
                 self.state = 2386
                 self.match(Java8Parser.DOT)
                 self.state = 2388
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if _la==Java8Parser.LT:
                     self.state = 2387
@@ -16881,7 +16698,6 @@ class Java8Parser ( Parser ):
                 self.state = 2391
                 self.match(Java8Parser.LPAREN)
                 self.state = 2393
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << Java8Parser.BOOLEAN) | (1 << Java8Parser.BYTE) | (1 << Java8Parser.CHAR) | (1 << Java8Parser.DOUBLE) | (1 << Java8Parser.FLOAT) | (1 << Java8Parser.INT) | (1 << Java8Parser.LONG) | (1 << Java8Parser.NEW) | (1 << Java8Parser.SHORT) | (1 << Java8Parser.SUPER) | (1 << Java8Parser.THIS) | (1 << Java8Parser.VOID) | (1 << Java8Parser.IntegerLiteral) | (1 << Java8Parser.FloatingPointLiteral) | (1 << Java8Parser.BooleanLiteral) | (1 << Java8Parser.CharacterLiteral) | (1 << Java8Parser.StringLiteral) | (1 << Java8Parser.NullLiteral) | (1 << Java8Parser.LPAREN))) != 0) or ((((_la - 69)) & ~0x3f) == 0 and ((1 << (_la - 69)) & ((1 << (Java8Parser.BANG - 69)) | (1 << (Java8Parser.TILDE - 69)) | (1 << (Java8Parser.INC - 69)) | (1 << (Java8Parser.DEC - 69)) | (1 << (Java8Parser.ADD - 69)) | (1 << (Java8Parser.SUB - 69)) | (1 << (Java8Parser.Identifier - 69)) | (1 << (Java8Parser.AT - 69)))) != 0):
                     self.state = 2392
@@ -16899,7 +16715,6 @@ class Java8Parser ( Parser ):
                 self.state = 2398
                 self.match(Java8Parser.DOT)
                 self.state = 2400
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if _la==Java8Parser.LT:
                     self.state = 2399
@@ -16911,7 +16726,6 @@ class Java8Parser ( Parser ):
                 self.state = 2403
                 self.match(Java8Parser.LPAREN)
                 self.state = 2405
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << Java8Parser.BOOLEAN) | (1 << Java8Parser.BYTE) | (1 << Java8Parser.CHAR) | (1 << Java8Parser.DOUBLE) | (1 << Java8Parser.FLOAT) | (1 << Java8Parser.INT) | (1 << Java8Parser.LONG) | (1 << Java8Parser.NEW) | (1 << Java8Parser.SHORT) | (1 << Java8Parser.SUPER) | (1 << Java8Parser.THIS) | (1 << Java8Parser.VOID) | (1 << Java8Parser.IntegerLiteral) | (1 << Java8Parser.FloatingPointLiteral) | (1 << Java8Parser.BooleanLiteral) | (1 << Java8Parser.CharacterLiteral) | (1 << Java8Parser.StringLiteral) | (1 << Java8Parser.NullLiteral) | (1 << Java8Parser.LPAREN))) != 0) or ((((_la - 69)) & ~0x3f) == 0 and ((1 << (_la - 69)) & ((1 << (Java8Parser.BANG - 69)) | (1 << (Java8Parser.TILDE - 69)) | (1 << (Java8Parser.INC - 69)) | (1 << (Java8Parser.DEC - 69)) | (1 << (Java8Parser.ADD - 69)) | (1 << (Java8Parser.SUB - 69)) | (1 << (Java8Parser.Identifier - 69)) | (1 << (Java8Parser.AT - 69)))) != 0):
                     self.state = 2404
@@ -16929,7 +16743,6 @@ class Java8Parser ( Parser ):
                 self.state = 2410
                 self.match(Java8Parser.DOT)
                 self.state = 2412
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if _la==Java8Parser.LT:
                     self.state = 2411
@@ -16941,7 +16754,6 @@ class Java8Parser ( Parser ):
                 self.state = 2415
                 self.match(Java8Parser.LPAREN)
                 self.state = 2417
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << Java8Parser.BOOLEAN) | (1 << Java8Parser.BYTE) | (1 << Java8Parser.CHAR) | (1 << Java8Parser.DOUBLE) | (1 << Java8Parser.FLOAT) | (1 << Java8Parser.INT) | (1 << Java8Parser.LONG) | (1 << Java8Parser.NEW) | (1 << Java8Parser.SHORT) | (1 << Java8Parser.SUPER) | (1 << Java8Parser.THIS) | (1 << Java8Parser.VOID) | (1 << Java8Parser.IntegerLiteral) | (1 << Java8Parser.FloatingPointLiteral) | (1 << Java8Parser.BooleanLiteral) | (1 << Java8Parser.CharacterLiteral) | (1 << Java8Parser.StringLiteral) | (1 << Java8Parser.NullLiteral) | (1 << Java8Parser.LPAREN))) != 0) or ((((_la - 69)) & ~0x3f) == 0 and ((1 << (_la - 69)) & ((1 << (Java8Parser.BANG - 69)) | (1 << (Java8Parser.TILDE - 69)) | (1 << (Java8Parser.INC - 69)) | (1 << (Java8Parser.DEC - 69)) | (1 << (Java8Parser.ADD - 69)) | (1 << (Java8Parser.SUB - 69)) | (1 << (Java8Parser.Identifier - 69)) | (1 << (Java8Parser.AT - 69)))) != 0):
                     self.state = 2416
@@ -16963,7 +16775,6 @@ class Java8Parser ( Parser ):
                 self.state = 2423
                 self.match(Java8Parser.DOT)
                 self.state = 2425
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if _la==Java8Parser.LT:
                     self.state = 2424
@@ -16975,7 +16786,6 @@ class Java8Parser ( Parser ):
                 self.state = 2428
                 self.match(Java8Parser.LPAREN)
                 self.state = 2430
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << Java8Parser.BOOLEAN) | (1 << Java8Parser.BYTE) | (1 << Java8Parser.CHAR) | (1 << Java8Parser.DOUBLE) | (1 << Java8Parser.FLOAT) | (1 << Java8Parser.INT) | (1 << Java8Parser.LONG) | (1 << Java8Parser.NEW) | (1 << Java8Parser.SHORT) | (1 << Java8Parser.SUPER) | (1 << Java8Parser.THIS) | (1 << Java8Parser.VOID) | (1 << Java8Parser.IntegerLiteral) | (1 << Java8Parser.FloatingPointLiteral) | (1 << Java8Parser.BooleanLiteral) | (1 << Java8Parser.CharacterLiteral) | (1 << Java8Parser.StringLiteral) | (1 << Java8Parser.NullLiteral) | (1 << Java8Parser.LPAREN))) != 0) or ((((_la - 69)) & ~0x3f) == 0 and ((1 << (_la - 69)) & ((1 << (Java8Parser.BANG - 69)) | (1 << (Java8Parser.TILDE - 69)) | (1 << (Java8Parser.INC - 69)) | (1 << (Java8Parser.DEC - 69)) | (1 << (Java8Parser.ADD - 69)) | (1 << (Java8Parser.SUB - 69)) | (1 << (Java8Parser.Identifier - 69)) | (1 << (Java8Parser.AT - 69)))) != 0):
                     self.state = 2429
@@ -17121,7 +16931,6 @@ class Java8Parser ( Parser ):
         self._la = 0 # Token type
         try:
             self.state = 2491
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,280,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
@@ -17130,7 +16939,6 @@ class Java8Parser ( Parser ):
                 self.state = 2445
                 self.match(Java8Parser.COLONCOLON)
                 self.state = 2447
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if _la==Java8Parser.LT:
                     self.state = 2446
@@ -17148,7 +16956,6 @@ class Java8Parser ( Parser ):
                 self.state = 2452
                 self.match(Java8Parser.COLONCOLON)
                 self.state = 2454
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if _la==Java8Parser.LT:
                     self.state = 2453
@@ -17166,7 +16973,6 @@ class Java8Parser ( Parser ):
                 self.state = 2459
                 self.match(Java8Parser.COLONCOLON)
                 self.state = 2461
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if _la==Java8Parser.LT:
                     self.state = 2460
@@ -17184,7 +16990,6 @@ class Java8Parser ( Parser ):
                 self.state = 2466
                 self.match(Java8Parser.COLONCOLON)
                 self.state = 2468
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if _la==Java8Parser.LT:
                     self.state = 2467
@@ -17206,7 +17011,6 @@ class Java8Parser ( Parser ):
                 self.state = 2474
                 self.match(Java8Parser.COLONCOLON)
                 self.state = 2476
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if _la==Java8Parser.LT:
                     self.state = 2475
@@ -17224,7 +17028,6 @@ class Java8Parser ( Parser ):
                 self.state = 2481
                 self.match(Java8Parser.COLONCOLON)
                 self.state = 2483
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if _la==Java8Parser.LT:
                     self.state = 2482
@@ -17297,7 +17100,6 @@ class Java8Parser ( Parser ):
             self.state = 2493
             self.match(Java8Parser.COLONCOLON)
             self.state = 2495
-            self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==Java8Parser.LT:
                 self.state = 2494
@@ -17374,7 +17176,6 @@ class Java8Parser ( Parser ):
         self._la = 0 # Token type
         try:
             self.state = 2539
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,287,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
@@ -17383,7 +17184,6 @@ class Java8Parser ( Parser ):
                 self.state = 2500
                 self.match(Java8Parser.COLONCOLON)
                 self.state = 2502
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if _la==Java8Parser.LT:
                     self.state = 2501
@@ -17401,7 +17201,6 @@ class Java8Parser ( Parser ):
                 self.state = 2507
                 self.match(Java8Parser.COLONCOLON)
                 self.state = 2509
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if _la==Java8Parser.LT:
                     self.state = 2508
@@ -17419,7 +17218,6 @@ class Java8Parser ( Parser ):
                 self.state = 2514
                 self.match(Java8Parser.COLONCOLON)
                 self.state = 2516
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if _la==Java8Parser.LT:
                     self.state = 2515
@@ -17441,7 +17239,6 @@ class Java8Parser ( Parser ):
                 self.state = 2522
                 self.match(Java8Parser.COLONCOLON)
                 self.state = 2524
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if _la==Java8Parser.LT:
                     self.state = 2523
@@ -17459,7 +17256,6 @@ class Java8Parser ( Parser ):
                 self.state = 2529
                 self.match(Java8Parser.COLONCOLON)
                 self.state = 2531
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if _la==Java8Parser.LT:
                     self.state = 2530
@@ -17541,7 +17337,6 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 406, self.RULE_arrayCreationExpression)
         try:
             self.state = 2563
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,290,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
@@ -17552,7 +17347,6 @@ class Java8Parser ( Parser ):
                 self.state = 2543
                 self.dimExprs()
                 self.state = 2545
-                self._errHandler.sync(self)
                 la_ = self._interp.adaptivePredict(self._input,288,self._ctx)
                 if la_ == 1:
                     self.state = 2544
@@ -17570,7 +17364,6 @@ class Java8Parser ( Parser ):
                 self.state = 2549
                 self.dimExprs()
                 self.state = 2551
-                self._errHandler.sync(self)
                 la_ = self._interp.adaptivePredict(self._input,289,self._ctx)
                 if la_ == 1:
                     self.state = 2550
@@ -17826,7 +17619,6 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 414, self.RULE_expression)
         try:
             self.state = 2586
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,293,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
@@ -17947,7 +17739,6 @@ class Java8Parser ( Parser ):
         self._la = 0 # Token type
         try:
             self.state = 2602
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,295,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
@@ -17960,7 +17751,6 @@ class Java8Parser ( Parser ):
                 self.state = 2593
                 self.match(Java8Parser.LPAREN)
                 self.state = 2595
-                self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << Java8Parser.BOOLEAN) | (1 << Java8Parser.BYTE) | (1 << Java8Parser.CHAR) | (1 << Java8Parser.DOUBLE) | (1 << Java8Parser.FINAL) | (1 << Java8Parser.FLOAT) | (1 << Java8Parser.INT) | (1 << Java8Parser.LONG) | (1 << Java8Parser.SHORT))) != 0) or _la==Java8Parser.Identifier or _la==Java8Parser.AT:
                     self.state = 2594
@@ -18091,18 +17881,17 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 422, self.RULE_lambdaBody)
         try:
             self.state = 2614
-            self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [Java8Parser.BOOLEAN, Java8Parser.BYTE, Java8Parser.CHAR, Java8Parser.DOUBLE, Java8Parser.FLOAT, Java8Parser.INT, Java8Parser.LONG, Java8Parser.NEW, Java8Parser.SHORT, Java8Parser.SUPER, Java8Parser.THIS, Java8Parser.VOID, Java8Parser.IntegerLiteral, Java8Parser.FloatingPointLiteral, Java8Parser.BooleanLiteral, Java8Parser.CharacterLiteral, Java8Parser.StringLiteral, Java8Parser.NullLiteral, Java8Parser.LPAREN, Java8Parser.BANG, Java8Parser.TILDE, Java8Parser.INC, Java8Parser.DEC, Java8Parser.ADD, Java8Parser.SUB, Java8Parser.Identifier, Java8Parser.AT]:
                 self.enterOuterAlt(localctx, 1)
                 self.state = 2612
                 self.expression()
-                pass
+
             elif token in [Java8Parser.LBRACE]:
                 self.enterOuterAlt(localctx, 2)
                 self.state = 2613
                 self.block()
-                pass
+
             else:
                 raise NoViableAltException(self)
 
@@ -18154,7 +17943,6 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 424, self.RULE_assignmentExpression)
         try:
             self.state = 2618
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,298,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
@@ -18279,7 +18067,6 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 428, self.RULE_leftHandSide)
         try:
             self.state = 2627
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,299,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
@@ -18347,7 +18134,6 @@ class Java8Parser ( Parser ):
             if not(((((_la - 66)) & ~0x3f) == 0 and ((1 << (_la - 66)) & ((1 << (Java8Parser.ASSIGN - 66)) | (1 << (Java8Parser.ADD_ASSIGN - 66)) | (1 << (Java8Parser.SUB_ASSIGN - 66)) | (1 << (Java8Parser.MUL_ASSIGN - 66)) | (1 << (Java8Parser.DIV_ASSIGN - 66)) | (1 << (Java8Parser.AND_ASSIGN - 66)) | (1 << (Java8Parser.OR_ASSIGN - 66)) | (1 << (Java8Parser.XOR_ASSIGN - 66)) | (1 << (Java8Parser.MOD_ASSIGN - 66)) | (1 << (Java8Parser.LSHIFT_ASSIGN - 66)) | (1 << (Java8Parser.RSHIFT_ASSIGN - 66)) | (1 << (Java8Parser.URSHIFT_ASSIGN - 66)))) != 0)):
                 self._errHandler.recoverInline(self)
             else:
-                self._errHandler.reportMatch(self)
                 self.consume()
         except RecognitionException as re:
             localctx.exception = re
@@ -18401,7 +18187,6 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 432, self.RULE_conditionalExpression)
         try:
             self.state = 2638
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,300,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
@@ -18861,7 +18646,6 @@ class Java8Parser ( Parser ):
                         self.triggerExitRuleEvent()
                     _prevctx = localctx
                     self.state = 2704
-                    self._errHandler.sync(self)
                     la_ = self._interp.adaptivePredict(self._input,306,self._ctx)
                     if la_ == 1:
                         localctx = Java8Parser.EqualityExpressionContext(self, _parentctx, _parentState)
@@ -18960,7 +18744,6 @@ class Java8Parser ( Parser ):
                         self.triggerExitRuleEvent()
                     _prevctx = localctx
                     self.state = 2727
-                    self._errHandler.sync(self)
                     la_ = self._interp.adaptivePredict(self._input,308,self._ctx)
                     if la_ == 1:
                         localctx = Java8Parser.RelationalExpressionContext(self, _parentctx, _parentState)
@@ -19094,7 +18877,6 @@ class Java8Parser ( Parser ):
                         self.triggerExitRuleEvent()
                     _prevctx = localctx
                     self.state = 2748
-                    self._errHandler.sync(self)
                     la_ = self._interp.adaptivePredict(self._input,310,self._ctx)
                     if la_ == 1:
                         localctx = Java8Parser.ShiftExpressionContext(self, _parentctx, _parentState)
@@ -19210,7 +18992,6 @@ class Java8Parser ( Parser ):
                         self.triggerExitRuleEvent()
                     _prevctx = localctx
                     self.state = 2762
-                    self._errHandler.sync(self)
                     la_ = self._interp.adaptivePredict(self._input,312,self._ctx)
                     if la_ == 1:
                         localctx = Java8Parser.AdditiveExpressionContext(self, _parentctx, _parentState)
@@ -19305,7 +19086,6 @@ class Java8Parser ( Parser ):
                         self.triggerExitRuleEvent()
                     _prevctx = localctx
                     self.state = 2779
-                    self._errHandler.sync(self)
                     la_ = self._interp.adaptivePredict(self._input,314,self._ctx)
                     if la_ == 1:
                         localctx = Java8Parser.MultiplicativeExpressionContext(self, _parentctx, _parentState)
@@ -19407,37 +19187,36 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 454, self.RULE_unaryExpression)
         try:
             self.state = 2791
-            self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [Java8Parser.INC]:
                 self.enterOuterAlt(localctx, 1)
                 self.state = 2784
                 self.preIncrementExpression()
-                pass
+
             elif token in [Java8Parser.DEC]:
                 self.enterOuterAlt(localctx, 2)
                 self.state = 2785
                 self.preDecrementExpression()
-                pass
+
             elif token in [Java8Parser.ADD]:
                 self.enterOuterAlt(localctx, 3)
                 self.state = 2786
                 self.match(Java8Parser.ADD)
                 self.state = 2787
                 self.unaryExpression()
-                pass
+
             elif token in [Java8Parser.SUB]:
                 self.enterOuterAlt(localctx, 4)
                 self.state = 2788
                 self.match(Java8Parser.SUB)
                 self.state = 2789
                 self.unaryExpression()
-                pass
+
             elif token in [Java8Parser.BOOLEAN, Java8Parser.BYTE, Java8Parser.CHAR, Java8Parser.DOUBLE, Java8Parser.FLOAT, Java8Parser.INT, Java8Parser.LONG, Java8Parser.NEW, Java8Parser.SHORT, Java8Parser.SUPER, Java8Parser.THIS, Java8Parser.VOID, Java8Parser.IntegerLiteral, Java8Parser.FloatingPointLiteral, Java8Parser.BooleanLiteral, Java8Parser.CharacterLiteral, Java8Parser.StringLiteral, Java8Parser.NullLiteral, Java8Parser.LPAREN, Java8Parser.BANG, Java8Parser.TILDE, Java8Parser.Identifier, Java8Parser.AT]:
                 self.enterOuterAlt(localctx, 5)
                 self.state = 2790
                 self.unaryExpressionNotPlusMinus()
-                pass
+
             else:
                 raise NoViableAltException(self)
 
@@ -19589,7 +19368,6 @@ class Java8Parser ( Parser ):
         self.enterRule(localctx, 460, self.RULE_unaryExpressionNotPlusMinus)
         try:
             self.state = 2805
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,317,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
@@ -19683,7 +19461,6 @@ class Java8Parser ( Parser ):
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 2809
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,318,self._ctx)
             if la_ == 1:
                 self.state = 2807
@@ -19702,16 +19479,15 @@ class Java8Parser ( Parser ):
             while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
                 if _alt==1:
                     self.state = 2813
-                    self._errHandler.sync(self)
                     token = self._input.LA(1)
                     if token in [Java8Parser.INC]:
                         self.state = 2811
                         self.postIncrementExpression_lf_postfixExpression()
-                        pass
+
                     elif token in [Java8Parser.DEC]:
                         self.state = 2812
                         self.postDecrementExpression_lf_postfixExpression()
-                        pass
+
                     else:
                         raise NoViableAltException(self)
              
@@ -19969,7 +19745,6 @@ class Java8Parser ( Parser ):
         self._la = 0 # Token type
         try:
             self.state = 2855
-            self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,323,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)

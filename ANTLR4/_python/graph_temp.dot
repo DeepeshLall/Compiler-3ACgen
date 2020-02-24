@@ -1,3 +1,5 @@
+ANTLR runtime and generated code versions disagree: 4.7.2!=4.5.1
+ANTLR runtime and generated code versions disagree: 4.7.2!=4.5.1
 digraph G {
 00[label="compilationUnit\n packageproject.unittests;publicclassMatMul{publicstaticvoidmain(Stringargs[]){intr1=3,c1=2,r2=2,c2=3,i,j,k,sum;if(c1==r2){intmat1[][]=newint[r1][c1];intmat2[][]=newint[r2][c2];intres[][]=newint[r1][c2];for(i=0;i<r1;i++){for(j=0;j<c1;j++)mat1[i][j]=r1+c1;}for(i=0;i<r2;i++){for(j=0;j<c2;j++)mat2[i][j]=r2+c2;}for(i=0;i<r1;i++){for(j=0;j<c2;j++){sum=0;for(k=0;k<r2;k++){sum+=mat1[i][k]*mat2[k][j];}res[i][j]=sum;}}System.out.println(\"Output matrix: \");for(i=0;i<r1;i++){for(j=0;j<c2;j++){System.out.print(res[i][j]+\" \");}System.out.println();}}elseSystem.out.print(\"multipication is not possible!\");}}<EOF> "]
 11[label="packageDeclaration\n packageproject.unittests; "]
