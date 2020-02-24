@@ -4,10 +4,10 @@ from Java8Parser import Java8Parser
 from Java8Visitor import Java8Visitor
  
 def traversal(node):
-    print(type(node)," ",str(node))
+    print(str(node.getChildCount())," Found a nonTerminal NODE----",str(type(node)).split('.')[-1][:-2].replace('Context',''))
     for child in node.getChildren():
     	if isinstance(child, antlr4.tree.Tree.TerminalNode):
-    		pass
+            print("Found a TERMINAL NODE::::",str(child.getText()))
     	else:
         	traversal(child)
 
