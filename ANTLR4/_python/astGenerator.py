@@ -16,7 +16,7 @@ def generateAST(ctx, verbose, indentation):
         LineNum.append(str(indentation))
         ruleName = Java8Parser.ruleNames[ctx.getRuleIndex()]
         Line_type.append(ruleName)
-        Content.append(ctx.getText())
+        Content.append(ctx.getText().replace('\"','\\\"'))
     for i in range(ctx.getChildCount()):
         child_ctx=ctx.getChild(i)
         if isinstance(child_ctx, antlr4.RuleContext):

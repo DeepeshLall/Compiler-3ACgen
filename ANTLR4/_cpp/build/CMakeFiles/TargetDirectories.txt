@@ -1,3 +1,0 @@
-/home/glaedr/Desktop/IITK/6th sem/CS335/antlr/_cpp/build/CMakeFiles/edit_cache.dir
-/home/glaedr/Desktop/IITK/6th sem/CS335/antlr/_cpp/build/CMakeFiles/rebuild_cache.dir
-/home/glaedr/Desktop/IITK/6th sem/CS335/antlr/_cpp/build/CMakeFiles/antlr4-tutorial.dir
