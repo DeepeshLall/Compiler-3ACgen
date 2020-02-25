@@ -296,6 +296,145 @@ Node *ast_root;
 
 
 
+%type <ast_node> AbstractMethodDeclaration
+%type <ast_node> AdditiveExpression
+%type <ast_node> AndExpression
+%type <ast_node> ArgumentList
+%type <ast_node> ArrayAccess
+%type <ast_node> ArrayCreationExpression
+%type <ast_node> ArrayInitializer
+%type <ast_node> ArrayType
+%type <ast_node> Assignment
+%type <ast_node> AssignmentExpression
+%type <ast_node> AssignmentOperator
+%type <ast_node> BasicForStatement
+%type <ast_node> BasicForStatementNoShortIf
+%type <ast_node> Block
+%type <ast_node> BlockStatement
+%type <ast_node> BlockStatements
+%type <ast_node> BreakStatement
+%type <ast_node> CastExpression
+%type <ast_node> CatchClause
+%type <ast_node> Catches
+%type <ast_node> ClassBody
+%type <ast_node> ClassBodyDeclaration
+%type <ast_node> ClassBodyDeclarationRec
+%type <ast_node> ClassDeclaration
+%type <ast_node> ClassInstanceCreationExpression
+%type <ast_node> ClassMemberDeclaration
+%type <ast_node> ClassOrInterfaceType
+%type <ast_node> ClassType
+%type <ast_node> ClassTypeList
+%type <ast_node> CompilationUnit
+%type <ast_node> ConditionalAndExpression
+%type <ast_node> ConditionalExpression
+%type <ast_node> ConditionalOrExpression
+%type <ast_node> ConstantDeclaration
+%type <ast_node> ConstantExpression
+%type <ast_node> ConstructorBody
+%type <ast_node> ConstructorDeclaration
+%type <ast_node> ConstructorDeclarator
+%type <ast_node> ContinueStatement
+%type <ast_node> DimExpr
+%type <ast_node> DimExprs
+%type <ast_node> Dims
+%type <ast_node> DoStatement
+%type <ast_node> EmptyStatement
+%type <ast_node> EqualityExpression
+%type <ast_node> ExclusiveOrExpression
+%type <ast_node> ExplicitConstructorInvocation
+%type <ast_node> Expression
+%type <ast_node> ExpressionStatement
+%type <ast_node> ExtendsInterfaces
+%type <ast_node> FieldAccess
+%type <ast_node> FieldDeclaration
+%type <ast_node> Finally
+%type <ast_node> FloatingPointType
+%type <ast_node> ForInit
+%type <ast_node> FormalParameter
+%type <ast_node> FormalParameterList
+%type <ast_node> ForStatement
+%type <ast_node> ForStatementNoShortIf
+%type <ast_node> ForUpdate
+%type <ast_node> Identifier
+%type <ast_node> IfThenElseStatement
+%type <ast_node> IfThenElseStatementNoShortIf
+%type <ast_node> IfThenStatement
+%type <ast_node> ImportDeclaration
+%type <ast_node> ImportDeclarationRec
+%type <ast_node> InclusiveOrExpression
+%type <ast_node> IntegralType
+%type <ast_node> InterfaceBody
+%type <ast_node> InterfaceDeclaration
+%type <ast_node> InterfaceMemberDeclaration
+%type <ast_node> InterfaceMemberDeclarationRec
+%type <ast_node> Interfaces
+%type <ast_node> InterfaceType
+%type <ast_node> InterfaceTypeList
+%type <ast_node> LabeledStatement
+%type <ast_node> LabeledStatementNoShortIf
+%type <ast_node> LeftHandSide
+%type <ast_node> Literal
+%type <ast_node> LocalVariableDeclaration
+%type <ast_node> LocalVariableDeclarationStatement
+%type <ast_node> MethodBody
+%type <ast_node> MethodDeclaration
+%type <ast_node> MethodDeclarator
+%type <ast_node> MethodHeader
+%type <ast_node> MethodInvocation
+%type <ast_node> Modifier
+%type <ast_node> Modifiers
+%type <ast_node> MultiplicativeExpression
+%type <ast_node> Name
+%type <ast_node> NumericType
+%type <ast_node> PackageDeclaration
+%type <ast_node> PostDecrementExpression
+%type <ast_node> PostfixExpression
+%type <ast_node> PostIncrementExpression
+%type <ast_node> PreDecrementExpression
+%type <ast_node> PreIncrementExpression
+%type <ast_node> Primary
+%type <ast_node> PrimaryNoNewArray
+%type <ast_node> PrimitiveType
+%type <ast_node> QualifiedName
+%type <ast_node> ReferenceType
+%type <ast_node> RelationalExpression
+%type <ast_node> ReturnStatement
+%type <ast_node> ShiftExpression
+%type <ast_node> SimpleName
+%type <ast_node> SingleTypeImportDeclaration
+%type <ast_node> Statement
+%type <ast_node> StatementExpression
+%type <ast_node> StatementExpressionList
+%type <ast_node> StatementNoShortIf
+%type <ast_node> StatementWithoutTrailingSubstatement
+%type <ast_node> StaticInitializer
+%type <ast_node> Super
+%type <ast_node> SwitchBlock
+%type <ast_node> SwitchBlockStatementGroup
+%type <ast_node> SwitchBlockStatementGroups
+%type <ast_node> SwitchLabel
+%type <ast_node> SwitchLabels
+%type <ast_node> SwitchStatement
+%type <ast_node> SynchronizedStatement
+%type <ast_node> Throws
+%type <ast_node> ThrowStatement
+%type <ast_node> TryStatement
+%type <ast_node> Type
+%type <ast_node> TypeDeclaration
+%type <ast_node> TypeDeclarationRec
+%type <ast_node> TypeImportOnDemandDeclaration
+%type <ast_node> UnaryExpression
+%type <ast_node> UnaryExpressionNotPlusMinus
+%type <ast_node> VariableDeclarator
+%type <ast_node> VariableDeclaratorId
+%type <ast_node> VariableDeclarators
+%type <ast_node> VariableInitializer
+%type <ast_node> VariableInitializerList
+%type <ast_node> WhileStatement
+%type <ast_node> WhileStatementNoShortIf
+
+
 %%
 
 
@@ -429,7 +568,7 @@ TypeImportOnDemandDeclaration  :  IMPORT Name DST SCLN 	 												{$$=new_non
 
 TypeDeclaration  :  ClassDeclaration  																	{$$=new_nonTerminal_Node_1_NT($1);}
 				 |  InterfaceDeclaration 																{$$=new_nonTerminal_Node_1_NT($1);}
-				 | SCLN 																				{/*doubt*/}
+				 | SCLN 																				{$$=new_nonTerminal_Node_1_T(";");}
 				 ;
 
 
@@ -486,7 +625,7 @@ InterfaceTypeList  :  InterfaceType 																	{$$=new_nonTerminal_Node_1_
 				   |  InterfaceTypeList CMA InterfaceType 												{$$=new_nonTerminal_Node_2_NT($1,$3);}
 				   ;
 
-ClassBody  :  LCB RCB 																					{/*doubt*/}
+ClassBody  :  LCB RCB 																					{$$=new_nonTerminal_Node_1_T("");}
 		   |  LCB ClassBodyDeclarationRec RCB 															{$$=new_nonTerminal_Node_1_NT($2);}
 		   ;
 
@@ -560,7 +699,7 @@ ClassTypeList  :  ClassType 																			{$$=new_nonTerminal_Node_1_NT($1)
 
 
 MethodBody  : Block 																					{$$=new_nonTerminal_Node_1_NT($1);}
-			| SCLN  																					{/*doubt*/}
+			| SCLN  																					{$$=new_nonTerminal_Node_1_T(";");}
 			;
 
 
@@ -580,7 +719,7 @@ ConstructorDeclarator  :  SimpleName LSMB FormalParameterList RSMB 										{$$
 ConstructorBody  :  LCB ExplicitConstructorInvocation BlockStatements RCB 								{$$=new_nonTerminal_Node_2_NT($2,$3);}
 				 |  LCB BlockStatements RCB 															{$$=new_nonTerminal_Node_1_NT($2);}
 				 |  LCB ExplicitConstructorInvocation RCB 												{$$=new_nonTerminal_Node_1_NT($2);}
-				 |  LCB RCB																				{/*doubt*/}
+				 |  LCB RCB																				{$$=new_nonTerminal_Node_1_T("");}
 				 ;
 
 ExplicitConstructorInvocation  :  THIS LSMB ArgumentList RSMB SCLN 										{$$=new_nonTerminal_Node_1_NT_1_T("this",$3);}
@@ -620,7 +759,7 @@ ExtendsInterfaces  :  EXTENDS InterfaceType 															{$$=new_nonTerminal_N
 				   ;
 
 InterfaceBody  :  LCB InterfaceMemberDeclarationRec RCB 												{$$=new_nonTerminal_Node_1_NT($2);}
-			   |  LCB RCB 																				{/*doubt*/}
+			   |  LCB RCB 																				{$$=new_nonTerminal_Node_1_T("");}
 			   ;
 
 InterfaceMemberDeclarationRec  :  InterfaceMemberDeclaration 											{$$=new_nonTerminal_Node_1_NT($1);}
@@ -653,9 +792,9 @@ AbstractMethodDeclaration  :  MethodHeader SCLN 														{$$=new_nonTermina
 
 
 ArrayInitializer : LCB VariableInitializerList CMA RCB 													{$$=new_nonTerminal_Node_1_NT($2);}		
-				 | LCB CMA RCB 																			{/*doubt*/}
+				 | LCB CMA RCB 																			{$$=new_nonTerminal_Node_1_T(";");}
 				 | LCB VariableInitializerList RCB 														{$$=new_nonTerminal_Node_1_NT($2);}
-				 | LCB RCB																				{/*doubt*/}
+				 | LCB RCB																				{$$=new_nonTerminal_Node_1_T("");}
 				 ;
 
 VariableInitializerList : VariableInitializerList CMA VariableInitializer 								{$$=new_nonTerminal_Node_2_NT($1,$3);}
@@ -678,7 +817,7 @@ VariableInitializerList : VariableInitializerList CMA VariableInitializer 						
 
 
 Block : LCB BlockStatements RCB 																		{$$=new_nonTerminal_Node_1_NT($2);}
-	  | LCB RCB 																						{/*doubt*/}
+	  | LCB RCB 																						{$$=new_nonTerminal_Node_1_T("");}
 	  ;
 
 BlockStatements : BlockStatements BlockStatement 														{$$=new_nonTerminal_Node_2_NT($1,$2);}	
@@ -722,13 +861,13 @@ StatementWithoutTrailingSubstatement : Block 															{$$=new_nonTerminal_
 									 | ThrowStatement 													{$$=new_nonTerminal_Node_1_NT($1);}
 									 | TryStatement 													{$$=new_nonTerminal_Node_1_NT($1);}
 									 ;
-EmptyStatement : SCLN 																					{/*doubt*/}
+EmptyStatement : SCLN 																					{$$=new_nonTerminal_Node_1_T(";");}
 			   ;
 
-LabeledStatement : Identifier COLON Statement 															{/*doubt*/}
+LabeledStatement : Identifier COLON Statement 															{$$=new_nonTerminal_Node_2_NT($1,$3);}
 				 ;
 
-LabeledStatementNoShortIf : Identifier COLON StatementNoShortIf 										{/*doubt*/}
+LabeledStatementNoShortIf : Identifier COLON StatementNoShortIf 										{$$=new_nonTerminal_Node_2_NT($1,$3);}
 						  ;
 
 ExpressionStatement : StatementExpression SCLN 															{$$=new_nonTerminal_Node_1_NT($1);}
@@ -759,7 +898,7 @@ SwitchStatement : SWITCH LSMB Expression RSMB SwitchBlock 												{$$=new_no
 SwitchBlock : LCB SwitchBlockStatementGroups SwitchLabels RCB 											{$$=new_nonTerminal_Node_2_NT($1,$2);}
 			| LCB SwitchLabels RCB 																		{$$=new_nonTerminal_Node_1_NT($1);}
 			| LCB SwitchBlockStatementGroups RCB 														{$$=new_nonTerminal_Node_1_NT($1);}
-			| LCB RCB 																					{/*doubt*/}
+			| LCB RCB 																					{$$=new_nonTerminal_Node_1_T("");}
 			;
 
 SwitchBlockStatementGroups : SwitchBlockStatementGroup 													{$$=new_nonTerminal_Node_1_NT($1);}
@@ -774,8 +913,8 @@ SwitchBlockStatementGroup : SwitchLabels BlockStatements 												{$$=new_non
 						  ;
 
 
-SwitchLabel : CASE ConstantExpression COLON 															{/*doubt*/}
-			| DEFAULT COLON 																			{/*doubt*/}
+SwitchLabel : CASE ConstantExpression COLON 															{$$=new_nonTerminal_Node_1_NT($2);}
+			| DEFAULT COLON 																			{$$=new_nonTerminal_Node_1_T("default");}
 			;
 
 WhileStatement : WHILE LSMB Expression RSMB Statement 													{$$=new_nonTerminal_Node_2_NT_1_T("while",$3,$5);}
@@ -784,7 +923,7 @@ WhileStatement : WHILE LSMB Expression RSMB Statement 													{$$=new_nonTe
 WhileStatementNoShortIf : WHILE LSMB Expression RSMB StatementNoShortIf 								{$$=new_nonTerminal_Node_2_NT_1_T("while",$3,$5);}
 						;
 
-DoStatement : DO Statement WHILE LSMB Expression RSMB SCLN 												{/*doubt*/}
+DoStatement : DO Statement WHILE LSMB Expression RSMB SCLN 												{$$=new_nonTerminal_Node_2_NT($2,$5);}
 			;
 
 ForStatement : BasicForStatement 																		{$$=new_nonTerminal_Node_1_NT($1);}
