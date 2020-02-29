@@ -468,7 +468,7 @@ IntegralType  :  BYTE 																					{$$=new_nonTerminal_Node_1_T("byte");
 			  |  LONG 																					{$$=new_nonTerminal_Node_1_T("long");}
 			  ;
 
-FloatingPointType  :  FLOAT 																			{$$=new_nonTerminal_Node_1_T(float);}
+FloatingPointType  :  FLOAT 																			{$$=new_nonTerminal_Node_1_T("float");}
 			  	   |  DOUBLE 																			{$$=new_nonTerminal_Node_1_T("double");}
 			  	   ;
 
@@ -540,7 +540,7 @@ CompilationUnit  :  PackageDeclaration ImportDeclarationRec TypeDeclarationRec 	
 				 |  PackageDeclaration ImportDeclarationRec 											{$$=new_nonTerminal_Node_2_NT($1,$2);}
 				 |  ImportDeclarationRec 																{$$=new_nonTerminal_Node_1_NT($1);}
 				 |  PackageDeclaration 																	{$$=new_nonTerminal_Node_1_NT($1);}
-				 |
+				 |																						{$$=new_nonTerminal_Node_1_T("");}
 				 ;
 
 ImportDeclarationRec  :  ImportDeclaration 																{$$=new_nonTerminal_Node_1_NT($1);}
@@ -647,7 +647,7 @@ FieldDeclaration  :  Modifiers Type VariableDeclarators SCLN 											{$$=new_
 				  ;
 
 VariableDeclarators  :  VariableDeclarator 																{$$=new_nonTerminal_Node_1_NT($1);}
-					 |  VariableDeclarators CMA VariableDeclarator 										{$$=new_nonTerminal_Node_2_NT($1,$2);}
+					 |  VariableDeclarators CMA VariableDeclarator 										{$$=new_nonTerminal_Node_2_NT($1,$3);}
 					 ;
 
 VariableDeclarator  :  VariableDeclaratorId 															{$$=new_nonTerminal_Node_1_NT($1);}
@@ -712,7 +712,7 @@ ConstructorDeclaration  :  Modifiers ConstructorDeclarator Throws ConstructorBod
 						|  ConstructorDeclarator ConstructorBody 										{$$=new_nonTerminal_Node_2_NT($1,$2);}
 						;
 
-ConstructorDeclarator  :  SimpleName LSMB FormalParameterList RSMB 										{$$=new_nonTerminal_Node_2_NT($2,$4);}
+ConstructorDeclarator  :  SimpleName LSMB FormalParameterList RSMB 										{$$=new_nonTerminal_Node_2_NT($1,$3);}
 					   |  SimpleName LSMB RSMB 															{$$=new_nonTerminal_Node_1_NT($1);}
 					   ;
 
@@ -895,9 +895,9 @@ IfThenElseStatementNoShortIf : IF LSMB Expression RSMB StatementNoShortIf ELSE S
 SwitchStatement : SWITCH LSMB Expression RSMB SwitchBlock 												{$$=new_nonTerminal_Node_2_NT_1_T("switch",$3,$5);}
 				;
 
-SwitchBlock : LCB SwitchBlockStatementGroups SwitchLabels RCB 											{$$=new_nonTerminal_Node_2_NT($1,$2);}
-			| LCB SwitchLabels RCB 																		{$$=new_nonTerminal_Node_1_NT($1);}
-			| LCB SwitchBlockStatementGroups RCB 														{$$=new_nonTerminal_Node_1_NT($1);}
+SwitchBlock : LCB SwitchBlockStatementGroups SwitchLabels RCB 											{$$=new_nonTerminal_Node_2_NT($2,$3);}
+			| LCB SwitchLabels RCB 																		{$$=new_nonTerminal_Node_1_NT($2);}
+			| LCB SwitchBlockStatementGroups RCB 														{$$=new_nonTerminal_Node_1_NT($2);}
 			| LCB RCB 																					{$$=new_nonTerminal_Node_1_T("");}
 			;
 
@@ -1018,7 +1018,7 @@ Primary : PrimaryNoNewArray 												{$$=new_nonTerminal_Node_1_NT($1);}
 		;
 
 PrimaryNoNewArray : Literal 												{$$=new_nonTerminal_Node_1_NT($1);} 
-				  | THIS 													{$$=new_nonTerminal_Node_1_NT("this");}
+				  | THIS 													{$$=new_nonTerminal_Node_1_T("this");}
 				  |	LSMB Expression RSMB 									{$$=new_nonTerminal_Node_1_NT($2);}	
 				  | ClassInstanceCreationExpression 						{$$=new_nonTerminal_Node_1_NT($1);} 
 				  | FieldAccess 											{$$=new_nonTerminal_Node_1_NT($1);}
@@ -1216,6 +1216,6 @@ void yyerror(const char *s)
 
 int main (int, char**) {
 	yyparse();
-    // Visit(ast_root);
+    Visit(ast_root);
 	return 0;
 }
