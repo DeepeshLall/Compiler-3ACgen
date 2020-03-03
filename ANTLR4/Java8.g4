@@ -790,7 +790,7 @@ primary_Type_1  :  primaryNoNewArray_Type_1_Pr
 primary_Type_2  :  primaryNoNewArray_Type_2_Pr
 				;
 
-primaryNoNewArray : Literal
+/*primaryNoNewArray : Literal
 				  | classLiteral
 				  | 'this'
 				  | name '.' 'this'
@@ -800,10 +800,32 @@ primaryNoNewArray : Literal
 				  | arrayAccess
 				  | methodInvocation
 				  | methodReference
+				  ;*/
+
+primaryNoNewArray : Literal
+				  | classLiteral
+				  | 'this'
+				  | name '.' 'this'
+				  |	'(' expression ')'
+				  | classInstancecreationExpression
+				  | fieldAccess
+				  | arrayAccess
+				  | methodInvocation
 				  ;
 
 primaryNoNewArray_Type_2_Aa  :  
 							  ;
+
+/*primaryNoNewArray_Type_1_Aa  :  Literal
+				  			| classLiteral
+				  			| 'this'
+				  			| name '.' 'this'
+				  			|	'(' expression ')'
+				  			| classInstancecreationExpression
+				  			| fieldAccess
+				  			| methodInvocation
+				  			| methodReference
+				  			;*/
 
 primaryNoNewArray_Type_1_Aa  :  Literal
 				  			| classLiteral
@@ -813,24 +835,46 @@ primaryNoNewArray_Type_1_Aa  :  Literal
 				  			| classInstancecreationExpression
 				  			| fieldAccess
 				  			| methodInvocation
-				  			| methodReference
 				  			;
+
+/*primaryNoNewArray_Type_2_Pr  :  classInstancecreationExpression_Type_2_Pr
+				  				| fieldAccess_Type_2_Pr
+				  				| arrayAccess_Type_2_Pr
+				  				| methodInvocation_Type_2_Pr
+				  				| methodReference_Type_2_Pr
+				  				;*/
 
 primaryNoNewArray_Type_2_Pr  :  classInstancecreationExpression_Type_2_Pr
 				  				| fieldAccess_Type_2_Pr
 				  				| arrayAccess_Type_2_Pr
 				  				| methodInvocation_Type_2_Pr
-				  				| methodReference_Type_2_Pr
 				  				;
 
 primaryNoNewArray_Type_2_2_2_Pr_Aa_Pr  :  
 										;
 
-primaryNoNewArray_Type_2_1_2_Pr_Aa_Pr  :  classInstancecreationExpression_Type_2_Pr
+/*primaryNoNewArray_Type_2_1_2_Pr_Aa_Pr  :  classInstancecreationExpression_Type_2_Pr
 				  				| fieldAccess_Type_2_Pr
 				  				| methodInvocation_Type_2_Pr
 				  				| methodReference_Type_2_Pr
+				  				;*/
+
+primaryNoNewArray_Type_2_1_2_Pr_Aa_Pr  :  classInstancecreationExpression_Type_2_Pr
+				  				| fieldAccess_Type_2_Pr
+				  				| methodInvocation_Type_2_Pr
 				  				;
+
+/*primaryNoNewArray_Type_1_Pr  :  Literal
+				  			| classLiteral
+				  			| 'this'
+				  			| name '.' 'this'
+				  			|	'(' expression ')'
+				  			| classInstancecreationExpression_Type_1_Pr
+				  			| fieldAccess_Type_1_Pr
+				  			| arrayAccess_Type_1_Pr
+				  			| methodInvocation_Type_1_Pr
+				  			| methodReference_Type_1_Pr
+				  			;*/
 
 primaryNoNewArray_Type_1_Pr  :  Literal
 				  			| classLiteral
@@ -841,11 +885,21 @@ primaryNoNewArray_Type_1_Pr  :  Literal
 				  			| fieldAccess_Type_1_Pr
 				  			| arrayAccess_Type_1_Pr
 				  			| methodInvocation_Type_1_Pr
-				  			| methodReference_Type_1_Pr
 				  			;
 
 primaryNoNewArray_Type_1_2_1_Pr_Aa_Pr  :  
 										;
+
+/*primaryNoNewArray_Type_1_1_1_Pr_Aa_Pr  :  Literal
+				  			| classLiteral
+				  			| 'this'
+				  			| name '.' 'this'
+				  			|	'(' expression ')'
+				  			| classInstancecreationExpression_Type_1_Pr
+				  			| fieldAccess_Type_1_Pr
+				  			| methodInvocation_Type_1_Pr
+				  			| methodReference_Type_1_Pr
+				  			;*/
 
 primaryNoNewArray_Type_1_1_1_Pr_Aa_Pr  :  Literal
 				  			| classLiteral
@@ -855,7 +909,6 @@ primaryNoNewArray_Type_1_1_1_Pr_Aa_Pr  :  Literal
 				  			| classInstancecreationExpression_Type_1_Pr
 				  			| fieldAccess_Type_1_Pr
 				  			| methodInvocation_Type_1_Pr
-				  			| methodReference_Type_1_Pr
 				  			;
 
 classLiteral  :  name ('[' ']')* '.' 'class'
@@ -947,7 +1000,7 @@ methodInvocation_Type_1_Pr  :  methodName '(' argumentList? ')'
 argumentList  :  expression (',' expression)*
 			  ;
 
-methodReference  :  name '::' typeArguments? Identifier
+/*methodReference  :  name '::' typeArguments? Identifier
 				 |  referenceType '::' typeArguments? Identifier
 				 |  primary '::' typeArguments? Identifier
 				 |  'super' '::' typeArguments? Identifier
@@ -965,7 +1018,7 @@ methodReference_Type_1_Pr  :  name '::' typeArguments? Identifier
 				 			|  name '.' 'super' '::' typeArguments? Identifier
 				 			|  classType '::' typeArguments? 'new'
 				 			|  arrayType '::' 'new'
-				 			;
+				 			;*/
 
 arraycreationExpression  :  'new' primitiveType dimExprs dims?
 						 |  'new' classOrInterfaceType dimExprs dims?
