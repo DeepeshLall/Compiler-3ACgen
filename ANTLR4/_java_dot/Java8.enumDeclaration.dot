@@ -1,0 +1,34 @@
+digraph ATN {
+rankdir=LR;
+s187[fontsize=11, label="187", shape=doublecircle, fixedsize=true, width=.6];
+s1222[fontsize=11,label="1222", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s1223[fontsize=11,label="&rarr;\n1223*", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s1224[fontsize=11,label="&larr;\n1224", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s1225[fontsize=11,label="{1225*\nd=114|{<p0>|<p1>}}", shape=record, fixedsize=false, peripheries=1];
+s1226[fontsize=11,label="1226", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s1227[fontsize=11,label="1227*", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s1228[fontsize=11,label="1228", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s1229[fontsize=11,label="1229", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s1230[fontsize=11,label="1230", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s1231[fontsize=11,label="{&rarr;\n1231\nd=115|{<p0>|<p1>}}", shape=record, fixedsize=false, peripheries=1];
+s1232[fontsize=11,label="&larr;\n1232", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s1233[fontsize=11,label="1233", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s1234[fontsize=11,label="1234", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s186[fontsize=11,label="186", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s186 -> s1225 [fontname="Times-Italic", label="&epsilon;"];
+s1225:p0 -> s1223 [fontname="Times-Italic", label="&epsilon;"];
+s1225:p1 -> s1226 [fontname="Times-Italic", label="&epsilon;"];
+s1223 -> s1222 [fontname="Times-Italic", label="&epsilon;"];
+s1226 -> s1228 [fontname="Times-Italic", label="&epsilon;"];
+s1222 -> s1224 [fontsize=11, fontname="Courier", arrowsize=.7, label = "<classModifier>", arrowhead = normal];
+s1228 -> s1229 [fontsize=11, fontname="Courier", arrowsize=.7, label = "'enum'", arrowhead = normal];
+s1224 -> s1227 [fontname="Times-Italic", label="&epsilon;"];
+s1229 -> s1231 [fontsize=11, fontname="Courier", arrowsize=.7, label = "Identifier", arrowhead = normal];
+s1227 -> s1225 [fontname="Times-Italic", label="&epsilon;", style="dashed"];
+s1231:p0 -> s1230 [fontname="Times-Italic", label="&epsilon;"];
+s1231:p1 -> s1232 [fontname="Times-Italic", label="&epsilon;"];
+s1230 -> s1232 [fontsize=11, fontname="Courier", arrowsize=.7, label = "<superinterfaces>", arrowhead = normal];
+s1232 -> s1233 [fontname="Times-Italic", label="&epsilon;"];
+s1233 -> s1234 [fontsize=11, fontname="Courier", arrowsize=.7, label = "<enumBody>", arrowhead = normal];
+s1234 -> s187 [fontname="Times-Italic", label="&epsilon;"];
+}

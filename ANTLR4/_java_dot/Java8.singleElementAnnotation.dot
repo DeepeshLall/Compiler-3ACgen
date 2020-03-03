@@ -1,0 +1,18 @@
+digraph ATN {
+rankdir=LR;
+s247[fontsize=11, label="247", shape=doublecircle, fixedsize=true, width=.6];
+s246[fontsize=11,label="246", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s1465[fontsize=11,label="1465", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s1466[fontsize=11,label="1466", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s1467[fontsize=11,label="1467", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s1468[fontsize=11,label="1468", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s1469[fontsize=11,label="1469", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s1470[fontsize=11,label="1470", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s246 -> s1465 [fontname="Times-Italic", label="&epsilon;"];
+s1465 -> s1466 [fontsize=11, fontname="Courier", arrowsize=.7, label = "'@'", arrowhead = normal];
+s1466 -> s1467 [fontsize=11, fontname="Courier", arrowsize=.7, label = "<typeName>", arrowhead = normal];
+s1467 -> s1468 [fontsize=11, fontname="Courier", arrowsize=.7, label = "'('", arrowhead = normal];
+s1468 -> s1469 [fontsize=11, fontname="Courier", arrowsize=.7, label = "<elementValue>", arrowhead = normal];
+s1469 -> s1470 [fontsize=11, fontname="Courier", arrowsize=.7, label = "')'", arrowhead = normal];
+s1470 -> s247 [fontname="Times-Italic", label="&epsilon;"];
+}

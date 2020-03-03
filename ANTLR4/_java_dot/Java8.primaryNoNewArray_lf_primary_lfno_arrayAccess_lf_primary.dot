@@ -1,0 +1,21 @@
+digraph ATN {
+rankdir=LR;
+s365[fontsize=11, label="365", shape=doublecircle, fixedsize=true, width=.6];
+s1944[fontsize=11,label="1944", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s1945[fontsize=11,label="1945", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s1946[fontsize=11,label="1946", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s1947[fontsize=11,label="1947", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s364[fontsize=11,label="364", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s1948[fontsize=11,label="{&rarr;\n1948\nd=198|{<p0>|<p1>|<p2>|<p3>}}", shape=record, fixedsize=false, peripheries=1];
+s1949[fontsize=11,label="&larr;\n1949", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s364 -> s1948 [fontname="Times-Italic", label="&epsilon;"];
+s1948:p0 -> s1944 [fontname="Times-Italic", label="&epsilon;"];
+s1948:p1 -> s1945 [fontname="Times-Italic", label="&epsilon;"];
+s1948:p2 -> s1946 [fontname="Times-Italic", label="&epsilon;"];
+s1948:p3 -> s1947 [fontname="Times-Italic", label="&epsilon;"];
+s1944 -> s1949 [fontsize=11, fontname="Courier", arrowsize=.7, label = "<classInstanceCreationExpression_lf_primary>", arrowhead = normal];
+s1945 -> s1949 [fontsize=11, fontname="Courier", arrowsize=.7, label = "<fieldAccess_lf_primary>", arrowhead = normal];
+s1946 -> s1949 [fontsize=11, fontname="Courier", arrowsize=.7, label = "<methodInvocation_lf_primary>", arrowhead = normal];
+s1947 -> s1949 [fontsize=11, fontname="Courier", arrowsize=.7, label = "<methodReference_lf_primary>", arrowhead = normal];
+s1949 -> s365 [fontname="Times-Italic", label="&epsilon;"];
+}

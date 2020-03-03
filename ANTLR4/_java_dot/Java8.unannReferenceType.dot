@@ -1,0 +1,18 @@
+digraph ATN {
+rankdir=LR;
+s121[fontsize=11, label="121", shape=doublecircle, fixedsize=true, width=.6];
+s120[fontsize=11,label="120", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s920[fontsize=11,label="920", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s921[fontsize=11,label="921", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s922[fontsize=11,label="922", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s923[fontsize=11,label="{&rarr;\n923\nd=63|{<p0>|<p1>|<p2>}}", shape=record, fixedsize=false, peripheries=1];
+s924[fontsize=11,label="&larr;\n924", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s120 -> s923 [fontname="Times-Italic", label="&epsilon;"];
+s923:p0 -> s920 [fontname="Times-Italic", label="&epsilon;"];
+s923:p1 -> s921 [fontname="Times-Italic", label="&epsilon;"];
+s923:p2 -> s922 [fontname="Times-Italic", label="&epsilon;"];
+s920 -> s924 [fontsize=11, fontname="Courier", arrowsize=.7, label = "<unannClassOrInterfaceType>", arrowhead = normal];
+s921 -> s924 [fontsize=11, fontname="Courier", arrowsize=.7, label = "<unannTypeVariable>", arrowhead = normal];
+s922 -> s924 [fontsize=11, fontname="Courier", arrowsize=.7, label = "<unannArrayType>", arrowhead = normal];
+s924 -> s121 [fontname="Times-Italic", label="&epsilon;"];
+}

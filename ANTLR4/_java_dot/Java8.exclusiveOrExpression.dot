@@ -1,0 +1,29 @@
+digraph ATN {
+rankdir=LR;
+s441[fontsize=11, label="441", shape=doublecircle, fixedsize=true, width=.6];
+s2673[fontsize=11,label="2673", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s2674[fontsize=11,label="2674", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s2675[fontsize=11,label="2675", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s2676[fontsize=11,label="2676", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s2677[fontsize=11,label="2677", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s2678[fontsize=11,label="2678", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s2679[fontsize=11,label="&rarr;\n2679*", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s440[fontsize=11,label="440", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s2680[fontsize=11,label="&larr;\n2680", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s2681[fontsize=11,label="{2681*\nd=304|{<p0>|<p1>}}", shape=record, fixedsize=false, peripheries=1];
+s2682[fontsize=11,label="2682", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s2683[fontsize=11,label="2683*", shape=circle, fixedsize=true, width=.55, peripheries=1];
+s440 -> s2673 [fontname="Times-Italic", label="&epsilon;"];
+s2673 -> s2674 [fontsize=11, fontname="Courier", arrowsize=.7, label = "action_220:-1", arrowhead = normal];
+s2674 -> s2675 [fontsize=11, fontname="Courier", arrowsize=.7, label = "<andExpression[0]>", arrowhead = normal];
+s2675 -> s2681 [fontname="Times-Italic", label="&epsilon;"];
+s2681:p0 -> s2679 [fontname="Times-Italic", label="&epsilon;"];
+s2681:p1 -> s2682 [fontname="Times-Italic", label="&epsilon;"];
+s2679 -> s2676 [fontname="Times-Italic", label="&epsilon;"];
+s2682 -> s441 [fontname="Times-Italic", label="&epsilon;"];
+s2676 -> s2677 [fontsize=11, fontname="Courier", arrowsize=.7, label = "1 >= _p", arrowhead = normal];
+s2677 -> s2678 [fontsize=11, fontname="Courier", arrowsize=.7, label = "'^'", arrowhead = normal];
+s2678 -> s2680 [fontsize=11, fontname="Courier", arrowsize=.7, label = "<andExpression[0]>", arrowhead = normal];
+s2680 -> s2683 [fontname="Times-Italic", label="&epsilon;"];
+s2683 -> s2681 [fontname="Times-Italic", label="&epsilon;", style="dashed"];
+}
