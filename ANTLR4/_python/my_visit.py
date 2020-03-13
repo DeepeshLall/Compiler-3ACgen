@@ -30,6 +30,7 @@ class my_visit(Java8Visitor):
         self.MethodParameter = [] # Method Parameters
         self.MethodType = None # Method Type
         self.fieldModifier = [] # Modifier List for Field declaration. 
+        self.MethodBlock=1 # If 1 then that block is not directly inside a method and to be used to increase Scope.
 
     def visitNormalclassDeclaration(self, ctx:Java8Parser.NormalclassDeclarationContext):
         self.classModifier = None
@@ -64,8 +65,13 @@ class my_visit(Java8Visitor):
         self.MethodName = None
         self.MethodParameter = []
         self.MethodType = None
+        self.MethodBlock=0
         self.visitChildren(ctx)
+        self.MethodBlock=1
         ST.Add('methods',self.MethodName,self.MethodParameter,self.MethodType,self.MethodModifier,1)
+        # print("Decreasing scope from :"+str(ST.scope))
+        ST.dec_scope()
+        # print("Decreased scope to :"+str(ST.scope))
         return 1
 
     def visitMethodModifier(self, ctx:Java8Parser.MethodModifierContext):
@@ -79,6 +85,9 @@ class my_visit(Java8Visitor):
 
     def visitMethodDeclarator(self, ctx:Java8Parser.MethodDeclaratorContext):
         self.MethodName = str(ctx.getChild(0).getText())
+        # print("Increasing scope from :"+str(ST.scope))
+        ST.inc_scope(self.MethodName)
+        # print("Increasing scope to :"+str(ST.scope))
         return self.visitChildren(ctx)
     
     def visitFormalParameterList(self, ctx:Java8Parser.FormalParameterListContext):
@@ -90,7 +99,22 @@ class my_visit(Java8Visitor):
         return self.visitChildren(ctx)
 
     def visitBlock(self, ctx:Java8Parser.BlockContext):
-        if(self.blockFlag==1):
+        if(self.blockFlag==0 or self.MethodBlock==0):
+            flagA=0
+            flagB=0
+            if (self.MethodBlock == 0):
+                flagA=1
+                self.MethodBlock = 1
+            if (self.blockFlag == 0):
+                flagB=1
+                self.blockFlag = 1
+            self.visitChildren(ctx)
+            if (flagA == 1):
+                self.MethodBlock=0
+            if (flagB == 1):
+                self.blockFlag=0
+            return 1
+        else:
             self.level+=1
             # print("Increasing scope from :"+str(ST.scope))
             ST.inc_scope()
@@ -101,8 +125,7 @@ class my_visit(Java8Visitor):
             ST.dec_scope()
             # print("Decreased scope to :"+str(ST.scope))
             return 1
-        else:
-            return self.visitChildren(ctx)
+            
 
     def visitWhileStatement(self, ctx:Java8Parser.WhileStatementContext):
         self.level+=1
