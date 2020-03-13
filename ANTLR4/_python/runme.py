@@ -6,6 +6,10 @@ from Java8Lexer import Java8Lexer
 from Java8Parser import Java8Parser
 from Java8Visitor import Java8Visitor
 from my_visit import  my_visit
+import SymbolTable
+
+global ST
+ST = SymbolTable.SymbolTable()
 
 def myChecker(ctx):
     print(antlr4.ParserRuleContext.getChildren(ctx))
@@ -33,7 +37,7 @@ def main():
     tree = parser.compilationUnit()
     visitor = my_visit()
     visitor.visit(tree)
-
+    visitor.PrintSymbolTable()
  
 if __name__ == '__main__':
     main()

@@ -37,7 +37,6 @@ class my_visit(Java8Visitor):
         self.classType=None
         self.visitChildren(ctx)
         ST.Add('classes',self.classid,None,self.classType,self.classModifier)
-        print(ST.SymbolTable)
         return 1
 
     def visitClassModifier(self, ctx:Java8Parser.ClassModifierContext):
@@ -257,5 +256,8 @@ class my_visit(Java8Visitor):
         self.typeList.append(ctx.getText())
         self.typeSizeList.append(ctx.getChild.__sizeof__())
         return self.visitChildren(ctx)
+
+    def PrintSymbolTable(self):
+        print(ST.SymbolTable)
 
 del Java8Parser
