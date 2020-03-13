@@ -259,5 +259,12 @@ class my_visit(Java8Visitor):
 
     def PrintSymbolTable(self):
         print(ST.SymbolTable)
+        print()
+        print("+----------------------------------------------------------------+")
+        print()
+        print("function , variable , modifiers , type , dimension")
+        for a in ST.SymbolTableFunction:
+            for b in ST.SymbolTableFunction[a]['variables']:
+                print(str(a) + " , " + str(b) +" , " + str(ST.SymbolTableFunction[a]['variables'][b]['modifiers']) + " , " + str(ST.SymbolTableFunction[a]['variables'][b]['type'])+" , "+str(ST.SymbolTableFunction[a]['variables'][b]['dimension']))
 
 del Java8Parser
