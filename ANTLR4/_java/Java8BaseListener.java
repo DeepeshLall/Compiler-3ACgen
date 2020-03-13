@@ -15,25 +15,13 @@ public class Java8BaseListener implements Java8Listener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterLiteral(Java8Parser.LiteralContext ctx) { }
+	@Override public void enterType_1(Java8Parser.Type_1Context ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitLiteral(Java8Parser.LiteralContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterType(Java8Parser.TypeContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitType(Java8Parser.TypeContext ctx) { }
+	@Override public void exitType_1(Java8Parser.Type_1Context ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -111,6 +99,78 @@ public class Java8BaseListener implements Java8Listener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterType_Type_1(Java8Parser.Type_Type_1Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitType_Type_1(Java8Parser.Type_Type_1Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterType_Type_2(Java8Parser.Type_Type_2Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitType_Type_2(Java8Parser.Type_Type_2Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterClassType_Type_1(Java8Parser.ClassType_Type_1Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitClassType_Type_1(Java8Parser.ClassType_Type_1Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterClassType_Type_2(Java8Parser.ClassType_Type_2Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitClassType_Type_2(Java8Parser.ClassType_Type_2Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterInterfaceType_Type_1(Java8Parser.InterfaceType_Type_1Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitInterfaceType_Type_1(Java8Parser.InterfaceType_Type_1Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterInterfaceType_Type_2(Java8Parser.InterfaceType_Type_2Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitInterfaceType_Type_2(Java8Parser.InterfaceType_Type_2Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterClassType(Java8Parser.ClassTypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -123,30 +183,6 @@ public class Java8BaseListener implements Java8Listener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterClassType_lf_classOrInterfaceType(Java8Parser.ClassType_lf_classOrInterfaceTypeContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitClassType_lf_classOrInterfaceType(Java8Parser.ClassType_lf_classOrInterfaceTypeContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterClassType_lfno_classOrInterfaceType(Java8Parser.ClassType_lfno_classOrInterfaceTypeContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitClassType_lfno_classOrInterfaceType(Java8Parser.ClassType_lfno_classOrInterfaceTypeContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterInterfaceType(Java8Parser.InterfaceTypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -154,30 +190,6 @@ public class Java8BaseListener implements Java8Listener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitInterfaceType(Java8Parser.InterfaceTypeContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterInterfaceType_lf_classOrInterfaceType(Java8Parser.InterfaceType_lf_classOrInterfaceTypeContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitInterfaceType_lf_classOrInterfaceType(Java8Parser.InterfaceType_lf_classOrInterfaceTypeContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterInterfaceType_lfno_classOrInterfaceType(Java8Parser.InterfaceType_lfno_classOrInterfaceTypeContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitInterfaceType_lfno_classOrInterfaceType(Java8Parser.InterfaceType_lfno_classOrInterfaceTypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -327,54 +339,6 @@ public class Java8BaseListener implements Java8Listener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterPackageName(Java8Parser.PackageNameContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitPackageName(Java8Parser.PackageNameContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterTypeName(Java8Parser.TypeNameContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitTypeName(Java8Parser.TypeNameContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterPackageOrTypeName(Java8Parser.PackageOrTypeNameContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitPackageOrTypeName(Java8Parser.PackageOrTypeNameContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterExpressionName(Java8Parser.ExpressionNameContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitExpressionName(Java8Parser.ExpressionNameContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterMethodName(Java8Parser.MethodNameContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -387,13 +351,13 @@ public class Java8BaseListener implements Java8Listener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterAmbiguousName(Java8Parser.AmbiguousNameContext ctx) { }
+	@Override public void enterName(Java8Parser.NameContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitAmbiguousName(Java8Parser.AmbiguousNameContext ctx) { }
+	@Override public void exitName(Java8Parser.NameContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -519,25 +483,13 @@ public class Java8BaseListener implements Java8Listener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterNormalClassDeclaration(Java8Parser.NormalClassDeclarationContext ctx) { }
+	@Override public void enterNormalclassDeclaration(Java8Parser.NormalclassDeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitNormalClassDeclaration(Java8Parser.NormalClassDeclarationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterClassModifier(Java8Parser.ClassModifierContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitClassModifier(Java8Parser.ClassModifierContext ctx) { }
+	@Override public void exitNormalclassDeclaration(Java8Parser.NormalclassDeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -579,13 +531,13 @@ public class Java8BaseListener implements Java8Listener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterSuperinterfaces(Java8Parser.SuperinterfacesContext ctx) { }
+	@Override public void enterSuperInterfaces(Java8Parser.SuperInterfacesContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitSuperinterfaces(Java8Parser.SuperinterfacesContext ctx) { }
+	@Override public void exitSuperInterfaces(Java8Parser.SuperInterfacesContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -627,13 +579,13 @@ public class Java8BaseListener implements Java8Listener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterClassMemberDeclaration(Java8Parser.ClassMemberDeclarationContext ctx) { }
+	@Override public void enterClassMemeberDeclaration(Java8Parser.ClassMemeberDeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitClassMemberDeclaration(Java8Parser.ClassMemberDeclarationContext ctx) { }
+	@Override public void exitClassMemeberDeclaration(Java8Parser.ClassMemeberDeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -646,18 +598,6 @@ public class Java8BaseListener implements Java8Listener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitFieldDeclaration(Java8Parser.FieldDeclarationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterFieldModifier(Java8Parser.FieldModifierContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitFieldModifier(Java8Parser.FieldModifierContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -747,49 +687,97 @@ public class Java8BaseListener implements Java8Listener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterUnannClassOrInterfaceType(Java8Parser.UnannClassOrInterfaceTypeContext ctx) { }
+	@Override public void enterUnannclassOrInterfaceType(Java8Parser.UnannclassOrInterfaceTypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitUnannClassOrInterfaceType(Java8Parser.UnannClassOrInterfaceTypeContext ctx) { }
+	@Override public void exitUnannclassOrInterfaceType(Java8Parser.UnannclassOrInterfaceTypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterUnannClassType(Java8Parser.UnannClassTypeContext ctx) { }
+	@Override public void enterUnann_Type_Type_1(Java8Parser.Unann_Type_Type_1Context ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitUnannClassType(Java8Parser.UnannClassTypeContext ctx) { }
+	@Override public void exitUnann_Type_Type_1(Java8Parser.Unann_Type_Type_1Context ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterUnannClassType_lf_unannClassOrInterfaceType(Java8Parser.UnannClassType_lf_unannClassOrInterfaceTypeContext ctx) { }
+	@Override public void enterUnann_Type_Type_2(Java8Parser.Unann_Type_Type_2Context ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitUnannClassType_lf_unannClassOrInterfaceType(Java8Parser.UnannClassType_lf_unannClassOrInterfaceTypeContext ctx) { }
+	@Override public void exitUnann_Type_Type_2(Java8Parser.Unann_Type_Type_2Context ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterUnannClassType_lfno_unannClassOrInterfaceType(Java8Parser.UnannClassType_lfno_unannClassOrInterfaceTypeContext ctx) { }
+	@Override public void enterUnann_classType_Type_1(Java8Parser.Unann_classType_Type_1Context ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitUnannClassType_lfno_unannClassOrInterfaceType(Java8Parser.UnannClassType_lfno_unannClassOrInterfaceTypeContext ctx) { }
+	@Override public void exitUnann_classType_Type_1(Java8Parser.Unann_classType_Type_1Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterUnann_classType_Type_2(Java8Parser.Unann_classType_Type_2Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitUnann_classType_Type_2(Java8Parser.Unann_classType_Type_2Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterUnann_InterfaceType_Type_1(Java8Parser.Unann_InterfaceType_Type_1Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitUnann_InterfaceType_Type_1(Java8Parser.Unann_InterfaceType_Type_1Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterUnann_InterfaceType_Type_2(Java8Parser.Unann_InterfaceType_Type_2Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitUnann_InterfaceType_Type_2(Java8Parser.Unann_InterfaceType_Type_2Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterUnannclassType(Java8Parser.UnannclassTypeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitUnannclassType(Java8Parser.UnannclassTypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -802,30 +790,6 @@ public class Java8BaseListener implements Java8Listener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitUnannInterfaceType(Java8Parser.UnannInterfaceTypeContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterUnannInterfaceType_lf_unannClassOrInterfaceType(Java8Parser.UnannInterfaceType_lf_unannClassOrInterfaceTypeContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitUnannInterfaceType_lf_unannClassOrInterfaceType(Java8Parser.UnannInterfaceType_lf_unannClassOrInterfaceTypeContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterUnannInterfaceType_lfno_unannClassOrInterfaceType(Java8Parser.UnannInterfaceType_lfno_unannClassOrInterfaceTypeContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitUnannInterfaceType_lfno_unannClassOrInterfaceType(Java8Parser.UnannInterfaceType_lfno_unannClassOrInterfaceTypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -862,18 +826,6 @@ public class Java8BaseListener implements Java8Listener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitMethodDeclaration(Java8Parser.MethodDeclarationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterMethodModifier(Java8Parser.MethodModifierContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitMethodModifier(Java8Parser.MethodModifierContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -987,13 +939,13 @@ public class Java8BaseListener implements Java8Listener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterThrows_(Java8Parser.Throws_Context ctx) { }
+	@Override public void enterThrowsVar(Java8Parser.ThrowsVarContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitThrows_(Java8Parser.Throws_Context ctx) { }
+	@Override public void exitThrowsVar(Java8Parser.ThrowsVarContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -1071,18 +1023,6 @@ public class Java8BaseListener implements Java8Listener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterConstructorModifier(Java8Parser.ConstructorModifierContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitConstructorModifier(Java8Parser.ConstructorModifierContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterConstructorDeclarator(Java8Parser.ConstructorDeclaratorContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -1107,6 +1047,18 @@ public class Java8BaseListener implements Java8Listener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterConstructorModifier(Java8Parser.ConstructorModifierContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitConstructorModifier(Java8Parser.ConstructorModifierContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterConstructorBody(Java8Parser.ConstructorBodyContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -1119,85 +1071,13 @@ public class Java8BaseListener implements Java8Listener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterExplicitConstructorInvocation(Java8Parser.ExplicitConstructorInvocationContext ctx) { }
+	@Override public void enterExplicitconstructorInvocation(Java8Parser.ExplicitconstructorInvocationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitExplicitConstructorInvocation(Java8Parser.ExplicitConstructorInvocationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterEnumDeclaration(Java8Parser.EnumDeclarationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitEnumDeclaration(Java8Parser.EnumDeclarationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterEnumBody(Java8Parser.EnumBodyContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitEnumBody(Java8Parser.EnumBodyContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterEnumConstantList(Java8Parser.EnumConstantListContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitEnumConstantList(Java8Parser.EnumConstantListContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterEnumConstant(Java8Parser.EnumConstantContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitEnumConstant(Java8Parser.EnumConstantContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterEnumConstantModifier(Java8Parser.EnumConstantModifierContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitEnumConstantModifier(Java8Parser.EnumConstantModifierContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterEnumBodyDeclarations(Java8Parser.EnumBodyDeclarationsContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitEnumBodyDeclarations(Java8Parser.EnumBodyDeclarationsContext ctx) { }
+	@Override public void exitExplicitconstructorInvocation(Java8Parser.ExplicitconstructorInvocationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -1227,13 +1107,13 @@ public class Java8BaseListener implements Java8Listener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterInterfaceModifier(Java8Parser.InterfaceModifierContext ctx) { }
+	@Override public void enterModifier(Java8Parser.ModifierContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitInterfaceModifier(Java8Parser.InterfaceModifierContext ctx) { }
+	@Override public void exitModifier(Java8Parser.ModifierContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -1318,66 +1198,6 @@ public class Java8BaseListener implements Java8Listener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitInterfaceMethodModifier(Java8Parser.InterfaceMethodModifierContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterAnnotationTypeDeclaration(Java8Parser.AnnotationTypeDeclarationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitAnnotationTypeDeclaration(Java8Parser.AnnotationTypeDeclarationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterAnnotationTypeBody(Java8Parser.AnnotationTypeBodyContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitAnnotationTypeBody(Java8Parser.AnnotationTypeBodyContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterAnnotationTypeMemberDeclaration(Java8Parser.AnnotationTypeMemberDeclarationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitAnnotationTypeMemberDeclaration(Java8Parser.AnnotationTypeMemberDeclarationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterAnnotationTypeElementDeclaration(Java8Parser.AnnotationTypeElementDeclarationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitAnnotationTypeElementDeclaration(Java8Parser.AnnotationTypeElementDeclarationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterAnnotationTypeElementModifier(Java8Parser.AnnotationTypeElementModifierContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitAnnotationTypeElementModifier(Java8Parser.AnnotationTypeElementModifierContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -1791,18 +1611,6 @@ public class Java8BaseListener implements Java8Listener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterEnumConstantName(Java8Parser.EnumConstantNameContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitEnumConstantName(Java8Parser.EnumConstantNameContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterWhileStatement(Java8Parser.WhileStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -2031,13 +1839,13 @@ public class Java8BaseListener implements Java8Listener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterCatchClause(Java8Parser.CatchClauseContext ctx) { }
+	@Override public void enterCatchclause(Java8Parser.CatchclauseContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitCatchClause(Java8Parser.CatchClauseContext ctx) { }
+	@Override public void exitCatchclause(Java8Parser.CatchclauseContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -2067,13 +1875,13 @@ public class Java8BaseListener implements Java8Listener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterFinally_(Java8Parser.Finally_Context ctx) { }
+	@Override public void enterFinallyVar(Java8Parser.FinallyVarContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitFinally_(Java8Parser.Finally_Context ctx) { }
+	@Override public void exitFinallyVar(Java8Parser.FinallyVarContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -2139,6 +1947,30 @@ public class Java8BaseListener implements Java8Listener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterPrimary_Type_1(Java8Parser.Primary_Type_1Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitPrimary_Type_1(Java8Parser.Primary_Type_1Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterPrimary_Type_2(Java8Parser.Primary_Type_2Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitPrimary_Type_2(Java8Parser.Primary_Type_2Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterPrimaryNoNewArray(Java8Parser.PrimaryNoNewArrayContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -2151,133 +1983,169 @@ public class Java8BaseListener implements Java8Listener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterPrimaryNoNewArray_lf_arrayAccess(Java8Parser.PrimaryNoNewArray_lf_arrayAccessContext ctx) { }
+	@Override public void enterPrimaryNoNewArray_Type_2_Aa(Java8Parser.PrimaryNoNewArray_Type_2_AaContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitPrimaryNoNewArray_lf_arrayAccess(Java8Parser.PrimaryNoNewArray_lf_arrayAccessContext ctx) { }
+	@Override public void exitPrimaryNoNewArray_Type_2_Aa(Java8Parser.PrimaryNoNewArray_Type_2_AaContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterPrimaryNoNewArray_lfno_arrayAccess(Java8Parser.PrimaryNoNewArray_lfno_arrayAccessContext ctx) { }
+	@Override public void enterPrimaryNoNewArray_Type_1_Aa(Java8Parser.PrimaryNoNewArray_Type_1_AaContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitPrimaryNoNewArray_lfno_arrayAccess(Java8Parser.PrimaryNoNewArray_lfno_arrayAccessContext ctx) { }
+	@Override public void exitPrimaryNoNewArray_Type_1_Aa(Java8Parser.PrimaryNoNewArray_Type_1_AaContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterPrimaryNoNewArray_lf_primary(Java8Parser.PrimaryNoNewArray_lf_primaryContext ctx) { }
+	@Override public void enterPrimaryNoNewArray_Type_2_Pr(Java8Parser.PrimaryNoNewArray_Type_2_PrContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitPrimaryNoNewArray_lf_primary(Java8Parser.PrimaryNoNewArray_lf_primaryContext ctx) { }
+	@Override public void exitPrimaryNoNewArray_Type_2_Pr(Java8Parser.PrimaryNoNewArray_Type_2_PrContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterPrimaryNoNewArray_lf_primary_lf_arrayAccess_lf_primary(Java8Parser.PrimaryNoNewArray_lf_primary_lf_arrayAccess_lf_primaryContext ctx) { }
+	@Override public void enterPrimaryNoNewArray_Type_2_2_2_Pr_Aa_Pr(Java8Parser.PrimaryNoNewArray_Type_2_2_2_Pr_Aa_PrContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitPrimaryNoNewArray_lf_primary_lf_arrayAccess_lf_primary(Java8Parser.PrimaryNoNewArray_lf_primary_lf_arrayAccess_lf_primaryContext ctx) { }
+	@Override public void exitPrimaryNoNewArray_Type_2_2_2_Pr_Aa_Pr(Java8Parser.PrimaryNoNewArray_Type_2_2_2_Pr_Aa_PrContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterPrimaryNoNewArray_lf_primary_lfno_arrayAccess_lf_primary(Java8Parser.PrimaryNoNewArray_lf_primary_lfno_arrayAccess_lf_primaryContext ctx) { }
+	@Override public void enterPrimaryNoNewArray_Type_2_1_2_Pr_Aa_Pr(Java8Parser.PrimaryNoNewArray_Type_2_1_2_Pr_Aa_PrContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitPrimaryNoNewArray_lf_primary_lfno_arrayAccess_lf_primary(Java8Parser.PrimaryNoNewArray_lf_primary_lfno_arrayAccess_lf_primaryContext ctx) { }
+	@Override public void exitPrimaryNoNewArray_Type_2_1_2_Pr_Aa_Pr(Java8Parser.PrimaryNoNewArray_Type_2_1_2_Pr_Aa_PrContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterPrimaryNoNewArray_lfno_primary(Java8Parser.PrimaryNoNewArray_lfno_primaryContext ctx) { }
+	@Override public void enterPrimaryNoNewArray_Type_1_Pr(Java8Parser.PrimaryNoNewArray_Type_1_PrContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitPrimaryNoNewArray_lfno_primary(Java8Parser.PrimaryNoNewArray_lfno_primaryContext ctx) { }
+	@Override public void exitPrimaryNoNewArray_Type_1_Pr(Java8Parser.PrimaryNoNewArray_Type_1_PrContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterPrimaryNoNewArray_lfno_primary_lf_arrayAccess_lfno_primary(Java8Parser.PrimaryNoNewArray_lfno_primary_lf_arrayAccess_lfno_primaryContext ctx) { }
+	@Override public void enterPrimaryNoNewArray_Type_1_2_1_Pr_Aa_Pr(Java8Parser.PrimaryNoNewArray_Type_1_2_1_Pr_Aa_PrContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitPrimaryNoNewArray_lfno_primary_lf_arrayAccess_lfno_primary(Java8Parser.PrimaryNoNewArray_lfno_primary_lf_arrayAccess_lfno_primaryContext ctx) { }
+	@Override public void exitPrimaryNoNewArray_Type_1_2_1_Pr_Aa_Pr(Java8Parser.PrimaryNoNewArray_Type_1_2_1_Pr_Aa_PrContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterPrimaryNoNewArray_lfno_primary_lfno_arrayAccess_lfno_primary(Java8Parser.PrimaryNoNewArray_lfno_primary_lfno_arrayAccess_lfno_primaryContext ctx) { }
+	@Override public void enterPrimaryNoNewArray_Type_1_1_1_Pr_Aa_Pr(Java8Parser.PrimaryNoNewArray_Type_1_1_1_Pr_Aa_PrContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitPrimaryNoNewArray_lfno_primary_lfno_arrayAccess_lfno_primary(Java8Parser.PrimaryNoNewArray_lfno_primary_lfno_arrayAccess_lfno_primaryContext ctx) { }
+	@Override public void exitPrimaryNoNewArray_Type_1_1_1_Pr_Aa_Pr(Java8Parser.PrimaryNoNewArray_Type_1_1_1_Pr_Aa_PrContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterClassInstanceCreationExpression(Java8Parser.ClassInstanceCreationExpressionContext ctx) { }
+	@Override public void enterClassLiteral(Java8Parser.ClassLiteralContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitClassInstanceCreationExpression(Java8Parser.ClassInstanceCreationExpressionContext ctx) { }
+	@Override public void exitClassLiteral(Java8Parser.ClassLiteralContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterClassInstanceCreationExpression_lf_primary(Java8Parser.ClassInstanceCreationExpression_lf_primaryContext ctx) { }
+	@Override public void enterClassInstancecreationExpression(Java8Parser.ClassInstancecreationExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitClassInstanceCreationExpression_lf_primary(Java8Parser.ClassInstanceCreationExpression_lf_primaryContext ctx) { }
+	@Override public void exitClassInstancecreationExpression(Java8Parser.ClassInstancecreationExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterClassInstanceCreationExpression_lfno_primary(Java8Parser.ClassInstanceCreationExpression_lfno_primaryContext ctx) { }
+	@Override public void enterClassInstancecreationExpression_Type_2_Pr(Java8Parser.ClassInstancecreationExpression_Type_2_PrContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitClassInstanceCreationExpression_lfno_primary(Java8Parser.ClassInstanceCreationExpression_lfno_primaryContext ctx) { }
+	@Override public void exitClassInstancecreationExpression_Type_2_Pr(Java8Parser.ClassInstancecreationExpression_Type_2_PrContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterClassInstancecreationExpression_Type_1_Pr(Java8Parser.ClassInstancecreationExpression_Type_1_PrContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitClassInstancecreationExpression_Type_1_Pr(Java8Parser.ClassInstancecreationExpression_Type_1_PrContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterUnqualifiedclassInstancecreationExpression(Java8Parser.UnqualifiedclassInstancecreationExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitUnqualifiedclassInstancecreationExpression(Java8Parser.UnqualifiedclassInstancecreationExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterClassOrInterfaceTypeToInstantiate(Java8Parser.ClassOrInterfaceTypeToInstantiateContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitClassOrInterfaceTypeToInstantiate(Java8Parser.ClassOrInterfaceTypeToInstantiateContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -2307,25 +2175,25 @@ public class Java8BaseListener implements Java8Listener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterFieldAccess_lf_primary(Java8Parser.FieldAccess_lf_primaryContext ctx) { }
+	@Override public void enterFieldAccess_Type_2_Pr(Java8Parser.FieldAccess_Type_2_PrContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitFieldAccess_lf_primary(Java8Parser.FieldAccess_lf_primaryContext ctx) { }
+	@Override public void exitFieldAccess_Type_2_Pr(Java8Parser.FieldAccess_Type_2_PrContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterFieldAccess_lfno_primary(Java8Parser.FieldAccess_lfno_primaryContext ctx) { }
+	@Override public void enterFieldAccess_Type_1_Pr(Java8Parser.FieldAccess_Type_1_PrContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitFieldAccess_lfno_primary(Java8Parser.FieldAccess_lfno_primaryContext ctx) { }
+	@Override public void exitFieldAccess_Type_1_Pr(Java8Parser.FieldAccess_Type_1_PrContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -2343,25 +2211,97 @@ public class Java8BaseListener implements Java8Listener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterArrayAccess_lf_primary(Java8Parser.ArrayAccess_lf_primaryContext ctx) { }
+	@Override public void enterArrayAccess_Type_1(Java8Parser.ArrayAccess_Type_1Context ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitArrayAccess_lf_primary(Java8Parser.ArrayAccess_lf_primaryContext ctx) { }
+	@Override public void exitArrayAccess_Type_1(Java8Parser.ArrayAccess_Type_1Context ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterArrayAccess_lfno_primary(Java8Parser.ArrayAccess_lfno_primaryContext ctx) { }
+	@Override public void enterArrayAccess_Type_2(Java8Parser.ArrayAccess_Type_2Context ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitArrayAccess_lfno_primary(Java8Parser.ArrayAccess_lfno_primaryContext ctx) { }
+	@Override public void exitArrayAccess_Type_2(Java8Parser.ArrayAccess_Type_2Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterArrayAccess_Type_2_Pr(Java8Parser.ArrayAccess_Type_2_PrContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitArrayAccess_Type_2_Pr(Java8Parser.ArrayAccess_Type_2_PrContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterArrayAccess_Type_2_Pr_Type_1(Java8Parser.ArrayAccess_Type_2_Pr_Type_1Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitArrayAccess_Type_2_Pr_Type_1(Java8Parser.ArrayAccess_Type_2_Pr_Type_1Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterArrayAccess_Type_2_Pr_Type_2(Java8Parser.ArrayAccess_Type_2_Pr_Type_2Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitArrayAccess_Type_2_Pr_Type_2(Java8Parser.ArrayAccess_Type_2_Pr_Type_2Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterArrayAccess_Type_1_Pr(Java8Parser.ArrayAccess_Type_1_PrContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitArrayAccess_Type_1_Pr(Java8Parser.ArrayAccess_Type_1_PrContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterArrayAccess_Type_1_Pr_Type_1(Java8Parser.ArrayAccess_Type_1_Pr_Type_1Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitArrayAccess_Type_1_Pr_Type_1(Java8Parser.ArrayAccess_Type_1_Pr_Type_1Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterArrayAccess_Type_1_Pr_Type_2(Java8Parser.ArrayAccess_Type_1_Pr_Type_2Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitArrayAccess_Type_1_Pr_Type_2(Java8Parser.ArrayAccess_Type_1_Pr_Type_2Context ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -2379,25 +2319,25 @@ public class Java8BaseListener implements Java8Listener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMethodInvocation_lf_primary(Java8Parser.MethodInvocation_lf_primaryContext ctx) { }
+	@Override public void enterMethodInvocation_Type_2_Pr(Java8Parser.MethodInvocation_Type_2_PrContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMethodInvocation_lf_primary(Java8Parser.MethodInvocation_lf_primaryContext ctx) { }
+	@Override public void exitMethodInvocation_Type_2_Pr(Java8Parser.MethodInvocation_Type_2_PrContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMethodInvocation_lfno_primary(Java8Parser.MethodInvocation_lfno_primaryContext ctx) { }
+	@Override public void enterMethodInvocation_Type_1_Pr(Java8Parser.MethodInvocation_Type_1_PrContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMethodInvocation_lfno_primary(Java8Parser.MethodInvocation_lfno_primaryContext ctx) { }
+	@Override public void exitMethodInvocation_Type_1_Pr(Java8Parser.MethodInvocation_Type_1_PrContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -2415,49 +2355,13 @@ public class Java8BaseListener implements Java8Listener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMethodReference(Java8Parser.MethodReferenceContext ctx) { }
+	@Override public void enterArraycreationExpression(Java8Parser.ArraycreationExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMethodReference(Java8Parser.MethodReferenceContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterMethodReference_lf_primary(Java8Parser.MethodReference_lf_primaryContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitMethodReference_lf_primary(Java8Parser.MethodReference_lf_primaryContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterMethodReference_lfno_primary(Java8Parser.MethodReference_lfno_primaryContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitMethodReference_lfno_primary(Java8Parser.MethodReference_lfno_primaryContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterArrayCreationExpression(Java8Parser.ArrayCreationExpressionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitArrayCreationExpression(Java8Parser.ArrayCreationExpressionContext ctx) { }
+	@Override public void exitArraycreationExpression(Java8Parser.ArraycreationExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -2482,18 +2386,6 @@ public class Java8BaseListener implements Java8Listener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitDimExpr(Java8Parser.DimExprContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterConstantExpression(Java8Parser.ConstantExpressionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitConstantExpression(Java8Parser.ConstantExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -2799,6 +2691,30 @@ public class Java8BaseListener implements Java8Listener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterPostfix_Type_1(Java8Parser.Postfix_Type_1Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitPostfix_Type_1(Java8Parser.Postfix_Type_1Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterPostfix_Type_2(Java8Parser.Postfix_Type_2Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitPostfix_Type_2(Java8Parser.Postfix_Type_2Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterPostIncrementExpression(Java8Parser.PostIncrementExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -2811,13 +2727,25 @@ public class Java8BaseListener implements Java8Listener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterPostIncrementExpression_lf_postfixExpression(Java8Parser.PostIncrementExpression_lf_postfixExpressionContext ctx) { }
+	@Override public void enterPure_postfix_decrement(Java8Parser.Pure_postfix_decrementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitPostIncrementExpression_lf_postfixExpression(Java8Parser.PostIncrementExpression_lf_postfixExpressionContext ctx) { }
+	@Override public void exitPure_postfix_decrement(Java8Parser.Pure_postfix_decrementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterPure_postfix_increment(Java8Parser.Pure_postfix_incrementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitPure_postfix_increment(Java8Parser.Pure_postfix_incrementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -2835,18 +2763,6 @@ public class Java8BaseListener implements Java8Listener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterPostDecrementExpression_lf_postfixExpression(Java8Parser.PostDecrementExpression_lf_postfixExpressionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitPostDecrementExpression_lf_postfixExpression(Java8Parser.PostDecrementExpression_lf_postfixExpressionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterCastExpression(Java8Parser.CastExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -2854,6 +2770,18 @@ public class Java8BaseListener implements Java8Listener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitCastExpression(Java8Parser.CastExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterConstantExpression(Java8Parser.ConstantExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitConstantExpression(Java8Parser.ConstantExpressionContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
