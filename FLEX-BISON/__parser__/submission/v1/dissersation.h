@@ -1,9 +1,0 @@
-#define TitleToken 1
-#define ChapterToken 2
-#define SectionToken 3
-#define DeclarativeSentenceToken 4
-#define InterogativeSentenceToken 5
-#define ExclamatorySentenceToken 6
-#define IdentifierWithoutDigitToken 7
-#define IdentifierWithDigitToken 8
-#define NonIdentifierToken 9
