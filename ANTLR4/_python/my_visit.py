@@ -31,6 +31,12 @@ class my_visit(Java8Visitor):
         self.MethodType = None # Method Type
         self.fieldModifier = [] # Modifier List for Field declaration. 
         self.MethodBlock=1 # If 1 then that block is not directly inside a method and to be used to increase Scope.
+        self.inFormalList=0 # if 1 then we are inside Formal list.
+        self.formalTypeList=[] # Each element is id in formal Declaration 
+        self.formalTypeSizeList=[] # type of respective indexed id in formalTypeList[]
+        self.formalType=None # type of formal Declaration
+        self.formalModifier=[] # Modifier for formal decalaration
+        self.dimsForArray=0 # if 1 then dims visitor are to be used for array in variableDeclaratorid visitor
 
     def visitNormalclassDeclaration(self, ctx:Java8Parser.NormalclassDeclarationContext):
         self.classModifier = None
@@ -92,7 +98,16 @@ class my_visit(Java8Visitor):
     
     def visitFormalParameterList(self, ctx:Java8Parser.FormalParameterListContext):
         self.MethodParameter=[]
-        return self.visitChildren(ctx)
+        self.inFormalList=1
+        self.formalTypeList=[]
+        self.formalTypeSizeList=[]
+        self.formalType=None
+        self.formalModifier=[]
+        self.visitChildren(ctx)
+        for i in range(len(self.formalTypeList)):
+            ST.Add('variables',str(self.formalTypeList[i]),str(self.formalTypeSizeList[i]),self.formalType,self.formalModifier)
+        self.inFormalList=0
+        return 1
 
     def visitFormalParameter(self, ctx:Java8Parser.FormalParameterContext):
         self.MethodParameter.append(ctx.getText())
@@ -269,15 +284,22 @@ class my_visit(Java8Visitor):
 
     def visitVariableModifier(self, ctx:Java8Parser.VariableModifierContext):
         self.variableModifier.append(ctx.getText())
+        if self.inFormalList == 1:
+            self.formalModifier.append(ctx.getText())
         return self.visitChildren(ctx)
 
     def visitUnannType(self, ctx:Java8Parser.UnannTypeContext):
         self.type=ctx.getText()
+        if self.inFormalList == 1:
+            self.formalType=self.type
         return self.visitChildren(ctx)
 
     def visitVariableDeclaratorId(self, ctx:Java8Parser.VariableDeclaratorIdContext):
         self.typeList.append(ctx.getText())
         self.typeSizeList.append(ctx.getChild.__sizeof__())
+        if self.inFormalList == 1:
+            self.formalTypeList.append(ctx.getText())
+            self.formalTypeSizeList.append(ctx.getChild.__sizeof__())
         return self.visitChildren(ctx)
 
     def PrintSymbolTable(self):
