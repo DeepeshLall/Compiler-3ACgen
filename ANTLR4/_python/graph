@@ -1,0 +1,485 @@
+// Symbol Table
+digraph {
+	0 [label=0]
+	1 [label="{
+    \"scope_name\": \"start\",
+    \"variables\": {},
+    \"methods\": {},
+    \"classes\": {
+        \"RecursionExampleDirectory\": {
+            \"type\": null,
+            \"dimension\": null,
+            \"modifiers\": [
+                \"public\"
+            ]
+        },
+        \"Directory\": {
+            \"type\": null,
+            \"dimension\": null,
+            \"modifiers\": []
+        },
+        \"File\": {
+            \"type\": null,
+            \"dimension\": null,
+            \"modifiers\": []
+        }
+    },
+    \"type\": \"start\",
+    \"parent\": 0
+}"]
+	0 -> 1
+	2 [label="{
+    \"scope_name\": \"RecursionExampleDirectory\",
+    \"variables\": {},
+    \"methods\": {
+        \"getSize\": {
+            \"type\": \"int\",
+            \"dimension\": [
+                \"Directorydir\"
+            ],
+            \"modifiers\": [
+                \"public\"
+            ]
+        },
+        \"main\": {
+            \"type\": \"void\",
+            \"dimension\": [
+                \"String[]args\"
+            ],
+            \"modifiers\": [
+                \"public\",
+                \"static\"
+            ]
+        },
+        \"fact\": {
+            \"type\": \"int\",
+            \"dimension\": [
+                \"intn\"
+            ],
+            \"modifiers\": [
+                \"public\",
+                \"static\"
+            ]
+        },
+        \"pow\": {
+            \"type\": \"int\",
+            \"dimension\": [
+                \"intbase\",
+                \"intexp\"
+            ],
+            \"modifiers\": [
+                \"public\",
+                \"static\"
+            ]
+        },
+        \"fib\": {
+            \"type\": \"int\",
+            \"dimension\": [
+                \"intn\"
+            ],
+            \"modifiers\": [
+                \"public\",
+                \"static\"
+            ]
+        },
+        \"minWasted\": {
+            \"type\": \"int\",
+            \"dimension\": [
+                \"int[]items\",
+                \"intitemNum\",
+                \"intcapLeft\"
+            ],
+            \"modifiers\": [
+                \"public\",
+                \"static\"
+            ]
+        }
+    },
+    \"classes\": {},
+    \"type\": \"start\",
+    \"parent\": 1
+}"]
+	1 -> 2
+	3 [label="{
+    \"scope_name\": \"getSize\",
+    \"variables\": {
+        \"dir\": {
+            \"type\": \"Directory\",
+            \"dimension\": \"40\",
+            \"modifiers\": []
+        },
+        \"total\": {
+            \"type\": \"int\",
+            \"dimension\": \"40\",
+            \"modifiers\": []
+        },
+        \"files\": {
+            \"type\": \"File[]\",
+            \"dimension\": \"40\",
+            \"modifiers\": []
+        },
+        \"subs\": {
+            \"type\": \"Directory[]\",
+            \"dimension\": \"40\",
+            \"modifiers\": []
+        }
+    },
+    \"methods\": {},
+    \"classes\": {},
+    \"type\": \"start\",
+    \"parent\": 2
+}"]
+	2 -> 3
+	4 [label="{
+    \"scope_name\": \"getSize\",
+    \"variables\": {
+        \"i\": {
+            \"type\": \"int\",
+            \"dimension\": \"40\",
+            \"modifiers\": []
+        }
+    },
+    \"methods\": {},
+    \"classes\": {},
+    \"type\": \"start\",
+    \"parent\": 3
+}"]
+	3 -> 4
+	5 [label="{
+    \"scope_name\": \"getSize\",
+    \"variables\": {
+        \"i\": {
+            \"type\": \"int\",
+            \"dimension\": \"40\",
+            \"modifiers\": []
+        }
+    },
+    \"methods\": {},
+    \"classes\": {},
+    \"type\": \"start\",
+    \"parent\": 3
+}"]
+	3 -> 5
+	6 [label="{
+    \"scope_name\": \"main\",
+    \"variables\": {
+        \"args\": {
+            \"type\": \"String[]\",
+            \"dimension\": \"40\",
+            \"modifiers\": []
+        },
+        \"r\": {
+            \"type\": \"RecursionExampleDirectory\",
+            \"dimension\": \"40\",
+            \"modifiers\": []
+        },
+        \"d\": {
+            \"type\": \"Directory\",
+            \"dimension\": \"40\",
+            \"modifiers\": []
+        }
+    },
+    \"methods\": {},
+    \"classes\": {},
+    \"type\": \"start\",
+    \"parent\": 2
+}"]
+	2 -> 6
+	7 [label="{
+    \"scope_name\": \"fact\",
+    \"variables\": {
+        \"n\": {
+            \"type\": \"int\",
+            \"dimension\": \"40\",
+            \"modifiers\": []
+        },
+        \"result\": {
+            \"type\": \"int\",
+            \"dimension\": \"40\",
+            \"modifiers\": []
+        }
+    },
+    \"methods\": {},
+    \"classes\": {},
+    \"type\": \"start\",
+    \"parent\": 2
+}"]
+	2 -> 7
+	8 [label="{
+    \"scope_name\": \"fact\",
+    \"variables\": {},
+    \"methods\": {},
+    \"classes\": {},
+    \"type\": \"start\",
+    \"parent\": 7
+}"]
+	7 -> 8
+	9 [label="{
+    \"scope_name\": \"pow\",
+    \"variables\": {
+        \"base\": {
+            \"type\": \"int\",
+            \"dimension\": \"40\",
+            \"modifiers\": []
+        },
+        \"exp\": {
+            \"type\": \"int\",
+            \"dimension\": \"40\",
+            \"modifiers\": []
+        },
+        \"result\": {
+            \"type\": \"int\",
+            \"dimension\": \"40\",
+            \"modifiers\": []
+        }
+    },
+    \"methods\": {},
+    \"classes\": {},
+    \"type\": \"start\",
+    \"parent\": 2
+}"]
+	2 -> 9
+	10 [label="{
+    \"scope_name\": \"pow\",
+    \"variables\": {},
+    \"methods\": {},
+    \"classes\": {},
+    \"type\": \"start\",
+    \"parent\": 9
+}"]
+	9 -> 10
+	11 [label="{
+    \"scope_name\": \"fib\",
+    \"variables\": {
+        \"n\": {
+            \"type\": \"int\",
+            \"dimension\": \"40\",
+            \"modifiers\": []
+        },
+        \"result\": {
+            \"type\": \"int\",
+            \"dimension\": \"40\",
+            \"modifiers\": []
+        }
+    },
+    \"methods\": {},
+    \"classes\": {},
+    \"type\": \"start\",
+    \"parent\": 2
+}"]
+	2 -> 11
+	12 [label="{
+    \"scope_name\": \"fib\",
+    \"variables\": {},
+    \"methods\": {},
+    \"classes\": {},
+    \"type\": \"start\",
+    \"parent\": 11
+}"]
+	11 -> 12
+	13 [label="{
+    \"scope_name\": \"minWasted\",
+    \"variables\": {
+        \"items\": {
+            \"type\": \"int\",
+            \"dimension\": \"40\",
+            \"modifiers\": []
+        },
+        \"itemNum\": {
+            \"type\": \"int\",
+            \"dimension\": \"40\",
+            \"modifiers\": []
+        },
+        \"capLeft\": {
+            \"type\": \"int\",
+            \"dimension\": \"40\",
+            \"modifiers\": []
+        },
+        \"result\": {
+            \"type\": \"int\",
+            \"dimension\": \"40\",
+            \"modifiers\": []
+        }
+    },
+    \"methods\": {},
+    \"classes\": {},
+    \"type\": \"start\",
+    \"parent\": 2
+}"]
+	2 -> 13
+	14 [label="{
+    \"scope_name\": \"minWasted\",
+    \"variables\": {},
+    \"methods\": {},
+    \"classes\": {},
+    \"type\": \"start\",
+    \"parent\": 13
+}"]
+	13 -> 14
+	15 [label="{
+    \"scope_name\": \"minWasted\",
+    \"variables\": {
+        \"minWithout\": {
+            \"type\": \"int\",
+            \"dimension\": \"40\",
+            \"modifiers\": []
+        }
+    },
+    \"methods\": {},
+    \"classes\": {},
+    \"type\": \"start\",
+    \"parent\": 14
+}"]
+	14 -> 15
+	16 [label="{
+    \"scope_name\": \"minWasted\",
+    \"variables\": {
+        \"minWith\": {
+            \"type\": \"int\",
+            \"dimension\": \"40\",
+            \"modifiers\": []
+        }
+    },
+    \"methods\": {},
+    \"classes\": {},
+    \"type\": \"start\",
+    \"parent\": 15
+}"]
+	15 -> 16
+	17 [label="{
+    \"scope_name\": \"Directory\",
+    \"variables\": {
+        \"mySubs\": {
+            \"type\": \"Directory[]\",
+            \"dimension\": \"40\",
+            \"modifiers\": [
+                \"private\"
+            ]
+        },
+        \"myFiles\": {
+            \"type\": \"File[]\",
+            \"dimension\": \"40\",
+            \"modifiers\": [
+                \"private\"
+            ]
+        },
+        \"numSubs\": {
+            \"type\": \"int\",
+            \"dimension\": \"40\",
+            \"modifiers\": []
+        },
+        \"numFiles\": {
+            \"type\": \"int\",
+            \"dimension\": \"40\",
+            \"modifiers\": []
+        }
+    },
+    \"methods\": {
+        \"getSubs\": {
+            \"type\": \"Directory[]\",
+            \"dimension\": [],
+            \"modifiers\": [
+                \"public\"
+            ]
+        },
+        \"getFiles\": {
+            \"type\": \"File[]\",
+            \"dimension\": [],
+            \"modifiers\": [
+                \"public\"
+            ]
+        }
+    },
+    \"classes\": {},
+    \"type\": \"start\",
+    \"parent\": 1
+}"]
+	1 -> 17
+	18 [label="{
+    \"scope_name\": \"Directory\",
+    \"variables\": {
+        \"i\": {
+            \"type\": \"int\",
+            \"dimension\": \"40\",
+            \"modifiers\": []
+        }
+    },
+    \"methods\": {},
+    \"classes\": {},
+    \"type\": \"start\",
+    \"parent\": 17
+}"]
+	17 -> 18
+	19 [label="{
+    \"scope_name\": \"Directory\",
+    \"variables\": {
+        \"i\": {
+            \"type\": \"int\",
+            \"dimension\": \"40\",
+            \"modifiers\": []
+        }
+    },
+    \"methods\": {},
+    \"classes\": {},
+    \"type\": \"start\",
+    \"parent\": 17
+}"]
+	17 -> 19
+	20 [label="{
+    \"scope_name\": \"getSubs\",
+    \"variables\": {},
+    \"methods\": {},
+    \"classes\": {},
+    \"type\": \"start\",
+    \"parent\": 17
+}"]
+	17 -> 20
+	21 [label="{
+    \"scope_name\": \"getFiles\",
+    \"variables\": {},
+    \"methods\": {},
+    \"classes\": {},
+    \"type\": \"start\",
+    \"parent\": 17
+}"]
+	17 -> 21
+	22 [label="{
+    \"scope_name\": \"File\",
+    \"variables\": {
+        \"iMySize\": {
+            \"type\": \"int\",
+            \"dimension\": \"40\",
+            \"modifiers\": [
+                \"private\"
+            ]
+        },
+        \"size\": {
+            \"type\": \"int\",
+            \"dimension\": \"40\",
+            \"modifiers\": []
+        }
+    },
+    \"methods\": {
+        \"getSize\": {
+            \"type\": \"int\",
+            \"dimension\": [],
+            \"modifiers\": [
+                \"public\"
+            ]
+        }
+    },
+    \"classes\": {},
+    \"type\": \"start\",
+    \"parent\": 1
+}"]
+	1 -> 22
+	23 [label="{
+    \"scope_name\": \"getSize\",
+    \"variables\": {},
+    \"methods\": {},
+    \"classes\": {},
+    \"type\": \"start\",
+    \"parent\": 22
+}"]
+	22 -> 23
+}

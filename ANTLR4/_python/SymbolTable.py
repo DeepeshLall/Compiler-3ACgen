@@ -37,7 +37,7 @@ class SymbolTable:
                 'modifiers' : modifiers
             }
         else:
-            sys.exit('Scope Error : ' + name + ' already present in current scope')
+            sys.exit('Scope Error : ' + str(name) + ' already present in current scope')
         if key == 'methods':
             self.SymbolTableFunction[self.func]['type'] = type
             self.SymbolTableFunction[self.func]['input'] = dimension
@@ -82,7 +82,7 @@ class SymbolTable:
             self.func = name
             self.offset = 0
         self.SymbolTable.append({
-                'scope_name' : 'start',
+                'scope_name' : self.func,
                 'variables' : {},
                 'methods' : {},
                 'classes': {},

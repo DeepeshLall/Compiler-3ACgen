@@ -1,17 +1,28 @@
 # Generated from Java8.g4 by ANTLR 4.5.1
-from antlr4 import *
+import antlr4
 if __name__ is not None and "." in __name__:
     from .Java8Parser import Java8Parser
     from .Java8Visitor import Java8Visitor
 else:
     from Java8Parser import Java8Parser
     from Java8Visitor import Java8Visitor
+from graphviz import Digraph
 import SymbolTable
+import json
 
-
+global parser
 global ST
+# print(dir(Java8Parser))
+parser = Java8Parser
 ST = SymbolTable.SymbolTable()
 # This class defines a Overriden visitor for a parse tree produced by Java8Parser.
+
+def _isIdentifier_(ctx):
+    if isinstance(ctx, antlr4.tree.Tree.TerminalNode):
+        # Return true is isIdentifier
+        return True
+    else:
+        return False
 
 class my_visit(Java8Visitor):
     def __init__(self):
@@ -22,9 +33,6 @@ class my_visit(Java8Visitor):
         self.variableModifier = [] # Modifier for local decalaration
         self.level=0  # level of Scope
         self.blockFlag=1 # Used for identifying normal block from if,for,while and switch block.
-        self.classid=None # used of id of class in Symbol Table
-        self.classModifier=None # Modifier of class
-        self.classType=None # Type of class
         self.MethodModifier = [] # Modifiers in Method Declaration.
         self.MethodName = None # Method id in Symbol Table
         self.MethodParameter = [] # Method Parameters
@@ -39,31 +47,24 @@ class my_visit(Java8Visitor):
         self.dimsForArray=0 # if 1 then dims visitor are to be used for array in variableDeclaratorid visitor
 
     def visitNormalclassDeclaration(self, ctx:Java8Parser.NormalclassDeclarationContext):
-        self.classModifier = None
-        self.classid=str(ctx.getChild(2).getText())
-        self.classType=None
-        self.visitChildren(ctx)
-        ST.Add('classes',self.classid,None,self.classType,self.classModifier)
-        return 1
-
-    def visitClassModifier(self, ctx:Java8Parser.ClassModifierContext):
-        self.classModifier = str(ctx.getText())
-        self.visitChildren(ctx)
-        return 1
-
-    def visitTypeParameter(self, ctx:Java8Parser.TypeParameterContext):
-        return self.visitChildren(ctx)
-
-    def visitClassBody(self, ctx:Java8Parser.ClassBodyContext):
-        self.level+=1
-        # print("Increasing scope from :"+str(ST.scope))
-        ST.inc_scope()
-        # print("Increased scope to :"+str(ST.scope))
-        self.visitChildren(ctx)
-        self.level-=1
-        # print("Decreasing scope from :"+str(ST.scope))
-        ST.dec_scope()
-        # print("Decreased scope to :"+str(ST.scope))
+        classid=None
+        classModifier = []
+        classType=None
+        children = ctx.getChildren()
+        for child in children:
+            if(_isIdentifier_(child)):
+                classid = child.getText()
+                if classid == 'class':
+                    continue
+                ST.Add('classes',classid,None,classType,classModifier)
+            elif(parser.ruleNames[child.getRuleIndex()] == 'classModifier' ):
+                classModifier.append(child.getText())  
+            elif(parser.ruleNames[child.getRuleIndex()] == 'classBody' ):
+                self.level+=1
+                ST.inc_scope(classid)
+                self.visitClassBody(child)
+                ST.dec_scope()
+                self.level-=1
         return 1
 
     def visitMethodDeclaration(self, ctx:Java8Parser.MethodDeclarationContext):
@@ -71,13 +72,7 @@ class my_visit(Java8Visitor):
         self.MethodName = None
         self.MethodParameter = []
         self.MethodType = None
-        self.MethodBlock=0
         self.visitChildren(ctx)
-        self.MethodBlock=1
-        ST.Add('methods',self.MethodName,self.MethodParameter,self.MethodType,self.MethodModifier,1)
-        # print("Decreasing scope from :"+str(ST.scope))
-        ST.dec_scope()
-        # print("Decreased scope to :"+str(ST.scope))
         return 1
 
     def visitMethodModifier(self, ctx:Java8Parser.MethodModifierContext):
@@ -87,15 +82,19 @@ class my_visit(Java8Visitor):
 
     def visitResult(self, ctx:Java8Parser.ResultContext):
         self.MethodType = ctx.getText()
-        return self.visitChildren(ctx)
+        self.visitChildren(ctx)
+        return 1
 
     def visitMethodDeclarator(self, ctx:Java8Parser.MethodDeclaratorContext):
         self.MethodName = str(ctx.getChild(0).getText())
-        # print("Increasing scope from :"+str(ST.scope))
         ST.inc_scope(self.MethodName)
-        # print("Increasing scope to :"+str(ST.scope))
         return self.visitChildren(ctx)
     
+    def visitMethodHeader(self, ctx:Java8Parser.MethodHeaderContext):
+        self.visitChildren(ctx)
+        ST.Add('methods',self.MethodName,self.MethodParameter,self.MethodType,self.MethodModifier,1)
+        return 1
+
     def visitFormalParameterList(self, ctx:Java8Parser.FormalParameterListContext):
         self.MethodParameter=[]
         self.inFormalList=1
@@ -107,6 +106,15 @@ class my_visit(Java8Visitor):
         for i in range(len(self.formalTypeList)):
             ST.Add('variables',str(self.formalTypeList[i]),str(self.formalTypeSizeList[i]),self.formalType,self.formalModifier)
         self.inFormalList=0
+        return 1
+
+    def visitMethodBody(self, ctx:Java8Parser.MethodBodyContext):
+        self.MethodBlock=0
+        self.visitChildren(ctx)
+        self.MethodBlock=1
+        # print("Decreasing scope from :"+str(ST.scope))
+        ST.dec_scope()
+        # print("Decreased scope to :"+str(ST.scope))
         return 1
 
     def visitFormalParameter(self, ctx:Java8Parser.FormalParameterContext):
@@ -311,5 +319,18 @@ class my_visit(Java8Visitor):
         for a in ST.SymbolTableFunction:
             for b in ST.SymbolTableFunction[a]['variables']:
                 print(str(a) + " , " + str(b) +" , " + str(ST.SymbolTableFunction[a]['variables'][b]['modifiers']) + " , " + str(ST.SymbolTableFunction[a]['variables'][b]['type'])+" , "+str(ST.SymbolTableFunction[a]['variables'][b]['dimension']))
+
+    def printSymbolTableGraph(self):
+        dot = Digraph(comment="Symbol Table")
+        for i in range(0,len(ST.SymbolTable)):
+            dot.node(str(i),json.dumps(ST.SymbolTable[i],indent=4))
+            if i == 0:
+                continue
+            dot.edge(str(ST.SymbolTable[i]["parent"]), str(i))
+        dot.render('graph',view=True)
+        print()
+        print("+----------------------------------------------------------------+")
+        print()
+        print(dot)
 
 del Java8Parser

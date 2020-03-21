@@ -21,14 +21,14 @@ def myChecker(ctx):
         myChecker(child)
 
 def main():
-    os.walk(".")
-    a = open("Java8.tokens","r").read()
-    b = a.split('\'')[0]
-    b.split('\n')[:-1]
-    rev_dict=dict()
-    for i,elem in enumerate( [elem.split('=')[0] for elem in b.split('\n')[:-1]]):
-        rev_dict[i+1] = elem
-    json.dump(rev_dict,open("rev_dict.json","w"),indent=True)
+    # os.walk(".")
+    # a = open("Java8.tokens","r").read()
+    # b = a.split('\'')[0]
+    # b.split('\n')[:-1]
+    # rev_dict=dict()
+    # for i,elem in enumerate( [elem.split('=')[0] for elem in b.split('\n')[:-1]]):
+    #     rev_dict[i+1] = elem
+    # json.dump(rev_dict,open("rev_dict.json","w"),indent=True)
     lexer = Java8Lexer(antlr4.StdinStream())
     stream = antlr4.CommonTokenStream(lexer)
     parser = Java8Parser(stream)
@@ -38,6 +38,7 @@ def main():
     visitor = my_visit()
     visitor.visit(tree)
     visitor.PrintSymbolTable()
+    visitor.printSymbolTableGraph()
  
 if __name__ == '__main__':
     main()
