@@ -1,20 +1,18 @@
 # Generated from Java8.g4 by ANTLR 4.5.1
 import antlr4
 if __name__ is not None and "." in __name__:
+    from .Java8Lexer import Java8Lexer
     from .Java8Parser import Java8Parser
     from .Java8Visitor import Java8Visitor
 else:
+    from Java8Lexer import Java8Lexer
     from Java8Parser import Java8Parser
     from Java8Visitor import Java8Visitor
 from graphviz import Digraph
+from my_visit1 import ST,parser
 import SymbolTable
 import json
 
-global parser
-global ST
-# print(dir(Java8Parser))
-parser = Java8Parser
-ST = SymbolTable.SymbolTable()
 # This class defines a Overriden visitor for a parse tree produced by Java8Parser.
 
 def _isIdentifier_(ctx):
@@ -24,7 +22,7 @@ def _isIdentifier_(ctx):
     else:
         return False
 
-class my_visit(Java8Visitor):
+class my_visit2(Java8Visitor):
     def __init__(self):
         super().__init__()
         self.typeList=[] # Each element is id in local Declaration 
@@ -33,10 +31,6 @@ class my_visit(Java8Visitor):
         self.variableModifier = [] # Modifier for local decalaration
         self.level=0  # level of Scope
         self.blockFlag=1 # Used for identifying normal block from if,for,while and switch block.
-        self.MethodModifier = [] # Modifiers in Method Declaration.
-        self.MethodName = None # Method id in Symbol Table
-        self.MethodParameter = [] # Method Parameters
-        self.MethodType = None # Method Type
         self.fieldModifier = [] # Modifier List for Field declaration. 
         self.MethodBlock=1 # If 1 then that block is not directly inside a method and to be used to increase Scope.
         self.inFormalList=0 # if 1 then we are inside Formal list.
@@ -45,23 +39,27 @@ class my_visit(Java8Visitor):
         self.formalType=None # type of formal Declaration
         self.formalModifier=[] # Modifier for formal decalaration
         self.dimsForArray=0 # if 1 then dims visitor are to be used for array in variableDeclaratorid visitor
+        self.MethodName = None # for increasing scope by same name
+
+    def reinitializeSymbolTableScope(self):
+        ST.func = 'start'
+        ST.new_s=1
+        ST.scope=1
+        ST.offset = 0
 
     def visitNormalclassDeclaration(self, ctx:Java8Parser.NormalclassDeclarationContext):
         classid=None
-        classModifier = []
-        classType=None
         children = ctx.getChildren()
         for child in children:
             if(_isIdentifier_(child)):
                 classid = child.getText()
                 if classid == 'class':
                     continue
-                ST.Add('classes',classid,None,classType,classModifier)
             elif(parser.ruleNames[child.getRuleIndex()] == 'classModifier' ):
-                classModifier.append(child.getText())  
+                pass
             elif(parser.ruleNames[child.getRuleIndex()] == 'classBody' ):
                 self.level+=1
-                ST.inc_scope(classid)
+                ST.inc_scope_minor(classid)
                 self.visitClassBody(child)
                 ST.dec_scope()
                 ST.func='start'
@@ -69,35 +67,28 @@ class my_visit(Java8Visitor):
         return 1
 
     def visitMethodDeclaration(self, ctx:Java8Parser.MethodDeclarationContext):
-        self.MethodModifier = []
         self.MethodName = None
-        self.MethodParameter = []
-        self.MethodType = None
         self.visitChildren(ctx)
         return 1
 
     def visitMethodModifier(self, ctx:Java8Parser.MethodModifierContext):
-        self.MethodModifier.append(ctx.getText())
         self.visitChildren(ctx)
         return 1
 
     def visitResult(self, ctx:Java8Parser.ResultContext):
-        self.MethodType = ctx.getText()
         self.visitChildren(ctx)
         return 1
 
     def visitMethodDeclarator(self, ctx:Java8Parser.MethodDeclaratorContext):
         self.MethodName = str(ctx.getChild(0).getText())
-        ST.inc_scope(self.MethodName)
+        ST.inc_scope_minor(self.MethodName)
         return self.visitChildren(ctx)
     
     def visitMethodHeader(self, ctx:Java8Parser.MethodHeaderContext):
         self.visitChildren(ctx)
-        ST.Add('methods',self.MethodName,self.MethodParameter,self.MethodType,self.MethodModifier,1)
         return 1
 
     def visitFormalParameterList(self, ctx:Java8Parser.FormalParameterListContext):
-        self.MethodParameter=[]
         self.inFormalList=1
         self.formalTypeList=[]
         self.formalTypeSizeList=[]
@@ -119,7 +110,6 @@ class my_visit(Java8Visitor):
         return 1
 
     def visitFormalParameter(self, ctx:Java8Parser.FormalParameterContext):
-        self.MethodParameter.append(ctx.getText())
         return self.visitChildren(ctx)
 
     def visitBlock(self, ctx:Java8Parser.BlockContext):
@@ -141,7 +131,7 @@ class my_visit(Java8Visitor):
         else:
             self.level+=1
             # print("Increasing scope from :"+str(ST.scope))
-            ST.inc_scope()
+            ST.inc_scope_minor()
             # print("Increased scope to :"+str(ST.scope))
             self.visitChildren(ctx)
             self.level-=1
@@ -154,7 +144,7 @@ class my_visit(Java8Visitor):
     def visitWhileStatement(self, ctx:Java8Parser.WhileStatementContext):
         self.level+=1
         # print("Increasing scope from :"+str(ST.scope))
-        ST.inc_scope()
+        ST.inc_scope_minor()
         # print("Increased scope to :"+str(ST.scope))
         self.blockFlag=0
         self.visitChildren(ctx)
@@ -168,7 +158,7 @@ class my_visit(Java8Visitor):
     def visitWhileStatementNoShortIf(self, ctx:Java8Parser.WhileStatementNoShortIfContext):
         self.level+=1
         # print("Increasing scope from :"+str(ST.scope))
-        ST.inc_scope()
+        ST.inc_scope_minor()
         # print("Increased scope to :"+str(ST.scope))
         self.blockFlag=0
         self.visitChildren(ctx)
@@ -182,7 +172,7 @@ class my_visit(Java8Visitor):
     def visitBasicForStatement(self, ctx:Java8Parser.BasicForStatementContext):
         self.level+=1
         # print("Increasing scope from :"+str(ST.scope))
-        ST.inc_scope()
+        ST.inc_scope_minor()
         # print("Increased scope to :"+str(ST.scope))
         self.blockFlag=0
         self.visitChildren(ctx)
@@ -196,7 +186,7 @@ class my_visit(Java8Visitor):
     def visitBasicForStatementNoShortIf(self, ctx:Java8Parser.BasicForStatementNoShortIfContext):
         self.level+=1
         # print("Increasing scope from :"+str(ST.scope))
-        ST.inc_scope()
+        ST.inc_scope_minor()
         # print("Increased scope to :"+str(ST.scope))
         self.blockFlag=0
         self.visitChildren(ctx)
@@ -210,7 +200,7 @@ class my_visit(Java8Visitor):
     def visitIfThenStatement(self, ctx:Java8Parser.IfThenStatementContext):
         self.level+=1
         # print("Increasing scope from :"+str(ST.scope))
-        ST.inc_scope()
+        ST.inc_scope_minor()
         # print("Increased scope to :"+str(ST.scope))
         self.blockFlag=0
         self.visitChildren(ctx)
@@ -224,7 +214,7 @@ class my_visit(Java8Visitor):
     def visitIfThenElseStatement(self, ctx:Java8Parser.IfThenElseStatementContext):
         self.level+=1
         # print("Increasing scope from :"+str(ST.scope))
-        ST.inc_scope()
+        ST.inc_scope_minor()
         # print("Increased scope to :"+str(ST.scope))
         self.blockFlag=0
         self.visitChildren(ctx)
@@ -239,7 +229,7 @@ class my_visit(Java8Visitor):
     def visitIfThenElseStatementNoShortIf(self, ctx:Java8Parser.IfThenElseStatementNoShortIfContext):
         self.level+=1
         # print("Increasing scope from :"+str(ST.scope))
-        ST.inc_scope()
+        ST.inc_scope_minor()
         # print("Increased scope to :"+str(ST.scope))
         self.blockFlag=0
         self.visitChildren(ctx)
@@ -253,7 +243,7 @@ class my_visit(Java8Visitor):
     def visitSwitchStatement(self, ctx:Java8Parser.SwitchStatementContext):
         self.level+=1
         # print("Increasing scope from :"+str(ST.scope))
-        ST.inc_scope()
+        ST.inc_scope_minor()
         # print("Increased scope to :"+str(ST.scope))
         self.blockFlag=0
         self.visitChildren(ctx)
@@ -336,5 +326,4 @@ class my_visit(Java8Visitor):
         print("+----------------------------------------------------------------+")
         print()
         print(dot)
-
 del Java8Parser

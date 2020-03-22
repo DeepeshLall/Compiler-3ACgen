@@ -92,5 +92,15 @@ class SymbolTable:
         self.new_s +=1
         self.scope = self.new_s
     
+    def inc_scope_minor(self,name=None):
+        if name:
+            self.SymbolTableFunction[name] = {
+                'variables' : {},
+                }
+            self.func = name
+            self.offset = 0
+        self.new_s +=1
+        self.scope = self.new_s
+
     def dec_scope(self):
         self.scope = self.SymbolTable[self.scope]['parent']

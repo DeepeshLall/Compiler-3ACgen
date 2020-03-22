@@ -1,4 +1,4 @@
-# This is for double scan using my_visit1.py and my_visit2.py
+# This is for single scan using my_visit.py
 import os
 import re
 import json
@@ -6,8 +6,7 @@ import antlr4
 from Java8Lexer import Java8Lexer
 from Java8Parser import Java8Parser
 from Java8Visitor import Java8Visitor
-from my_visit1 import  my_visit1
-from my_visit2 import my_visit2
+from my_visit import  my_visit
 import SymbolTable
 
 global ST
@@ -26,17 +25,9 @@ def main():
     stream = antlr4.CommonTokenStream(lexer)
     parser = Java8Parser(stream)
     tree = parser.compilationUnit()
-    visitor = my_visit1()
+    visitor = my_visit()
     visitor.visit(tree)
-    # print("After 1 visit.")
-    # visitor.PrintSymbolTable()
-    # visitor.printSymbolTableGraph()
-    ST = visitor.getSymbolTable()
-    visitor2 = my_visit2()
-    visitor2.reinitializeSymbolTableScope()
-    visitor2.visit(tree)
-    # print("After 2 visit.")
-    visitor2.PrintSymbolTable()
+    visitor.PrintSymbolTable()
  
 if __name__ == '__main__':
     main()
