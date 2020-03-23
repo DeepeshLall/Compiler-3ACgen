@@ -36,7 +36,7 @@ def main():
     visitor2.reinitializeSymbolTableScope()
     visitor2.visit(tree)
     # print("After 2 visit.")
-    visitor2.PrintSymbolTable()
+    # visitor2.PrintSymbolTable()
  
 if __name__ == '__main__':
     main()
