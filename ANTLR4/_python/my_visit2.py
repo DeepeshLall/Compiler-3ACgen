@@ -309,9 +309,8 @@ class my_visit2(Java8Visitor):
         for i in range(len(self.typeList)):
             ST.Add('variables',str(self.typeList[i]),str(self.typeSizeList[i]),self.type,self.variableModifier)
         return 1
-
+        
     def visitFieldDeclaration(self, ctx:Java8Parser.FieldDeclarationContext):
-        # print(ST.scope)
         self.typeList=[]
         self.typeSizeList=[]
         self.type=""
