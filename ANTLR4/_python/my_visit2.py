@@ -604,7 +604,7 @@ class my_visit2(Java8Visitor):
             elif parser.ruleNames[child.getRuleIndex()] == 'variableInitializer':
                 self.visit(child)
                 rhs = self.variableInitializer
-                # tac.emit(str(dest),str(lhs),str(rhs),str(operator))
+                tac.emit(str(dest),str(lhs),str(rhs),str(operator))
                 #to be replaced by tac.emit for load and store.
         return 1
 
@@ -759,6 +759,7 @@ class my_visit2(Java8Visitor):
         elif childCount == 3:
             lhs = None
             rhs = None
+            lhs1 = None
             operator = None
             dest = None
             label = None
@@ -769,6 +770,8 @@ class my_visit2(Java8Visitor):
                 elif parser.ruleNames[child.getRuleIndex()] == 'conditionalOrExpression':
                     self.visit(child)
                     lhs = self.conditionalOrExpression
+                    lhs1 = tac.getTemp()
+                    tac.emit(str(lhs1),str(lhs1),str(lhs),'=')
                     # make trueList and FalseList
                     # emit tac for backpatch and shortcircuit on basis of return value of self.condiotionalOrExpression
                     # what to set self.conditionalOrExpression for head? nothing currently
@@ -780,7 +783,7 @@ class my_visit2(Java8Visitor):
                     rhs = self.conditionalAndExpression
             dest = tac.getTemp()
             self.conditionalOrExpression = dest
-            tac.emit(str(dest),str(lhs),str(rhs),str(operator))
+            tac.emit(str(dest),str(lhs1),str(rhs),str(operator))
             tac.backpatch(self.conditionalOrExpressionFL,label)
             self.conditionalOrExpressionTL = self.conditionalOrExpressionTL + self.conditionalAndExpressionTL
             self.conditionalOrExpressionFL = self.conditionalAndExpressionFL
@@ -801,6 +804,7 @@ class my_visit2(Java8Visitor):
         elif childCount == 3:
             lhs = None
             rhs = None
+            lhs1 = None
             operator = None
             dest = None
             for child in children:
@@ -810,6 +814,8 @@ class my_visit2(Java8Visitor):
                 elif parser.ruleNames[child.getRuleIndex()] == 'conditionalAndExpression':
                     self.visit(child)
                     lhs = self.conditionalOrExpression
+                    lhs1 = tac.getTemp()
+                    tac.emit(str(lhs1),str(lhs1),str(lhs),'=')
                     # make trueList and FalseList
                     # emit tac for backpatch and shortcircuit on basis of return value of self.conditionalAndExpression
                     # what to set self.conditionalAndExpression for head? nothing currently.
@@ -821,7 +827,7 @@ class my_visit2(Java8Visitor):
                     rhs = self.conditionalAndExpression
             dest = tac.getTemp()
             self.conditionalAndExpression = dest
-            tac.emit(str(dest),str(lhs),str(rhs),str(operator))
+            tac.emit(str(dest),str(lhs1),str(rhs),str(operator))
             tac.backpatch(self.conditionalAndExpressionTL,label)
             self.conditionalAndExpressionFL = self.conditionalAndExpressionFL + self.inclusiveOrExpression
             self.conditionalAndExpressionTL = self.inclusiveOrExpressionTL
@@ -842,6 +848,7 @@ class my_visit2(Java8Visitor):
         elif childCount == 3:
             lhs = None
             rhs = None
+            lhs1 = None
             operator = '|'
             for child in children:
                 if _isIdentifier_(child):
@@ -849,12 +856,14 @@ class my_visit2(Java8Visitor):
                 elif parser.ruleNames[child.getRuleIndex()] == 'inclusiveOrExpression':
                     self.visit(child)
                     lhs = self.inclusiveOrExpression
+                    lhs1 = tac.getTemp()
+                    tac.emit(str(lhs1),str(lhs1),str(lhs),'=')
                 elif parser.ruleNames[child.getRuleIndex()] == 'exclusiveOrExpression':
                     self.visit(child)
                     rhs = self.exclusiveOrExpression
             dest = tac.getTemp()
             self.inclusiveOrExpression = dest
-            tac.emit(str(dest),str(lhs),str(rhs),str(operator))
+            tac.emit(str(dest),str(lhs1),str(rhs),str(operator))
             self.inclusiveOrExpressionTL = []
             self.inclusiveOrExpressionFL = []
         return 1
@@ -875,18 +884,21 @@ class my_visit2(Java8Visitor):
             lhs = None
             rhs = None
             operator = '^'
+            lhs1 = None
             for child in children:
                 if _isIdentifier_(child):
                     continue
                 elif parser.ruleNames[child.getRuleIndex()] == 'exclusiveOrExpression':
                     self.visit(child)
                     lhs = self.exclusiveOrExpression
+                    lhs1 = tac.getTemp()
+                    tac.emit(str(lhs1),str(lhs1),str(lhs),'=')
                 elif parser.ruleNames[child.getRuleIndex()] == 'andExpression':
                     self.visit(child)
                     rhs = self.andExpression
             dest = tac.getTemp()
             self.exclusiveOrExpression = dest
-            tac.emit(str(dest),str(lhs),str(rhs),str(operator)) 
+            tac.emit(str(dest),str(lhs1),str(rhs),str(operator)) 
             self.exclusiveOrExpressionTL = []
             self.exclusiveOrExpressionFL = []
         return 1
@@ -906,6 +918,7 @@ class my_visit2(Java8Visitor):
         elif childCount == 3:
             lhs = None
             rhs = None
+            lhs1 = None
             operator = '&'
             for child in children:
                 if _isIdentifier_(child):
@@ -913,12 +926,14 @@ class my_visit2(Java8Visitor):
                 elif parser.ruleNames[child.getRuleIndex()] == 'andExpression':
                     self.visit(child)
                     lhs = self.andExpression
+                    lhs1 = tac.getTemp()
+                    tac.emit(str(lhs1),str(lhs1),str(lhs),'=')
                 elif parser.ruleNames[child.getRuleIndex()] == 'equalityExpression':
                     self.visit(child)
                     rhs = self.equalityExpression
             dest = tac.getTemp()
             self.andExpression = dest
-            tac.emit(str(dest),str(lhs),str(rhs),str(operator)) 
+            tac.emit(str(dest),str(lhs1),str(rhs),str(operator)) 
             self.andExpressionTL = []
             self.andExpressionFL = []
         return 1
@@ -939,6 +954,7 @@ class my_visit2(Java8Visitor):
         elif childCount == 3:
             lhs = None
             rhs = None
+            lhs1 = None
             for child in children:
                 if _isIdentifier_(child):
                     operator = child.getText()
@@ -946,12 +962,14 @@ class my_visit2(Java8Visitor):
                 elif parser.ruleNames[child.getRuleIndex()] == 'equalityExpression':
                     self.visit(child)
                     lhs = self.equalityExpression
+                    lhs1 = tac.getTemp()
+                    tac.emit(str(lhs1),str(lhs1),str(lhs),'=')
                 elif parser.ruleNames[child.getRuleIndex()] == 'relationalExpression':
                     self.visit(child)
                     rhs = self.relationalExpression
             dest = tac.getTemp()
             self.equalityExpression = dest
-            tac.emit(str(dest),str(lhs),str(rhs),str(operator))
+            tac.emit(str(dest),str(lhs1),str(rhs),str(operator))
             self.equalityExpressionFL = [len(tac.code)]
             tac.emit('ifgoto',dest,'eq0','')
             self.equalityExpressionTL = [len(tac.code)]
@@ -977,6 +995,7 @@ class my_visit2(Java8Visitor):
         elif childCount == 3:
             lhs = None
             rhs = None
+            lhs1 = None
             for child in children:
                 if _isIdentifier_(child):
                     operator = child.getText()
@@ -984,6 +1003,8 @@ class my_visit2(Java8Visitor):
                 elif parser.ruleNames[child.getRuleIndex()] == 'relationalExpression':
                     self.visit(child)
                     lhs = self.relationalExpression
+                    lhs1 = tac.getTemp()
+                    tac.emit(str(lhs1),str(lhs1),str(lhs),'=')
                 elif parser.ruleNames[child.getRuleIndex()] == 'shiftExpression':
                     self.visit(child)
                     rhs = self.shiftExpression
@@ -992,7 +1013,7 @@ class my_visit2(Java8Visitor):
                     rhs = self.referenceType
             dest = tac.getTemp()
             self.relationalExpression = dest
-            tac.emit(str(dest),str(lhs),str(rhs),str(operator))
+            tac.emit(str(dest),str(lhs1),str(rhs),str(operator))
             self.relationalExpressionFL = [len(tac.code)]
             tac.emit('ifgoto',dest,'eq0','')
             self.relationalExpressionTL = [len(tac.code)]
@@ -1016,6 +1037,7 @@ class my_visit2(Java8Visitor):
         elif childCount == 3:
             lhs = None
             rhs = None
+            lhs1 = None
             for child in children:
                 if _isIdentifier_(child):
                     operator = child.getText()
@@ -1023,12 +1045,14 @@ class my_visit2(Java8Visitor):
                 elif parser.ruleNames[child.getRuleIndex()] == 'shiftExpression':
                     self.visit(child)
                     lhs = self.shiftExpression
+                    lhs1 = tac.getTemp()
+                    tac.emit(str(lhs1),str(lhs1),str(lhs),'=')
                 elif parser.ruleNames[child.getRuleIndex()] == 'additiveExpression':
                     self.visit(child)
                     rhs = self.additiveExpression
             dest = tac.getTemp()
             self.shiftExpression = dest
-            tac.emit(str(dest),str(lhs),str(rhs),str(operator)) 
+            tac.emit(str(dest),str(lhs1),str(rhs),str(operator)) 
             self.shiftExpressionTL = []
             self.shiftExpressionFL = []
         return 1
@@ -1049,6 +1073,7 @@ class my_visit2(Java8Visitor):
         elif childCount == 3:
             lhs = None
             rhs = None
+            lhs1 = None
             for child in children:
                 if _isIdentifier_(child):
                     operator = child.getText()
@@ -1056,12 +1081,14 @@ class my_visit2(Java8Visitor):
                 elif parser.ruleNames[child.getRuleIndex()] == 'additiveExpression':
                     self.visit(child)
                     lhs = self.additiveExpression
+                    lhs1 = tac.getTemp()
+                    tac.emit(str(lhs1),str(lhs1),str(lhs),'=')
                 elif parser.ruleNames[child.getRuleIndex()] == 'multiplicativeExpression':
                     self.visit(child)
                     rhs = self.multiplicativeExpression
             dest = tac.getTemp()
             self.additiveExpression = dest
-            tac.emit(str(dest),str(lhs),str(rhs),str(operator)) 
+            tac.emit(str(dest),str(lhs1),str(rhs),str(operator)) 
             self.additiveExpressionTL = []
             self.additiveExpressionFL = []
         return 1
@@ -1083,6 +1110,7 @@ class my_visit2(Java8Visitor):
         elif childCount == 3:
             lhs = None
             rhs = None
+            lhs1 = None
             for child in children:
                 if _isIdentifier_(child):
                     operator = child.getText()
@@ -1090,12 +1118,14 @@ class my_visit2(Java8Visitor):
                 elif parser.ruleNames[child.getRuleIndex()] == 'multiplicativeExpression':
                     self.visit(child)
                     lhs = self.multiplicativeExpression
+                    lhs1 = tac.getTemp()
+                    tac.emit(str(lhs1),str(lhs1),str(lhs),'=')
                 elif parser.ruleNames[child.getRuleIndex()] == 'unaryExpression':
                     self.visit(child)
                     rhs = self.unaryExpression
             dest = tac.getTemp()
             self.multiplicativeExpression = dest
-            tac.emit(str(dest),str(lhs),str(rhs),str(operator))
+            tac.emit(str(dest),str(lhs1),str(rhs),str(operator))
             self.multiplicativeExpressionTL = []
             self.multiplicativeExpressionFL = []
         return 1
