@@ -80,6 +80,42 @@ class my_visit2(Java8Visitor):
         self.methodInvocation_Type_1_Pr = None # it contains the temporary for methodInvocation_Type_1_Pr after visiting.
         self.argumentList = None # it contains the temporary for argumentList after visiting.
 
+        # False List of all the nonterminal having value to be backpatched.
+        self.expressionFL = []
+        self.assignmentExpressionFL = []
+        self.assignmentFL = []
+        self.conditionExpressionFL = []
+        self.conditionalOrExpressionFL = []
+        self.conditionalAndExpressionFL = []
+        self.conditionalAndExpressionFL = []
+        self.inclusiveOrExpressionFL = []
+        self.exclusiveOrExpressionFL = []
+        self.andExpressionFL = []
+        self.equalityExpressionFL = []
+        self.relationalExpressionFL = []
+        self.shiftExpressionFL = []
+        self.additiveExpressionFL = []
+        self.multiplicativeExpressionFL = []
+        self.unaryExpressionFL = []
+
+        # True List of all the nonterminal having value to be backpatched.
+        self.expressionTL = []
+        self.assignmentExpressionTL = []
+        self.assignmentTL = []
+        self.conditionExpressionTL = []
+        self.conditionalOrExpressionTL = []
+        self.conditionalAndExpressionTL = []
+        self.conditionalAndExpressionTL = []
+        self.inclusiveOrExpressionTL = []
+        self.exclusiveOrExpressionTL = []
+        self.andExpressionTL = []
+        self.equalityExpressionTL = []
+        self.relationalExpressionTL = []
+        self.shiftExpressionTL = []
+        self.additiveExpressionTL = []
+        self.multiplicativeExpressionTL = []
+        self.unaryExpressionTL = []
+
     def reinitializeSymbolTableScope(self):
         ST.func = 'start'
         ST.new_s=1
@@ -187,12 +223,30 @@ class my_visit2(Java8Visitor):
             
 
     def visitWhileStatement(self, ctx:Java8Parser.WhileStatementContext):
+        # whileStatement  :  'while' '(' expression ')' statement
+		# 		;
         self.level+=1
         # print("Increasing scope from :"+str(ST.scope))
         ST.inc_scope_minor()
         # print("Increased scope to :"+str(ST.scope))
         self.blockFlag=0
-        self.visitChildren(ctx)
+        children = ctx.getChildren()
+        l1 = tac.newLabel()
+        l2 = tac.newLabel()
+        l3 = tac.newLabel()
+        for child in children:
+            if _isIdentifier_(child):
+                continue
+            elif parser.ruleNames[child.getRuleIndex()] == 'expression':
+                tac.emit('label :','', '', l1)
+                self.visit(child)
+                tac.backpatch(self.expressionTL,l2)
+                tac.backpatch(self.expressionFL,l3)
+            elif parser.ruleNames[child.getRuleIndex()] == 'statement':
+                tac.emit('label :','', '', l2)
+                self.visit(child)
+                tac.emit('goto','', '', l1)
+                tac.emit('label :','', '', l3)
         self.level-=1
         # print("Decreasing scope from :"+str(ST.scope))
         ST.dec_scope()
@@ -201,12 +255,30 @@ class my_visit2(Java8Visitor):
         return 1
 
     def visitWhileStatementNoShortIf(self, ctx:Java8Parser.WhileStatementNoShortIfContext):
+        # whileStatementNoShortIf  :  'while' '(' expression ')' statementNoShortIf
+		# 				 ;
         self.level+=1
         # print("Increasing scope from :"+str(ST.scope))
         ST.inc_scope_minor()
         # print("Increased scope to :"+str(ST.scope))
         self.blockFlag=0
-        self.visitChildren(ctx)
+        children = ctx.getChildren()
+        l1 = tac.newLabel()
+        l2 = tac.newLabel()
+        l3 = tac.newLabel()
+        for child in children:
+            if _isIdentifier_(child):
+                continue
+            elif parser.ruleNames[child.getRuleIndex()] == 'expression':
+                tac.emit('label :','', '', l1)
+                self.visit(child)
+                tac.backpatch(self.expressionTL,l2)
+                tac.backpatch(self.expressionFL,l3)
+            elif parser.ruleNames[child.getRuleIndex()] == 'statementNoShortIf':
+                tac.emit('label :','', '', l2)
+                self.visit(child)
+                tac.emit('goto','', '', l1)
+                tac.emit('label :','', '', l3)
         self.level-=1
         # print("Decreasing scope from :"+str(ST.scope))
         ST.dec_scope()
@@ -215,12 +287,38 @@ class my_visit2(Java8Visitor):
         return 1
 
     def visitBasicForStatement(self, ctx:Java8Parser.BasicForStatementContext):
+        # basicForStatement  :  'for' '(' forInit? ';' expression? ';' forUpdate? ')' statement
+		# 		;
         self.level+=1
         # print("Increasing scope from :"+str(ST.scope))
         ST.inc_scope_minor()
         # print("Increased scope to :"+str(ST.scope))
         self.blockFlag=0
-        self.visitChildren(ctx)
+        children = ctx.getChildren()
+        l1 = tac.newLabel()
+        l2 = tac.newLabel()
+        l3 = tac.newLabel()
+        l4 = tac.newLabel()
+        l5 = tac.newLabel()
+        for child in children:
+            if _isIdentifier_(child):
+                continue
+            elif parser.ruleNames[child.getRuleIndex()] == 'forInit':
+                self.visit(child)
+            elif parser.ruleNames[child.getRuleIndex()] == 'expression':
+                tac.emit('label :','', '', l1)
+                self.visit(child)
+                tac.backpatch(self.expressionTL,l4)
+                tac.backpatch(self.expressionFL,l5)
+            elif parser.ruleNames[child.getRuleIndex()] == 'forUpdate':
+                tac.emit('label :','', '', l2)
+                self.visit(child)
+                tac.emit('goto','', '', l1)
+            elif parser.ruleNames[child.getRuleIndex()] == 'statement':
+                tac.emit('label :','', '', l4)
+                self.visit(child)
+                tac.emit('goto','', '', l2)
+                tac.emit('label :','', '', l5)
         self.level-=1
         # print("Decreasing scope from :"+str(ST.scope))
         ST.dec_scope()
@@ -229,12 +327,38 @@ class my_visit2(Java8Visitor):
         return 1
 
     def visitBasicForStatementNoShortIf(self, ctx:Java8Parser.BasicForStatementNoShortIfContext):
+        # basicForStatementNoShortIf  :  'for' '(' forInit? ';' expression? ';' forUpdate? ')' statementNoShortIf
+		# 		;
         self.level+=1
         # print("Increasing scope from :"+str(ST.scope))
         ST.inc_scope_minor()
         # print("Increased scope to :"+str(ST.scope))
         self.blockFlag=0
-        self.visitChildren(ctx)
+        children = ctx.getChildren()
+        l1 = tac.newLabel()
+        l2 = tac.newLabel()
+        l3 = tac.newLabel()
+        l4 = tac.newLabel()
+        l5 = tac.newLabel()
+        for child in children:
+            if _isIdentifier_(child):
+                continue
+            elif parser.ruleNames[child.getRuleIndex()] == 'forInit':
+                self.visit(child)
+            elif parser.ruleNames[child.getRuleIndex()] == 'expression':
+                tac.emit('label :','', '', l1)
+                self.visit(child)
+                tac.backpatch(self.expressionTL,l4)
+                tac.backpatch(self.expressionFL,l5)
+            elif parser.ruleNames[child.getRuleIndex()] == 'forUpdate':
+                tac.emit('label :','', '', l2)
+                self.visit(child)
+                tac.emit('goto','', '', l1)
+            elif parser.ruleNames[child.getRuleIndex()] == 'statementNoShortIf':
+                tac.emit('label :','', '', l4)
+                self.visit(child)
+                tac.emit('goto','', '', l2)
+                tac.emit('label :','', '', l5)
         self.level-=1
         # print("Decreasing scope from :"+str(ST.scope))
         ST.dec_scope()
@@ -243,12 +367,28 @@ class my_visit2(Java8Visitor):
         return 1
 
     def visitIfThenStatement(self, ctx:Java8Parser.IfThenStatementContext):
+        # ifThenStatement  :  'if' '(' expression ')' statement 
+        #            ;
         self.level+=1
         # print("Increasing scope from :"+str(ST.scope))
         ST.inc_scope_minor()
         # print("Increased scope to :"+str(ST.scope))
         self.blockFlag=0
-        self.visitChildren(ctx)
+        # self.visitChildren(ctx)
+        children = ctx.getChildren()
+        l1 = tac.newLabel()
+        l2 = tac.newLabel()
+        for child in children:
+            if _isIdentifier_(child):
+                continue
+            elif parser.ruleNames[child.getRuleIndex()] == 'expression':
+                self.visit(child)
+                tac.backpatch(self.expressionTL,l1)
+                tac.backpatch(self.expressionFL,l2)
+            elif parser.ruleNames[child.getRuleIndex()] == 'statement':
+                tac.emit('label :','', '', l1)
+                self.visit(child)
+                tac.emit('label :','', '', l2)
         self.level-=1
         # print("Decreasing scope from :"+str(ST.scope))
         ST.dec_scope()
@@ -257,12 +397,32 @@ class my_visit2(Java8Visitor):
         return 1
 
     def visitIfThenElseStatement(self, ctx:Java8Parser.IfThenElseStatementContext):
+        # ifThenElseStatement  :  'if' '(' expression ')' statementNoShortIf 'else' statement
+		# 			 ;
         self.level+=1
         # print("Increasing scope from :"+str(ST.scope))
         ST.inc_scope_minor()
         # print("Increased scope to :"+str(ST.scope))
         self.blockFlag=0
-        self.visitChildren(ctx)
+        children = ctx.getChildren()
+        l1 = tac.newLabel()
+        l2 = tac.newLabel()
+        l3 = tac.newLabel()
+        for child in children:
+            if _isIdentifier_(child):
+                continue
+            elif parser.ruleNames[child.getRuleIndex()] == 'expression':
+                self.visit(child)
+                tac.backpatch(self.expressionTL,l1)
+                tac.backpatch(self.expressionFL,l3)
+            elif parser.ruleNames[child.getRuleIndex()] == 'statementNoShortIf':
+                tac.emit('label :','','',l1)
+                self.visit(child)
+            elif parser.ruleNames[child.getRuleIndex()] == 'statement':
+                tac.emit('goto','','',l2)
+                tac.emit('label :','', '', l3)
+                self.visit(child)
+                tac.emit('label :','', '', l2)
         self.level-=1
         # print("Decreasing scope from :"+str(ST.scope))
         ST.dec_scope()
@@ -272,12 +432,34 @@ class my_visit2(Java8Visitor):
 
 
     def visitIfThenElseStatementNoShortIf(self, ctx:Java8Parser.IfThenElseStatementNoShortIfContext):
+        # ifThenElseStatementNoShortIf  :  'if' '(' expression ')' statementNoShortIf 'else' statementNoShortIf 
+		# 			 ;
         self.level+=1
         # print("Increasing scope from :"+str(ST.scope))
         ST.inc_scope_minor()
         # print("Increased scope to :"+str(ST.scope))
         self.blockFlag=0
-        self.visitChildren(ctx)
+        children = ctx.getChildren()
+        l1 = tac.newLabel()
+        l2 = tac.newLabel()
+        l3 = tac.newLabel()
+        firstVisit = 0
+        for child in children:
+            if _isIdentifier_(child):
+                continue
+            elif parser.ruleNames[child.getRuleIndex()] == 'expression':
+                self.visit(child)
+                tac.backpatch(self.expressionTL,l1)
+                tac.backpatch(self.expressionFL,l3)
+            elif parser.ruleNames[child.getRuleIndex()] == 'statementNoShortIf' and firstVisit  == 0:
+                tac.emit('label :','','',l1)
+                self.visit(child)
+                firstVisit = 1
+            elif parser.ruleNames[child.getRuleIndex()] == 'statementNoShortIf' and firstVisit == 1:
+                tac.emit('goto','','',l2)
+                tac.emit('label :','', '', l3)
+                self.visit(child)
+                tac.emit('label :','', '', l2)
         self.level-=1
         # print("Decreasing scope from :"+str(ST.scope))
         ST.dec_scope()
@@ -286,6 +468,8 @@ class my_visit2(Java8Visitor):
         return 1
 
     def visitSwitchStatement(self, ctx:Java8Parser.SwitchStatementContext):
+        # switchStatement  :  'switch' '(' expression ')' switchBlock
+        #                    ;
         self.level+=1
         # print("Increasing scope from :"+str(ST.scope))
         ST.inc_scope_minor()
@@ -387,7 +571,8 @@ class my_visit2(Java8Visitor):
             elif parser.ruleNames[child.getRuleIndex()] == 'variableInitializer':
                 self.visit(child)
                 rhs = self.variableInitializer
-                print(str(lhs)+"   "+str(operator)+"   "+str(rhs)+"   "+str(dest))
+                tac.emit(str(dest),str(lhs),str(rhs),str(operator))
+                #to be replaced by tac.emit for load and store.
         return 1
 
     def visitVariableInitializer(self, ctx:Java8Parser.VariableInitializerContext):
@@ -402,6 +587,9 @@ class my_visit2(Java8Visitor):
         return 1
 
     def visitExpression(self, ctx:Java8Parser.ExpressionContext):
+        # expression : lambdaExpression
+		#    | assignmentExpression
+		#    ;
         children = ctx.getChildren()
         for child in children:
             if parser.ruleNames[child.getRuleIndex()] == 'assignmentExpression':
@@ -409,11 +597,15 @@ class my_visit2(Java8Visitor):
                 self.ExpressionType=0
                 self.visit(child)
                 self.expression = self.assignmentExpression
+                self.expressionTL = self.assignmentExpressionTL
+                self.expressionFL = self.assignmentExpressionFL
             else:
                 #Lambda Expression
                 self.ExpressionType=1
                 self.visit(child)
                 self.expression = "Lambda Expression."
+                self.expressionTL = []
+                self.expressionFL = []
         self.ExpressionType=None
         return 1
 
@@ -427,16 +619,25 @@ class my_visit2(Java8Visitor):
         return 1
 
     def visitAssignmentExpression(self, ctx:Java8Parser.AssignmentExpressionContext):
+        # assignmentExpression  :  conditionalExpression
+		# 			  |  assignment
+		# 			  ;
         children = ctx.getChildren()
         for child in  children:
             self.visit(child)
             if parser.ruleNames[child.getRuleIndex()] == 'conditionalExpression':
                 self.assignmentExpression = self.conditionExpression
+                self.assignmentExpressionTL = self.conditionExpressionTL
+                self.assignmentExpressionFL = self.conditionExpressionFL
             elif parser.ruleNames[child.getRuleIndex()] == 'assignment':
                 self.assignmentExpression = self.assignment
+                self.assignmentExpressionTL = self.assignmentTL
+                self.assignmentExpressionFL = self.assignmentFL
         return 1
 
     def visitAssignment(self, ctx:Java8Parser.AssignmentContext):
+        # assignment  :  leftHandSide assignmentOperator expression
+		#     ;
         children = ctx.getChildren()
         lhs = None
         rhs = None
@@ -452,29 +653,44 @@ class my_visit2(Java8Visitor):
                 rhs = self.expression
         if operator == '=':
             dest = lhs
-            print(str(lhs)+"   "+str(operator)+"   "+str(rhs)+"   "+str(dest))
+            tac.emit(str(dest),str(lhs),str(rhs),str(operator))
         else:
             operatorBeforeEqual = operator[:-1]
             dest = tac.getTemp()
-            print(str(lhs)+"   "+str(operatorBeforeEqual)+"   "+str(rhs)+"   "+str(dest))
+            tac.emit(str(dest),str(lhs),str(rhs),str(operatorBeforeEqual))
             tempvar = dest
+            operator_equal = '='
             dest = lhs
             rhs = tempvar
-            print(str(lhs)+"   "+"="+"   "+str(rhs)+"   "+str(dest))
+            tac.emit(str(dest),str(lhs),str(rhs),str(operator_equal))
+        self.assignment = dest
+        self.assignmentTL =[]
+        self.assignmentFL = []
         return 1
 
     def visitLeftHandSide(self, ctx:Java8Parser.LeftHandSideContext):
+        # leftHandSide  :  expressionName
+		# 	  |  fieldAccess
+		# 	  |  arrayAccess
+		# 	  ;
         self.LeftHandSide = ctx.getText() # to be improved for array and field access.
         return self.visitChildren(ctx)
 
     def visitConditionalExpression(self, ctx:Java8Parser.ConditionalExpressionContext):
+        # conditionalExpression : conditionalOrExpression
+		# 			  | conditionalOrExpression '?' expression ':' conditionalExpression
+		# 			  | conditionalOrExpression '?' expression ':' lambdaExpression
+		# 			  ;
         children = ctx.getChildren()
         childCount = ctx.getChildCount()
         if childCount == 1:
             for child in children:
                 self.visit(child)
             self.conditionExpression = self.conditionalOrExpression
+            self.conditionExpressionTL = self.conditionalOrExpressionTL
+            self.conditionExpressionFL =  self.conditionalOrExpressionFL
         elif childCount == 5:
+            #for now in this case there's no tac for ternary jump or 
             for child in children:
                 if _isIdentifier_(child):
                     continue
@@ -491,23 +707,31 @@ class my_visit2(Java8Visitor):
                     # print("Print tac for false statements "+str(child.getText()))
                     #emit tac for below. As self.conditonExpression(temp) is to be stored in same place for self.condtionExpression of head as of self.expression.
                     # self.conditionExpression = self.conditionExpression
+                self.conditionExpressionTL = []
+                self.conditionExpressionFL = []
         return 1
 
     def visitConditionalOrExpression(self, ctx:Java8Parser.ConditionalOrExpressionContext):
+        # conditionalOrExpression :   conditionalAndExpression
+		# 				            | conditionalOrExpression '||' conditionalAndExpression
+		# 				            ;
         children = ctx.getChildren()
         childCount = ctx.getChildCount()
         if childCount == 1:
             for child in children:
                 self.visit(child)
             self.conditionalOrExpression = self.conditionalAndExpression
+            self.conditionalOrExpressionTL = self.conditionalAndExpressionTL
+            self.conditionalOrExpressionFL = self.conditionalAndExpressionFL
         elif childCount == 3:
             lhs = None
             rhs = None
             operator = None
             dest = None
+            label = None
             for child in children:
                 if _isIdentifier_(child):
-                    operator = chilf.getText()
+                    operator = child.getText()
                     continue
                 elif parser.ruleNames[child.getRuleIndex()] == 'conditionalOrExpression':
                     self.visit(child)
@@ -517,20 +741,30 @@ class my_visit2(Java8Visitor):
                     # what to set self.conditionalOrExpression for head? nothing currently
                     #if to be taken as 3ac then emit a tac here and set the dest -> self.head value
                 elif parser.ruleNames[child.getRuleIndex()] == 'conditionalAndExpression':
+                    label = tac.newLabel()
+                    tac.emit('label: ','','',label)
                     self.visit(child)
                     rhs = self.conditionalAndExpression
-                dest = tac.getTemp()
-                self.conditionalOrExpression = dest
-                print(str(lhs)+"   "+str(operator)+"   "+str(rhs)+"   "+str(dest))
+            dest = tac.getTemp()
+            self.conditionalOrExpression = dest
+            tac.emit(str(dest),str(lhs),str(rhs),str(operator))
+            tac.backpatch(self.conditionalOrExpressionFL,label)
+            self.conditionalOrExpressionTL = self.conditionalOrExpressionTL + self.conditionalAndExpressionTL
+            self.conditionalOrExpressionFL = self.conditionalAndExpressionFL
         return 1
 
     def visitConditionalAndExpression(self, ctx:Java8Parser.ConditionalAndExpressionContext):
+        # conditionalAndExpression : inclusiveOrExpression
+		# 				 | conditionalAndExpression '&&' inclusiveOrExpression
+		# 				 ;
         children = ctx.getChildren()
         childCount = ctx.getChildCount()
         if childCount == 1:
             for child in children:
                 self.visit(child)
             self.conditionalAndExpression = self.inclusiveOrExpression
+            self.conditionalAndExpressionTL = self.inclusiveOrExpressionTL
+            self.conditionalAndExpressionFL = self.inclusiveOrExpressionFL
         elif childCount == 3:
             lhs = None
             rhs = None
@@ -548,20 +782,30 @@ class my_visit2(Java8Visitor):
                     # what to set self.conditionalAndExpression for head? nothing currently.
                     #if to be taken as 3ac then emit a tac here and set the dest -> self.head value
                 elif parser.ruleNames[child.getRuleIndex()] == 'inclusiveOrExpression':
+                    label = tac.newLabel()
+                    tac.emit('label: ','','',label)
                     self.visit(child)
                     rhs = self.conditionalAndExpression
-                dest = tac.getTemp()
-                self.conditionalOrExpression = dest
-                print(str(lhs)+"   "+str(operator)+"   "+str(rhs)+"   "+str(dest))
+            dest = tac.getTemp()
+            self.conditionalAndExpression = dest
+            tac.emit(str(dest),str(lhs),str(rhs),str(operator))
+            tac.backpatch(self.conditionalAndExpressionTL,label)
+            self.conditionalAndExpressionFL = self.conditionalAndExpressionFL + self.inclusiveOrExpression
+            self.conditionalAndExpressionTL = self.inclusiveOrExpressionTL
         return 1
 
     def visitInclusiveOrExpression(self, ctx:Java8Parser.InclusiveOrExpressionContext):
+        # inclusiveOrExpression : exclusiveOrExpression
+		# 			  | inclusiveOrExpression '|' exclusiveOrExpression
+		# 			  ;
         children = ctx.getChildren()
         childCount = ctx.getChildCount()
         if childCount == 1:
             for child in children:
                 self.visit(child)
             self.inclusiveOrExpression = self.exclusiveOrExpression
+            self.inclusiveOrExpressionTL = self.exclusiveOrExpressionTL
+            self.inclusiveOrExpressionFL = self.exclusiveOrExpressionFL
         elif childCount == 3:
             lhs = None
             rhs = None
@@ -577,16 +821,23 @@ class my_visit2(Java8Visitor):
                     rhs = self.exclusiveOrExpression
             dest = tac.getTemp()
             self.inclusiveOrExpression = dest
-            print(str(lhs)+"   "+str(operator)+"   "+str(rhs)+"   "+str(dest))
+            tac.emit(str(dest),str(lhs),str(rhs),str(operator))
+            self.inclusiveOrExpressionTL = []
+            self.inclusiveOrExpressionFL = []
         return 1
 
     def visitExclusiveOrExpression(self, ctx:Java8Parser.ExclusiveOrExpressionContext):
+        # exclusiveOrExpression : andExpression
+		# 			  | exclusiveOrExpression '^' andExpression
+		# 			  ;	  
         children = ctx.getChildren()
         childCount = ctx.getChildCount()
         if childCount == 1:
             for child in children:
                 self.visit(child)
             self.exclusiveOrExpression = self.andExpression
+            self.exclusiveOrExpressionTL = self.andExpressionTL
+            self.exclusiveOrExpressionFL = self.andExpressionFL
         elif childCount == 3:
             lhs = None
             rhs = None
@@ -602,16 +853,23 @@ class my_visit2(Java8Visitor):
                     rhs = self.andExpression
             dest = tac.getTemp()
             self.exclusiveOrExpression = dest
-            print(str(lhs)+"   "+str(operator)+"   "+str(rhs)+"   "+str(dest)) 
+            tac.emit(str(dest),str(lhs),str(rhs),str(operator)) 
+            self.exclusiveOrExpressionTL = []
+            self.exclusiveOrExpressionFL = []
         return 1
 
     def visitAndExpression(self, ctx:Java8Parser.AndExpressionContext):
+        # andExpression : equalityExpression
+		# 	  | andExpression '&' equalityExpression
+		# 	  ;
         children = ctx.getChildren()
         childCount = ctx.getChildCount()
         if childCount == 1:
             for child in children:
                 self.visit(child)
             self.andExpression = self.equalityExpression
+            self.andExpressionTL = self.equalityExpressionTL
+            self.andExpressionFL = self.equalityExpressionFL
         elif childCount == 3:
             lhs = None
             rhs = None
@@ -627,16 +885,24 @@ class my_visit2(Java8Visitor):
                     rhs = self.equalityExpression
             dest = tac.getTemp()
             self.andExpression = dest
-            print(str(lhs)+"   "+str(operator)+"   "+str(rhs)+"   "+str(dest)) 
+            tac.emit(str(dest),str(lhs),str(rhs),str(operator)) 
+            self.andExpressionTL = []
+            self.andExpressionFL = []
         return 1
 
     def visitEqualityExpression(self, ctx:Java8Parser.EqualityExpressionContext):
+        # equalityExpression : relationalExpression
+		# 		   | equalityExpression '==' relationalExpression
+		# 		   | equalityExpression '!=' relationalExpressio
+        #          ;
         children = ctx.getChildren()
         childCount = ctx.getChildCount()
         if childCount == 1:
             for child in children:
                 self.visit(child)
             self.equalityExpression = self.relationalExpression
+            self.equalityExpressionTL = self.relationalExpressionTL
+            self.equalityExpressionFL = self.relationalExpressionFL
         elif childCount == 3:
             lhs = None
             rhs = None
@@ -652,16 +918,29 @@ class my_visit2(Java8Visitor):
                     rhs = self.relationalExpression
             dest = tac.getTemp()
             self.equalityExpression = dest
-            print(str(lhs)+"   "+str(operator)+"   "+str(rhs)+"   "+str(dest)) 
+            tac.emit(str(dest),str(lhs),str(rhs),str(operator))
+            self.equalityExpressionFL = [len(tac.code)]
+            tac.emit('ifgoto',dest,'eq0','')
+            self.equalityExpressionTL = [len(tac.code)]
+            tac.emit('goto','','','')
         return 1
 
     def visitRelationalExpression(self, ctx:Java8Parser.RelationalExpressionContext):
+        # relationalExpression : shiftExpression
+		# 			 | relationalExpression '<' shiftExpression
+		# 			 | relationalExpression '>' shiftExpression
+		# 			 | relationalExpression '<=' shiftExpression
+		# 			 | relationalExpression '>=' shiftExpression
+		# 			 | relationalExpression 'instanceof' referenceType
+		# 			 ;
         children = ctx.getChildren()
         childCount = ctx.getChildCount()
         if childCount == 1:
             for child in children:
                 self.visit(child)
             self.relationalExpression = self.shiftExpression
+            self.relationalExpressionTL = self.shiftExpressionTL
+            self.relationalExpressionFL = self.shiftExpressionFL
         elif childCount == 3:
             lhs = None
             rhs = None
@@ -680,16 +959,27 @@ class my_visit2(Java8Visitor):
                     rhs = self.referenceType
             dest = tac.getTemp()
             self.relationalExpression = dest
-            print(str(lhs)+"   "+str(operator)+"   "+str(rhs)+"   "+str(dest)) 
+            tac.emit(str(dest),str(lhs),str(rhs),str(operator))
+            self.relationalExpressionFL = [len(tac.code)]
+            tac.emit('ifgoto',dest,'eq0','')
+            self.relationalExpressionTL = [len(tac.code)]
+            tac.emit('goto','','','')
         return 1
 
     def visitShiftExpression(self, ctx:Java8Parser.ShiftExpressionContext):
+        # shiftExpression : additiveExpression
+		# 		| shiftExpression '<<' additiveExpression
+		# 		| shiftExpression '>>' additiveExpression
+		# 		| shiftExpression '>>>' additiveExpression
+		# 		;
         children = ctx.getChildren()
         childCount = ctx.getChildCount()
         if childCount == 1:
             for child in children:
                 self.visit(child)
             self.shiftExpression = self.additiveExpression
+            self.shiftExpressionTL = self.additiveExpressionTL
+            self.shiftExpressionFL = self.additiveExpressionFL
         elif childCount == 3:
             lhs = None
             rhs = None
@@ -705,16 +995,24 @@ class my_visit2(Java8Visitor):
                     rhs = self.additiveExpression
             dest = tac.getTemp()
             self.shiftExpression = dest
-            print(str(lhs)+"   "+str(operator)+"   "+str(rhs)+"   "+str(dest)) 
+            tac.emit(str(dest),str(lhs),str(rhs),str(operator)) 
+            self.shiftExpressionTL = []
+            self.shiftExpressionFL = []
         return 1
 
     def visitAdditiveExpression(self, ctx:Java8Parser.AdditiveExpressionContext):
+        # additiveExpression : multiplicativeExpression
+		# 		   | additiveExpression '+' multiplicativeExpression
+		# 		   | additiveExpression '-' multiplicativeExpression
+		# 		   ;
         children = ctx.getChildren()
         childCount = ctx.getChildCount()
         if childCount == 1:
             for child in children:
                 self.visit(child)
             self.additiveExpression = self.multiplicativeExpression
+            self.additiveExpressionTL = self.multiplicativeExpressionTL
+            self.additiveExpressionFL = self.multiplicativeExpressionFL
         elif childCount == 3:
             lhs = None
             rhs = None
@@ -730,16 +1028,25 @@ class my_visit2(Java8Visitor):
                     rhs = self.multiplicativeExpression
             dest = tac.getTemp()
             self.additiveExpression = dest
-            print(str(lhs)+"   "+str(operator)+"   "+str(rhs)+"   "+str(dest)) 
+            tac.emit(str(dest),str(lhs),str(rhs),str(operator)) 
+            self.additiveExpressionTL = []
+            self.additiveExpressionFL = []
         return 1
 
     def visitMultiplicativeExpression(self, ctx:Java8Parser.MultiplicativeExpressionContext):
+        # multiplicativeExpression : unaryExpression
+		# 				 | multiplicativeExpression '*' unaryExpression
+		# 				 | multiplicativeExpression '/' unaryExpression
+		# 				 | multiplicativeExpression '%' unaryExpression
+		# 				 ;
         children = ctx.getChildren()
         childCount = ctx.getChildCount()
         if childCount == 1:
             for child in children:
                 self.visit(child)
             self.multiplicativeExpression = self.unaryExpression
+            self.multiplicativeExpressionTL = self.unaryExpressionTL
+            self.multiplicativeExpressionFL = self.unaryExpressionFL
         elif childCount == 3:
             lhs = None
             rhs = None
@@ -755,10 +1062,18 @@ class my_visit2(Java8Visitor):
                     rhs = self.unaryExpression
             dest = tac.getTemp()
             self.multiplicativeExpression = dest
-            print(str(lhs)+"   "+str(operator)+"   "+str(rhs)+"   "+str(dest)) 
+            tac.emit(str(dest),str(lhs),str(rhs),str(operator))
+            self.multiplicativeExpressionTL = []
+            self.multiplicativeExpressionFL = []
         return 1
 
     def visitUnaryExpression(self, ctx:Java8Parser.UnaryExpressionContext):
+        # unaryExpression : preIncrementExpression
+		# 		| preDecrementExpression
+		# 		| '+' unaryExpression
+		# 		| '-' unaryExpression
+		# 		| unaryExpressionNotPlusMinus
+		# 		;
         children = ctx.getChildren()
         childCount = ctx.getChildCount()
         if childCount == 1:
@@ -784,10 +1099,14 @@ class my_visit2(Java8Visitor):
                     lhs = self.unaryExpression
             dest = tac.getTemp()
             self.unaryExpression = dest
-            print(str(lhs)+"   "+str(operator)+"   "+str(rhs)+"   "+str(dest)) 
+            tac.emit(str(dest),str(lhs),str(rhs),str(operator)) 
+        self.unaryExpressionTL = []
+        self.unaryExpressionFL = []
         return 1
 
     def visitPreIncrementExpression(self, ctx:Java8Parser.PreIncrementExpressionContext):
+        # preIncrementExpression : '++' unaryExpression
+		# 			   ;
         children = ctx.getChildren()
         lhs = None
         rhs = None
@@ -805,14 +1124,16 @@ class my_visit2(Java8Visitor):
         if operator == '++':
             operator_1 = '+'
             rhs = '1'
-            print(str(lhs)+"   "+str(operator_1)+"   "+str(rhs)+"   "+str(dest)) 
+            tac.emit(str(dest),str(lhs),str(rhs),str(operator_1))
             operator_2 = '='
             rhs = dest
             dest = lhs
-            print(str(lhs)+"   "+str(operator_2)+"   "+str(rhs)+"   "+str(dest))
+            tac.emit(str(dest),str(lhs),str(rhs),str(operator_2))
         return 1
 
     def visitPreDecrementExpression(self, ctx:Java8Parser.PreDecrementExpressionContext):
+        # preDecrementExpression : '--' unaryExpression
+		# 			   ;
         children = ctx.getChildren()
         lhs = None
         rhs = None
@@ -830,14 +1151,19 @@ class my_visit2(Java8Visitor):
         if operator == '--':
             operator_1 = '-'
             rhs = '1'
-            print(str(lhs)+"   "+str(operator_1)+"   "+str(rhs)+"   "+str(dest)) 
+            tac.emit(str(dest),str(lhs),str(rhs),str(operator_1))
             operator_2 = '='
             rhs = dest
             dest = lhs
-            print(str(lhs)+"   "+str(operator_2)+"   "+str(rhs)+"   "+str(dest))
+            tac.emit(str(dest),str(lhs),str(rhs),str(operator_2))
         return 1
 
     def visitUnaryExpressionNotPlusMinus(self, ctx:Java8Parser.UnaryExpressionNotPlusMinusContext):
+        # unaryExpressionNotPlusMinus : postfixExpression
+		# 					| '~' unaryExpression
+		# 					| '!' unaryExpression
+		# 					| castExpression
+		# 					;
         children = ctx.getChildren()
         childCount = ctx.getChildCount()
         if childCount == 1:
@@ -861,10 +1187,12 @@ class my_visit2(Java8Visitor):
                     lhs = self.unaryExpression
             dest = tac.getTemp()
             self.unaryExpressionNotPlusMinus = dest
-            print(str(lhs)+"   "+str(operator)+"   "+str(rhs)+"   "+str(dest)) 
+            tac.emit(str(dest),str(lhs),str(rhs),str(operator)) 
         return 1
 
     def visitPostfixExpression(self, ctx:Java8Parser.PostfixExpressionContext):
+        # postfixExpression : postfix_Type_1 postfix_Type_2*
+        #           ;
         children = ctx.getChildren()
         lhs = None
         rhs = None
@@ -876,31 +1204,41 @@ class my_visit2(Java8Visitor):
                 lhs = self.postfix_Type_1
                 dest = lhs
             elif parser.ruleNames[child.getRuleIndex()] == 'postfix_Type_2':
+                # postfix_Type_2  :  pure_postfix_decrement
+                #                 |  pure_postfix_increment
+                #                 ;
+                # pure_postfix_decrement  :  '--'
+                #                         ;
+                # pure_postfix_increment  :  '++'
+                #                         ;
                 self.visit(child)
                 operator = child.getText()
                 if operator == '++':
                     operator_1='+'
                     dest = tac.getTemp()
                     rhs = '1'
-                    print(str(lhs)+"   "+str(operator_1)+"   "+str(rhs)+"   "+str(dest))
+                    tac.emit(str(dest),str(lhs),str(rhs),str(operator_1))
                     rhs = dest
                     dest = lhs
                     operator_2 = '='
-                    print(str(lhs)+"   "+str(operator_2)+"   "+str(rhs)+"   "+str(dest))
+                    tac.emit(str(dest),str(lhs),str(rhs),str(operator_2))
                 elif operator == '--':
                     operator_1='-'
                     dest = tac.getTemp()
                     rhs = '1'
-                    print(str(lhs)+"   "+str(operator_1)+"   "+str(rhs)+"   "+str(dest))
+                    tac.emit(str(dest),str(lhs),str(rhs),str(operator_1))
                     rhs = dest
                     dest = lhs
                     operator_2 = '='
-                    print(str(lhs)+"   "+str(operator_2)+"   "+str(rhs)+"   "+str(dest))
+                    tac.emit(str(dest),str(lhs),str(rhs),str(operator_2))
                 lhs = dest
         self.postfixExpression = dest
         return 1
 
     def visitPostfix_Type_1(self, ctx:Java8Parser.Postfix_Type_1Context):
+        # postfix_Type_1  :  primary
+		# 		|  expressionName
+		# 		;
         children = ctx.getChildren()
         for child in children:
             if parser.ruleNames[child.getRuleIndex()] == 'primary':
@@ -912,6 +1250,10 @@ class my_visit2(Java8Visitor):
         return 1
 
     def visitCastExpression(self, ctx:Java8Parser.CastExpressionContext):
+        # castExpression  :  '(' primitiveType ')' unaryExpression
+		# 		|  '(' referenceType additionalBound* ')' unaryExpressionNotPlusMinus
+		# 		|  '(' referenceType additionalBound* ')' lambdaExpression
+		# 		;
         children = ctx.getChildren()
         operator = None
         lhs = None
@@ -940,11 +1282,13 @@ class my_visit2(Java8Visitor):
                 lhs = "Lambda Expression"
         dest = tac.getTemp()
         self.castExpression = dest
-        print(str(lhs)+"   "+str(operator)+"   "+str(rhs)+"   "+str(dest))
+        tac.emit(str(dest),str(lhs),str(rhs),str(operator))
         return 1
 
     #if self.primary_Type_2 is simply string added to self.primary_Type_1 for now for simplicity.
     def visitPrimary(self, ctx:Java8Parser.PrimaryContext):
+        # primary : primary_Type_1 primary_Type_2*
+		# ;
         children = ctx.getChildren()
         for child in children:
             if parser.ruleNames[child.getRuleIndex()] == 'primary_Type_1':
@@ -957,6 +1301,9 @@ class my_visit2(Java8Visitor):
 
     # for now arraycreationExpression is just taken as string.    
     def visitPrimary_Type_1(self, ctx:Java8Parser.Primary_Type_1Context):
+        # primary_Type_1  :  primaryNoNewArray_Type_1_Pr
+		# 		|  arraycreationExpression
+		# 		;
         children = ctx.getChildren()
         for child in children:
             if parser.ruleNames[child.getRuleIndex()] == 'primaryNoNewArray_Type_1_Pr':
@@ -968,6 +1315,17 @@ class my_visit2(Java8Visitor):
         return 1
 
     def visitPrimaryNoNewArray_Type_1_Pr(self, ctx:Java8Parser.PrimaryNoNewArray_Type_1_PrContext):
+        # primaryNoNewArray_Type_1_Pr  :  Literal
+		# 		  			| classLiteral
+		# 		  			| 'this'
+		# 		  			| typeName '.' 'this'
+		# 		  			|	'(' expression ')'
+		# 		  			| classInstancecreationExpression_Type_1_Pr
+		# 		  			| fieldAccess_Type_1_Pr
+		# 		  			| arrayAccess_Type_1_Pr
+		# 		  			| methodInvocation_Type_1_Pr
+		# 		  			| methodReference_Type_1_Pr  #NOT TO BE CONSIDERED
+		# 		  			;
         children = ctx.getChildren()
         flag = 0 
         for child in children:
@@ -992,6 +1350,12 @@ class my_visit2(Java8Visitor):
         return 1
 
     def visitMethodInvocation_Type_1_Pr(self, ctx:Java8Parser.MethodInvocation_Type_1_PrContext):
+        # methodInvocation_Type_1_Pr  :  methodName '(' argumentList? ')'
+		# 		  |  typeName '.' typeArguments? Identifier '(' argumentList? ')'
+		# 		  |  expressionName '.' typeArguments? Identifier '(' argumentList? ')'
+		# 		  |  'super' '.' typeArguments? Identifier '(' argumentList? ')'   #NOT TO BE CONSIDERED
+		# 		  |  typeName '.' 'super' '.' typeArguments? Identifier '('argumentList? ')'    #NOT TO BE CONSIDERED
+		# 		  ;
         children = ctx.getChildren()
         lhs = ""
         rhs = None
@@ -1013,14 +1377,21 @@ class my_visit2(Java8Visitor):
                 operator = operator + child.getText()
         dest = tac.getTemp()
         self.methodInvocation_Type_1_Pr = dest
-        print(str(lhs)+"   "+str(operator)+"   "+str(rhs)+"   "+str(dest))
+        tac.emit(str(dest),str(lhs),str(rhs),str(operator))
         return 1
 
     def visitArgumentList(self, ctx:Java8Parser.ArgumentListContext):
+        # argumentList  :  expression (',' expression)*
+		# 	  ;
         children = ctx.getChildren()
         for child in children:
             self.visit(child)
             self.argumentList = self.expression
         return 1
+
+    def showTac(self):
+        print("SL.NO.   dest    op1    op2    operator")
+        for i in range(len(tac.code)):
+            print(str(i) + "    " + str(tac.code[i][0]) + "   " + str(tac.code[i][1]) + "    " + str(tac.code[i][2]) + "    " + str(tac.code[i][3]))
 
 del Java8Parser

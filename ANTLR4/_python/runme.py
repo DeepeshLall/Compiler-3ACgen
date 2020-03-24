@@ -37,6 +37,7 @@ def main():
     visitor2.visit(tree)
     # print("After 2 visit.")
     # visitor2.PrintSymbolTable()
+    visitor2.showTac()
  
 if __name__ == '__main__':
     main()

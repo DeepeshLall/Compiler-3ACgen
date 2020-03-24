@@ -8,8 +8,11 @@ public class RecursionExampleDirectory
 		d = fib(a) + fib(b);
         int val = 0;
 		val = val++ + ++val;
-		if(a==val){
+		if(a==val || a>2){
 			System.out.println( "Hey I am string." );
+			b=3;
+		}else{
+			a = 2;
 		}
 		val = a==val?val+val:a+a;
 		a++;

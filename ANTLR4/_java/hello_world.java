@@ -2,13 +2,13 @@ public class RecursionExampleDirectory
 {	
     public static void main(String[] args){
         long a=1,b=2;
-        long c=a+2,d=4.2+"string temp";
+        long c=a+2,d=4.2;
         a/=c;
 		c=a+b*c-d;
 		d = fib(a) + fib(b);
         int val = 0;
 		val = val++ + ++val;
-		if(a==val){
+		if(a==val || a>2){
 			System.out.println( "Hey I am string." );
 		}
 		val = a==val?val+val:a+a;
