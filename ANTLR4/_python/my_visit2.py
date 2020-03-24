@@ -87,7 +87,7 @@ class my_visit2(Java8Visitor):
         ST.offset = 0
 
     def visitNormalclassDeclaration(self, ctx:Java8Parser.NormalclassDeclarationContext):
-        classid=None
+        classid = None
         children = ctx.getChildren()
         for child in children:
             if(_isIdentifier_(child)):
@@ -459,8 +459,7 @@ class my_visit2(Java8Visitor):
             print(str(lhs)+"   "+str(operatorBeforeEqual)+"   "+str(rhs)+"   "+str(dest))
             tempvar = dest
             dest = lhs
-            lhs = tempvar
-            rhs = dest
+            rhs = tempvar
             print(str(lhs)+"   "+"="+"   "+str(rhs)+"   "+str(dest))
         return 1
 
@@ -476,7 +475,6 @@ class my_visit2(Java8Visitor):
                 self.visit(child)
             self.conditionExpression = self.conditionalOrExpression
         elif childCount == 5:
-
             for child in children:
                 if _isIdentifier_(child):
                     continue
@@ -503,17 +501,27 @@ class my_visit2(Java8Visitor):
                 self.visit(child)
             self.conditionalOrExpression = self.conditionalAndExpression
         elif childCount == 3:
+            lhs = None
+            rhs = None
+            operator = None
+            dest = None
             for child in children:
                 if _isIdentifier_(child):
+                    operator = chilf.getText()
                     continue
                 elif parser.ruleNames[child.getRuleIndex()] == 'conditionalOrExpression':
                     self.visit(child)
+                    lhs = self.conditionalOrExpression
                     # make trueList and FalseList
                     # emit tac for backpatch and shortcircuit on basis of return value of self.condiotionalOrExpression
                     # what to set self.conditionalOrExpression for head? nothing currently
                     #if to be taken as 3ac then emit a tac here and set the dest -> self.head value
                 elif parser.ruleNames[child.getRuleIndex()] == 'conditionalAndExpression':
                     self.visit(child)
+                    rhs = self.conditionalAndExpression
+                dest = tac.getTemp()
+                self.conditionalOrExpression = dest
+                print(str(lhs)+"   "+str(operator)+"   "+str(rhs)+"   "+str(dest))
         return 1
 
     def visitConditionalAndExpression(self, ctx:Java8Parser.ConditionalAndExpressionContext):
@@ -524,17 +532,27 @@ class my_visit2(Java8Visitor):
                 self.visit(child)
             self.conditionalAndExpression = self.inclusiveOrExpression
         elif childCount == 3:
+            lhs = None
+            rhs = None
+            operator = None
+            dest = None
             for child in children:
                 if _isIdentifier_(child):
+                    operator = child.getText()
                     continue
                 elif parser.ruleNames[child.getRuleIndex()] == 'conditionalAndExpression':
                     self.visit(child)
+                    lhs = self.conditionalOrExpression
                     # make trueList and FalseList
                     # emit tac for backpatch and shortcircuit on basis of return value of self.conditionalAndExpression
                     # what to set self.conditionalAndExpression for head? nothing currently.
                     #if to be taken as 3ac then emit a tac here and set the dest -> self.head value
                 elif parser.ruleNames[child.getRuleIndex()] == 'inclusiveOrExpression':
                     self.visit(child)
+                    rhs = self.conditionalAndExpression
+                dest = tac.getTemp()
+                self.conditionalOrExpression = dest
+                print(str(lhs)+"   "+str(operator)+"   "+str(rhs)+"   "+str(dest))
         return 1
 
     def visitInclusiveOrExpression(self, ctx:Java8Parser.InclusiveOrExpressionContext):
@@ -783,8 +801,15 @@ class my_visit2(Java8Visitor):
                 self.visit(child)
                 lhs = self.unaryExpression
         dest = tac.getTemp()
-        self.preIncrementExpression = dest
-        print(str(lhs)+"   "+str(operator)+"   "+str(rhs)+"   "+str(dest)) 
+        self.preIncrementExpression = lhs
+        if operator == '++':
+            operator_1 = '+'
+            rhs = '1'
+            print(str(lhs)+"   "+str(operator_1)+"   "+str(rhs)+"   "+str(dest)) 
+            operator_2 = '='
+            rhs = dest
+            dest = lhs
+            print(str(lhs)+"   "+str(operator_2)+"   "+str(rhs)+"   "+str(dest))
         return 1
 
     def visitPreDecrementExpression(self, ctx:Java8Parser.PreDecrementExpressionContext):
@@ -801,8 +826,15 @@ class my_visit2(Java8Visitor):
                 self.visit(child)
                 lhs = self.unaryExpression
         dest = tac.getTemp()
-        self.preDecrementExpression = dest
-        print(str(lhs)+"   "+str(operator)+"   "+str(rhs)+"   "+str(dest)) 
+        self.preDecrementExpression = lhs
+        if operator == '--':
+            operator_1 = '-'
+            rhs = '1'
+            print(str(lhs)+"   "+str(operator_1)+"   "+str(rhs)+"   "+str(dest)) 
+            operator_2 = '='
+            rhs = dest
+            dest = lhs
+            print(str(lhs)+"   "+str(operator_2)+"   "+str(rhs)+"   "+str(dest))
         return 1
 
     def visitUnaryExpressionNotPlusMinus(self, ctx:Java8Parser.UnaryExpressionNotPlusMinusContext):
@@ -845,9 +877,25 @@ class my_visit2(Java8Visitor):
                 dest = lhs
             elif parser.ruleNames[child.getRuleIndex()] == 'postfix_Type_2':
                 self.visit(child)
-                dest = tac.getTemp()
                 operator = child.getText()
-                print(str(lhs)+"   "+str(operator)+"   "+str(rhs)+"   "+str(dest))
+                if operator == '++':
+                    operator_1='+'
+                    dest = tac.getTemp()
+                    rhs = '1'
+                    print(str(lhs)+"   "+str(operator_1)+"   "+str(rhs)+"   "+str(dest))
+                    rhs = dest
+                    dest = lhs
+                    operator_2 = '='
+                    print(str(lhs)+"   "+str(operator_2)+"   "+str(rhs)+"   "+str(dest))
+                elif operator == '--':
+                    operator_1='-'
+                    dest = tac.getTemp()
+                    rhs = '1'
+                    print(str(lhs)+"   "+str(operator_1)+"   "+str(rhs)+"   "+str(dest))
+                    rhs = dest
+                    dest = lhs
+                    operator_2 = '='
+                    print(str(lhs)+"   "+str(operator_2)+"   "+str(rhs)+"   "+str(dest))
                 lhs = dest
         self.postfixExpression = dest
         return 1
