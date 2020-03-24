@@ -79,6 +79,8 @@ class my_visit2(Java8Visitor):
         self.primaryNoNewArray_Type_1_Pr = None # it contains the temporary for primaryNoNewArray_Type_1_Pr after visiting.
         self.methodInvocation_Type_1_Pr = None # it contains the temporary for methodInvocation_Type_1_Pr after visiting.
         self.argumentList = None # it contains the temporary for argumentList after visiting.
+        self.postDecrementExpression = None # it contains the temporary for postDecrementExpression after visiting.
+        self.postIncrementExpression = None  # it contains the temporary for postIncrementExpression after visiting.
 
         # False List of all the nonterminal having value to be backpatched.
         self.expressionFL = []
@@ -97,6 +99,8 @@ class my_visit2(Java8Visitor):
         self.additiveExpressionFL = []
         self.multiplicativeExpressionFL = []
         self.unaryExpressionFL = []
+        self.postDecrementExpressionFL = []
+        self.postIncrementExpressionFL = []
 
         # True List of all the nonterminal having value to be backpatched.
         self.expressionTL = []
@@ -115,6 +119,11 @@ class my_visit2(Java8Visitor):
         self.additiveExpressionTL = []
         self.multiplicativeExpressionTL = []
         self.unaryExpressionTL = []
+        self.postDecrementExpressionTL = []
+        self.postIncrementExpressionTL = []
+
+        self.BreakList = []
+        self.ContinueList = []
 
     def reinitializeSymbolTableScope(self):
         ST.func = 'start'
@@ -234,6 +243,8 @@ class my_visit2(Java8Visitor):
         l1 = tac.newLabel()
         l2 = tac.newLabel()
         l3 = tac.newLabel()
+        self.BreakList.append([])
+        self.ContinueList.append([])
         for child in children:
             if _isIdentifier_(child):
                 continue
@@ -247,6 +258,10 @@ class my_visit2(Java8Visitor):
                 self.visit(child)
                 tac.emit('goto','', '', l1)
                 tac.emit('label :','', '', l3)
+        tac.backpatch(self.BreakList[-1],l3)
+        tac.backpatch(self.ContinueList[-1],l1)
+        self.BreakList.pop()
+        self.ContinueList.pop()
         self.level-=1
         # print("Decreasing scope from :"+str(ST.scope))
         ST.dec_scope()
@@ -266,6 +281,8 @@ class my_visit2(Java8Visitor):
         l1 = tac.newLabel()
         l2 = tac.newLabel()
         l3 = tac.newLabel()
+        self.BreakList.append([])
+        self.ContinueList.append([])
         for child in children:
             if _isIdentifier_(child):
                 continue
@@ -279,6 +296,10 @@ class my_visit2(Java8Visitor):
                 self.visit(child)
                 tac.emit('goto','', '', l1)
                 tac.emit('label :','', '', l3)
+        tac.backpatch(self.BreakList[-1],l3)
+        tac.backpatch(self.ContinueList[-1],l1)
+        self.BreakList.pop()
+        self.ContinueList.pop()
         self.level-=1
         # print("Decreasing scope from :"+str(ST.scope))
         ST.dec_scope()
@@ -300,6 +321,8 @@ class my_visit2(Java8Visitor):
         l3 = tac.newLabel()
         l4 = tac.newLabel()
         l5 = tac.newLabel()
+        self.BreakList.append([])
+        self.ContinueList.append([])
         for child in children:
             if _isIdentifier_(child):
                 continue
@@ -319,8 +342,12 @@ class my_visit2(Java8Visitor):
                 self.visit(child)
                 tac.emit('goto','', '', l2)
                 tac.emit('label :','', '', l5)
+        tac.backpatch(self.BreakList[-1],l5)
+        tac.backpatch(self.ContinueList[-1],l2)
+        self.BreakList.pop()
+        self.ContinueList.pop()
         self.level-=1
-        # print("Decreasing scope from :"+str(ST.scope))
+        print("Decreasing scope from :"+str(ST.scope))
         ST.dec_scope()
         # print("Decreased scope to :"+str(ST.scope))
         self.blockFlag=1
@@ -340,6 +367,8 @@ class my_visit2(Java8Visitor):
         l3 = tac.newLabel()
         l4 = tac.newLabel()
         l5 = tac.newLabel()
+        self.BreakList.append([])
+        self.ContinueList.append([])
         for child in children:
             if _isIdentifier_(child):
                 continue
@@ -359,6 +388,10 @@ class my_visit2(Java8Visitor):
                 self.visit(child)
                 tac.emit('goto','', '', l2)
                 tac.emit('label :','', '', l5)
+        tac.backpatch(self.BreakList[-1],l5)
+        tac.backpatch(self.ContinueList[-1],l2)
+        self.BreakList.pop()
+        self.ContinueList.pop()
         self.level-=1
         # print("Decreasing scope from :"+str(ST.scope))
         ST.dec_scope()
@@ -1432,6 +1465,18 @@ class my_visit2(Java8Visitor):
         self.postDecrementExpression = lhs
         self.postDecrementExpressionTL = []
         self.postDecrementExpressionFL = []
+        return 1
+
+    def visitBreakStatement(self, ctx:Java8Parser.BreakStatementContext):
+        self.visitChildren(ctx)
+        self.BreakList[-1].append(len(tac.code))
+        tac.emit('goto','','','')
+        return 1
+
+    def visitContinueStatement(self, ctx:Java8Parser.ContinueStatementContext):
+        self.visitChildren(ctx)
+        self.ContinueList[-1].append(len(tac.code))
+        tac.emit('goto','','','')
         return 1
 
     def showTac(self):

@@ -16,6 +16,8 @@ public class RecursionExampleDirectory
 			// 	a = 2;
 			// }
 			a=2;
+			break;
+			c=2;
 		}
 		// val = a==val?val+val:a+a;
 		// a++;
