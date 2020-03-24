@@ -347,7 +347,7 @@ class my_visit2(Java8Visitor):
         self.BreakList.pop()
         self.ContinueList.pop()
         self.level-=1
-        print("Decreasing scope from :"+str(ST.scope))
+        # print("Decreasing scope from :"+str(ST.scope))
         ST.dec_scope()
         # print("Decreased scope to :"+str(ST.scope))
         self.blockFlag=1
