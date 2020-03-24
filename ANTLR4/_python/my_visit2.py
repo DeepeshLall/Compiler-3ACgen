@@ -1389,6 +1389,51 @@ class my_visit2(Java8Visitor):
             self.argumentList = self.expression
         return 1
 
+    def visitPostIncrementExpression(self, ctx:Java8Parser.PostIncrementExpressionContext):
+        # postIncrementExpression : postfixExpression '++'
+		# 				;
+        children = ctx.getChildren()
+        lhs = None
+        rhs = None
+        operator = '++'
+        dest = None
+        for child in children:
+            if _isIdentifier_(child):
+                continue
+            elif parser.ruleNames[child.getRuleIndex()] == 'postfixExpression':
+                self.visit(child)
+                lhs = self.postfixExpression
+        dest = tac.getTemp()
+        tac.emit(str(dest),str(lhs),'1','+')
+        tac.emit(str(lhs),str(lhs),str(dest),'=')
+        self.postIncrementExpression = lhs
+        self.postIncrementExpressionTL = []
+        self.postIncrementExpressionFL = []
+        return 1
+
+    def visitPostDecrementExpression(self, ctx:Java8Parser.PostDecrementExpressionContext):
+        # postDecrementExpression : postfixExpression '--'
+		# 				;
+        children = ctx.getChildren()
+        lhs = None
+        rhs = None
+        operator = '--'
+        dest = None
+        for child in children:
+            if _isIdentifier_(child):
+                self.visit(child)
+                continue
+            elif parser.ruleNames[child.getRuleIndex()] == 'postfixExpression':
+                self.visit(child)
+                lhs = self.postfixExpression
+        dest = tac.getTemp()
+        tac.emit(str(dest),str(lhs),'1','-')
+        tac.emit(str(lhs),str(lhs),str(dest),'=')
+        self.postDecrementExpression = lhs
+        self.postDecrementExpressionTL = []
+        self.postDecrementExpressionFL = []
+        return 1
+
     def showTac(self):
         print("SL.NO.   dest    op1    op2    operator")
         for i in range(len(tac.code)):
