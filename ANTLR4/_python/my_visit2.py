@@ -604,7 +604,7 @@ class my_visit2(Java8Visitor):
             elif parser.ruleNames[child.getRuleIndex()] == 'variableInitializer':
                 self.visit(child)
                 rhs = self.variableInitializer
-                tac.emit(str(dest),str(lhs),str(rhs),str(operator))
+                # tac.emit(str(dest),str(lhs),str(rhs),str(operator))
                 #to be replaced by tac.emit for load and store.
         return 1
 
@@ -689,13 +689,13 @@ class my_visit2(Java8Visitor):
             tac.emit(str(dest),str(lhs),str(rhs),str(operator))
         else:
             operatorBeforeEqual = operator[:-1]
-            dest = tac.getTemp()
-            tac.emit(str(dest),str(lhs),str(rhs),str(operatorBeforeEqual))
-            tempvar = dest
-            operator_equal = '='
             dest = lhs
-            rhs = tempvar
-            tac.emit(str(dest),str(lhs),str(rhs),str(operator_equal))
+            tac.emit(str(dest),str(lhs),str(rhs),str(operatorBeforeEqual))
+            # tempvar = dest
+            # operator_equal = '='
+            # dest = lhs
+            # rhs = tempvar
+            # tac.emit(str(dest),str(lhs),str(rhs),str(operator_equal))
         self.assignment = dest
         self.assignmentTL =[]
         self.assignmentFL = []
