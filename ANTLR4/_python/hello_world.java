@@ -22,11 +22,29 @@ public class RecursionExampleDirectory
 		val = a==val?val+val:a+a;
 		a++;
 		System.out.println( r.getSize(d) );
+		
+		
+		
+		// int[] arr; 
+		// int a[][];
+		// int[] zrr = new int[2]; 
+
+		// arr = new int[5]; 
+		
+		// int val = 0;
+		// val = val + 2.0;
+
+		// char myChar = 'a';
+		// String myString = "MyString";
+		// arr[0] = 10; 
+        // zrr[1] = 20; 
+
+		// a[2][3] = 3;
     }
 
-	public static int fib(int n)
-	{	int result = 0;
-		result = fib(n-1) + fib(n-2);
-		return result;
-	}
+	// public static int fib(int n)
+	// {	int result = 0;
+	// 	result = fib(n-1) + fib(n-2);
+	// 	return result;
+	// }
 }
