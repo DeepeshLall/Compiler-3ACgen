@@ -3,10 +3,12 @@ public class RecursionExampleDirectory
     public static void main(String[] args){
         int a=1,b=2;
         float c=a+2,d=4.2;
-        a/=c;
+		int[][] arr;
+		
+		a/=c;
 		c=a+b*c-d;
 		d = fib(a) + fib(b);
-        int val = 0;
+		int val = 0;
 		val = ++val + ++val;
 		for (int i =0 ; i < a ; i++ ){
 			if(a==val || a>2){
@@ -23,10 +25,7 @@ public class RecursionExampleDirectory
 		a++;
 		System.out.println( r.getSize(d) );
 		
-		
-		
-		// int[] arr; 
-		// int a[][];
+	
 		// int[] zrr = new int[2]; 
 
 		// arr = new int[5]; 
@@ -39,7 +38,7 @@ public class RecursionExampleDirectory
 		// arr[0] = 10; 
         // zrr[1] = 20; 
 
-		// a[2][3] = 3;
+		arr[2][3] = 3;
     }
 
 	// public static int fib(int n)

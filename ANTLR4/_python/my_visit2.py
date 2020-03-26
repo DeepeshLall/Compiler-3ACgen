@@ -587,14 +587,6 @@ class my_visit2(Java8Visitor):
             self.formalType=self.type
         return self.visitChildren(ctx)
 
-    def visitVariableDeclaratorId(self, ctx:Java8Parser.VariableDeclaratorIdContext):
-        self.typeList.append(ctx.getText())
-        self.typeSizeList.append(ctx.getChild.__sizeof__())
-        if self.inFormalList == 1:
-            self.formalTypeList.append(ctx.getText())
-            self.formalTypeSizeList.append(ctx.getChild.__sizeof__())
-        return self.visitChildren(ctx)
-
     def PrintSymbolTable(self):
         print(ST.SymbolTable)
         print()
@@ -635,15 +627,41 @@ class my_visit2(Java8Visitor):
                 lhs = child.getText()
                 dest =lhs
                 # get  self.variableDeclaratorId from using symbolTable.
-                # lhsType = self.variableDeclaratorId 
+                lhsType = self.type 
             elif parser.ruleNames[child.getRuleIndex()] == 'variableInitializer':
                 self.visit(child)
-                # rhsType = self.variableInitializerType
+                rhsType = self.variableInitializerType
                 rhs = self.variableInitializer
-                # if not leftType == rhsType:
-                #     sys.exit("Type mismatch in declaration :  " + str(child.getText()))
+                if not lhsType == rhsType:
+                    #check of typecasting is possible.
+                    # print("RHS Type: "+str(rhsType) + " LHS Type: "+str(lhsType))
+                    print("Type mismatch in declaration :  " + str(ctx.getText()))
+                else:
+                    pass
+                    # print("varaible Declared: "+str(lhsType)+" "+str(ctx.getText()))
         tac.emit(str(dest),str(lhs),str(rhs),str(operator))
         #to be replaced by tac.emit for load and store.
+        return 1
+
+    def visitVariableDeclaratorId(self, ctx:Java8Parser.VariableDeclaratorIdContext):
+        children = ctx.getChildren()
+        childCount = ctx.getChildCount()
+        self.typeSizeList.append(childCount-1)
+        for child in children:
+            if _isIdentifier_(child):
+                self.typeList.append(child.getText())
+                continue
+            else:
+                pass
+        if self.inFormalList == 1:
+            if childCount > 1:
+                self.formalTypeSizeList.append(childCount-1)
+            for child in children:
+                if _isIdentifier_(child):
+                    self.formalTypeList.append(child.getText())
+                    continue
+                else:
+                    pass
         return 1
 
     def visitVariableInitializer(self, ctx:Java8Parser.VariableInitializerContext):
@@ -751,6 +769,7 @@ class my_visit2(Java8Visitor):
 		# 	  |  arrayAccess
 		# 	  ;
         self.LeftHandSide = ctx.getText() # to be improved for array and field access.
+        print(ctx.getText() +" : "+ str(ST.getType('variables',ctx.getText())))
         # get its type from SymbolTable in present Scope.
         self.LeftHandSideType = 'int' #hardcoded.
         return self.visitChildren(ctx)
