@@ -7,8 +7,8 @@ public class RecursionExampleDirectory
 		short e;
 		// c = e;
 		// a/=c;
-		// c=a+b*c-d;
-		// d = fib(a) + fib(b);
+		c=a+b*(int)c-(float)d;
+		d = fib(a - 1) + fib(b);
 		int val = 0;
 		val = ++val + ++val;
 		val = (float) val;
@@ -27,7 +27,6 @@ public class RecursionExampleDirectory
 		// val = a==val?val+val:a+a;
 		// a++;
 		// System.out.println( r.getSize(d) );
-		
 	
 		// int[] zrr = new int[2]; 
 

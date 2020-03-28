@@ -895,7 +895,7 @@ class my_visit2(Java8Visitor):
                     rhs = self.conditionalAndExpression
                     rhsType = self.inclusiveOrExpressionType
             if lhsType == rhsType :
-                if not ((lhsType == 'char') or (lhsType == 'string')):
+                if not ((lhsType == 'char') or (lhsType == 'string')  or (lhsType == 'int') or (lhsType == 'float')):
                     self.conditionalOrExpressionType = 'boolean'
                 else:
                     sys.exit("Type error in conditionalOrExpressionType, don't accept char or string for shift.")
@@ -946,7 +946,7 @@ class my_visit2(Java8Visitor):
                     rhs = self.conditionalAndExpression
                     rhsType = self.inclusiveOrExpressionType
             if lhsType == rhsType :
-                if not ((lhsType == 'char') or (lhsType == 'string')):
+                if not ((lhsType == 'char') or (lhsType == 'string') or (lhsType == 'int') or (lhsType == 'float')):
                     self.conditionalAndExpressionType = 'boolean'
                 else:
                     sys.exit("Type error in conditionalAndExpression, don't accept char or string for shift.")
