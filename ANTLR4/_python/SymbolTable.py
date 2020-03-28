@@ -72,6 +72,7 @@ class SymbolTable:
             if name in self.SymbolTable[scope_curr][key]:
                 return self.SymbolTable[scope_curr][key][name]['type']
             scope_curr = self.SymbolTable[scope_curr]['parent']
+        sys.exit(key+" : " + name+" not defined.")
         return None
     
     def inc_scope(self,name=None):

@@ -3,27 +3,27 @@ public class RecursionExampleDirectory
     public static void main(String[] args){
         int a=1,b=2;
         float c=a+2,d=4.2;
-		int[][] arr;
+		// int[][] arr;
 		
-		a/=c;
-		c=a+b*c-d;
-		d = fib(a) + fib(b);
-		int val = 0;
-		val = ++val + ++val;
-		for (int i =0 ; i < a ; i++ ){
+		// a/=c;
+		// c=a+b*c-d;
+		// d = fib(a) + fib(b);
+		// int val = 0;
+		// val = ++val + ++val;
+		// for (int i =0 ; i < a ; i++ ){
 			if(a==val || a>2){
 				System.out.println( "Hey I am string." );
 				b=3;
 			}else{
-				a = 2;
+				a = b;
 			}
 			// a=2;
 			// break;
 			// c=2;
-		}
-		val = a==val?val+val:a+a;
-		a++;
-		System.out.println( r.getSize(d) );
+		// }
+		// val = a==val?val+val:a+a;
+		// a++;
+		// System.out.println( r.getSize(d) );
 		
 	
 		// int[] zrr = new int[2]; 
@@ -38,7 +38,7 @@ public class RecursionExampleDirectory
 		// arr[0] = 10; 
         // zrr[1] = 20; 
 
-		arr[2][3] = 3;
+		// arr[2][3] = 3;
     }
 
 	// public static int fib(int n)

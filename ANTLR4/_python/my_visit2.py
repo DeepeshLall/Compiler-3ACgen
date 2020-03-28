@@ -58,30 +58,32 @@ class my_visit2(Java8Visitor):
         self.assignment = None # it contain the return temporary for expression after assignment.
         self.LeftHandSide = None # it contains the temporary for leftHandSide in assignment
 
-        self.conditionalOrExpression = None # it contains the temporary for conditonalOrExpression after visiting.
-        self.conditionalAndExpression = None # it contains the temporary for conditionalAndExpression after visiting.
-        self.inclusiveOrExpression = None # it contains the temporary for inclusiveOrExpression after visiting.
-        self.exclusiveOrExpression = None # it contains the temporary for exclusiveOrExpression after visiting.
-        self.andExpression = None # it contains the temporary for andExpression after visiting.
-        self.equalityExpression = None # it contains the temporary for equalityExpression after visiting.
-        self.relationalExpression = None # it contains the temporary for relationalExpression after visiting.
-        self.shiftExpression = None # it contains the temporary for shiftExpression after visiting.
-        self.additiveExpression = None # it contains the temporary for additiveExpression after visiting.
-        self.multiplicativeExpression = None # it contains the temporary for multiplicativeExpression after visiting.
-        self.unaryExpression = None # it contains the temporary for unaryExpression after visiting.
-        self.preIncrementExpression = None # it contains the temporary for preIncrementExpression after visiting.
-        self.preDecrementExpression = None # it contains the temporary for preDecrementExpression after visiting.
-        self.unaryExpressionNotPlusMinus = None # it contains the temporary for unaryExpressionNotPlusMinus after visiting.
-        self.postfixExpression = None # it contains the temporary for postfixExpression after visiting.
-        self.postfix_Type_1 = None # it contains the temporary for postfix_Type_1 after visiting.
-        self.primary = None # it contains the temporary for primary after visiting.
-        self.castExpression = None # it contains the temporary for castExpression after visiting.
-        self.primary_Type_1 = None # it contains the temporary for primary_Type_1 after visiting.
-        self.primaryNoNewArray_Type_1_Pr = None # it contains the temporary for primaryNoNewArray_Type_1_Pr after visiting.
-        self.methodInvocation_Type_1_Pr = None # it contains the temporary for methodInvocation_Type_1_Pr after visiting.
-        self.argumentList = None # it contains the temporary for argumentList after visiting.
-        self.postDecrementExpression = None # it contains the temporary for postDecrementExpression after visiting.
-        self.postIncrementExpression = None  # it contains the temporary for postIncrementExpression after visiting.
+        #contains temporary register in case of operand reduction at that named non terminal node in parse tree.
+        self.conditionalOrExpression = None 
+        self.conditionalAndExpression = None 
+        self.inclusiveOrExpression = None 
+        self.exclusiveOrExpression = None 
+        self.andExpression = None 
+        self.equalityExpression = None 
+        self.relationalExpression = None 
+        self.shiftExpression = None 
+        self.additiveExpression = None 
+        self.multiplicativeExpression = None 
+        self.unaryExpression = None 
+        self.preIncrementExpression = None 
+        self.preDecrementExpression = None 
+        self.unaryExpressionNotPlusMinus = None 
+        self.postfixExpression = None 
+        self.postfix_Type_1 = None 
+        self.primary = None 
+        self.castExpression = None 
+        self.primary_Type_1 = None 
+        self.primaryNoNewArray_Type_1_Pr = None 
+        self.methodInvocation_Type_1_Pr = None 
+        self.argumentList = None 
+        self.postDecrementExpression = None 
+        self.postIncrementExpression = None  
+        self.expressionName = None
 
         # False List of all the nonterminal having value to be backpatched.
         self.expressionFL = []
@@ -154,6 +156,7 @@ class my_visit2(Java8Visitor):
         self.argumentListType = 'void'
         self.postDecrementExpressionType = 'void'
         self.postIncrementExpressionType = 'void'
+        self.expressionNameType = 'void'
 
         self.BreakList = []
         self.ContinueList = []
@@ -615,8 +618,8 @@ class my_visit2(Java8Visitor):
 
     def visitVariableDeclarator(self, ctx:Java8Parser.VariableDeclaratorContext):
         children = ctx.getChildren()
-        lhs = None
-        rhs = None
+        lhs = ""
+        rhs = ""
         dest = None
         operator = '='
         for child in children:
@@ -632,13 +635,13 @@ class my_visit2(Java8Visitor):
                 self.visit(child)
                 rhsType = self.variableInitializerType
                 rhs = self.variableInitializer
-                if not lhsType == rhsType:
-                    #check of typecasting is possible.
-                    # print("RHS Type: "+str(rhsType) + " LHS Type: "+str(lhsType))
-                    print("Type mismatch in declaration :  " + str(ctx.getText()))
+                if not lhsType == rhsType :
+                    # Coercion limited to widening rule Page 389 Aho.
+                    if ((lhsType == 'short' or lhsType == 'byte') and (rhsType == 'char')):
+                        sys.exit("Type widening not possible in Declaration. lhsType = "+lhsType+" , rhsType = "+rhsType)
+                    tac.emit(str(rhs),str(rhs),'',"("+str(lhsType)+")")
                 else:
                     pass
-                    # print("varaible Declared: "+str(lhsType)+" "+str(ctx.getText()))
         tac.emit(str(dest),str(lhs),str(rhs),str(operator))
         #to be replaced by tac.emit for load and store.
         return 1
@@ -734,8 +737,8 @@ class my_visit2(Java8Visitor):
         # assignment  :  leftHandSide assignmentOperator expression
 		#     ;
         children = ctx.getChildren()
-        lhs = None
-        rhs = None
+        lhs = ""
+        rhs = ""
         operator = None
         dest = None
         for child in children:
@@ -748,6 +751,11 @@ class my_visit2(Java8Visitor):
             if parser.ruleNames[child.getRuleIndex()] == 'expression':
                 rhs = self.expression
                 rhsType = self.expressionType
+        if not lhsType == rhsType :
+            # Coercion limited to widening rule Page 389 Aho.
+            if ((lhsType == 'short' or lhsType == 'byte') and (rhsType == 'char')) or ((rhsType == 'short' or rhsType == 'byte') and (lhsType == 'char')):
+                sys.exit("Type widening not possible in assignment. lhsType = "+lhsType+" , rhsType = "+rhsType)
+            tac.emit(str(rhs),str(rhs),'',"("+str(lhsType)+")")
         if operator == '=':
             dest = lhs
             tac.emit(str(dest),str(lhs),str(rhs),str(operator))
@@ -755,8 +763,6 @@ class my_visit2(Java8Visitor):
             operatorBeforeEqual = operator[:-1]
             dest = lhs
             tac.emit(str(dest),str(lhs),str(rhs),str(operatorBeforeEqual))
-        # if not lhsType == rhsType :
-            #generate tac for typecasting if possible.
         self.assignment = dest
         self.assignmentTL =[]
         self.assignmentFL = []
@@ -768,11 +774,38 @@ class my_visit2(Java8Visitor):
 		# 	  |  fieldAccess
 		# 	  |  arrayAccess
 		# 	  ;
-        self.LeftHandSide = ctx.getText() # to be improved for array and field access.
-        print(ctx.getText() +" : "+ str(ST.getType('variables',ctx.getText())))
-        # get its type from SymbolTable in present Scope.
-        self.LeftHandSideType = 'int' #hardcoded.
-        return self.visitChildren(ctx)
+        children = ctx.getChildren()
+        for child in children:
+            if parser.ruleNames[child.getRuleIndex()] == 'expressionName':
+                self.visit(child)
+                self.LeftHandSide = self.expressionName
+                self.LeftHandSideType = self.expressionNameType
+            elif parser.ruleNames[child.getRuleIndex()] == 'arrayAccess':
+                self.visit(child)
+                self.LeftHandSide = child.getText() # need to be replaced by self.arrayAccess
+                self.leftHandSideType = 'int' #HARDCODED.
+            elif parser.ruleNames[child.getRuleIndex()] == 'fieldAccess':
+                self.visit(child)
+                self.LeftHandSide = child.getText() # need to be replaced by self.fieldAccess
+                self.leftHandSideType = 'int' #HARDCODED.
+        return 1
+
+    def visitExpressionName(self, ctx:Java8Parser.ExpressionNameContext):
+        # expressionName  :  Identifier
+		# 		|  ambiguousName '.' Identifier
+		# 		;
+        children = ctx.getChildren()
+        for child in children:
+            if _isIdentifier_(child):
+                self.expressionName = ctx.getText()
+                self.expressionNameType = ST.getType('variables',child.getText())
+                continue
+            elif parser.ruleNames[child.getRuleIndex()] == 'ambiguousName':
+                self.visit(child)
+                self.expressionName = child.getText
+                self.expressionNameType = ST.getType('variables',child.getText())
+
+        return 1
 
     def visitConditionalExpression(self, ctx:Java8Parser.ConditionalExpressionContext):
         # conditionalExpression : conditionalOrExpression
@@ -792,25 +825,29 @@ class my_visit2(Java8Visitor):
             #for now in this case there's no tac for ternary jump or labels.
             ifTruetype = 'void'
             ifFalseType = 'void'
+            label1 = tac.newLabel()
+            label2 = tac.newLabel()
+            label3 = tac.newLabel()
+            predicateType = "void"
             for child in children:
                 if _isIdentifier_(child):
                     continue
                 elif parser.ruleNames[child.getRuleIndex()] == 'conditionalOrExpression':
                     self.visit(child)
                     predicateType = self.conditionalOrExpressionType
-                    # print("Setting Labels,jump and backpatching trueList and FalseList.")
-                    #emit tac for this to be backpatched and backpatching visited expression true and falseList..
+                    tac.backpatch(self.conditionalOrExpressionTL,label1)
+                    tac.backpatch(self.conditionalOrExpressionFL,label2)
                 elif parser.ruleNames[child.getRuleIndex()] == 'expression':
+                    tac.emit('label: ','','',label1)
                     self.visit(child)
-                    # print("Print tac for true statements "+str(child.getText()))
+                    tac.emit('goto','','',label3)
                     self.conditionExpression = self.expression
                     ifTruetype = self.expressionType
                 elif parser.ruleNames[child.getRuleIndex()] == 'conditionalExpression':
+                    tac.emit('label: ','','',label2)
                     self.visit(child)
-                    # print("Print tac for false statements "+str(child.getText()))
-                    #emit tac for below. As self.conditonExpression(temp) is to be stored in same place for self.condtionExpression of head as of self.expression.
-                    # self.conditionExpression = self.conditionExpression
                     ifFalseType = self.conditionExpressionType
+                    tac.emit('label: ','','',label3)
             if predicateType in ['int','float','boolean'] and ifTruetype == ifFalseType:
                 self.conditionExpressionType = ifTruetype
             elif predicateType in ['int','float','boolean']:
@@ -818,7 +855,7 @@ class my_visit2(Java8Visitor):
                 sys.exit("ifTrue and ifFalse type of ternary operator are different.")
             else:
                 print("Type Error : Predicate Must Be A Boolean")
-                sys.exit(predicate.type)
+                sys.exit(predicateType)
             self.conditionExpressionTL = []
             self.conditionExpressionFL = []
         return 1
@@ -837,9 +874,9 @@ class my_visit2(Java8Visitor):
             self.conditionalOrExpressionFL = self.conditionalAndExpressionFL
             self.conditionalOrExpressionType = self.conditionalAndExpressionType
         elif childCount == 3:
-            lhs = None
-            rhs = None
-            lhs1 = None
+            lhs = ""
+            rhs = ""
+            lhs1 = ""
             operator = None
             dest = None
             label = None
@@ -853,10 +890,7 @@ class my_visit2(Java8Visitor):
                     lhs1 = tac.getTemp()
                     tac.emit(str(lhs1),str(lhs1),str(lhs),'=')
                     lhsType = self.conditionalOrExpressionType
-                    # make trueList and FalseList
-                    # emit tac for backpatch and shortcircuit on basis of return value of self.condiotionalOrExpression
-                    # what to set self.conditionalOrExpression for head? nothing currently
-                    #if to be taken as 3ac then emit a tac here and set the dest -> self.head value
+                    # currently between to goto so not reached.
                 elif parser.ruleNames[child.getRuleIndex()] == 'conditionalAndExpression':
                     label = tac.newLabel()
                     tac.emit('label: ','','',label)
@@ -865,7 +899,6 @@ class my_visit2(Java8Visitor):
                     rhsType = self.inclusiveOrExpressionType
             if lhsType == rhsType :
                 if not ((lhsType == 'char') or (lhsType == 'string')):
-                    #considered conditionalOrExpression when containing == or != return a boolean. 
                     self.conditionalOrExpressionType = 'boolean'
                 else:
                     sys.exit("Type error in conditionalOrExpressionType, don't accept char or string for shift.")
@@ -896,9 +929,9 @@ class my_visit2(Java8Visitor):
             self.conditionalAndExpressionFL = self.inclusiveOrExpressionFL
             self.conditionalAndExpressionType = self.inclusiveOrExpressionType
         elif childCount == 3:
-            lhs = None
-            rhs = None
-            lhs1 = None
+            lhs = ""
+            rhs = ""
+            lhs1 = ""
             operator = None
             dest = None
             for child in children:
@@ -911,10 +944,7 @@ class my_visit2(Java8Visitor):
                     lhs1 = tac.getTemp()
                     tac.emit(str(lhs1),str(lhs1),str(lhs),'=')
                     lhsType = self.conditionalAndExpressionType
-                    # make trueList and FalseList
-                    # emit tac for backpatch and shortcircuit on basis of return value of self.conditionalAndExpression
-                    # what to set self.conditionalAndExpression for head? nothing currently.
-                    #if to be taken as 3ac then emit a tac here and set the dest -> self.head value
+                    # currently between to goto so not reached.
                 elif parser.ruleNames[child.getRuleIndex()] == 'inclusiveOrExpression':
                     label = tac.newLabel()
                     tac.emit('label: ','','',label)
@@ -923,7 +953,6 @@ class my_visit2(Java8Visitor):
                     rhsType = self.inclusiveOrExpressionType
             if lhsType == rhsType :
                 if not ((lhsType == 'char') or (lhsType == 'string')):
-                    #considered conditionalAndExpression when containing == or != return a boolean. 
                     self.conditionalAndExpressionType = 'boolean'
                 else:
                     sys.exit("Type error in conditionalAndExpression, don't accept char or string for shift.")
@@ -954,9 +983,9 @@ class my_visit2(Java8Visitor):
             self.inclusiveOrExpressionFL = self.exclusiveOrExpressionFL
             self.inclusiveOrExpressionType = self.exclusiveOrExpressionType
         elif childCount == 3:
-            lhs = None
-            rhs = None
-            lhs1 = None
+            lhs = ""
+            rhs = ""
+            lhs1 = ""
             operator = '|'
             for child in children:
                 if _isIdentifier_(child):
@@ -977,7 +1006,10 @@ class my_visit2(Java8Visitor):
                 else:
                     sys.exit("Type error: inclusiveOrExpression don't take string or char.")
             elif (lhsType in ['int','float'] and rhsType in ['float']) or (rhsType in ['int','float'] and lhsType in ['float']):
-                #generate a tac for typecast.
+                if lhsType == 'int' and rhsType == 'float':
+                    tac.emit(str(lhs1),str(lhs1),'','(float)')
+                elif rhsType == 'int' and rhsType == 'float':
+                    tac.emit(str(rhs),str(rhs),'','(float)')
                 self.inclusiveOrExpressionType = 'float'
             else:
                 print("Type Error in inclusiveOrExpression")
@@ -1003,10 +1035,10 @@ class my_visit2(Java8Visitor):
             self.exclusiveOrExpressionFL = self.andExpressionFL
             self.exclusiveOrExpressionType = self.andExpressionType
         elif childCount == 3:
-            lhs = None
-            rhs = None
+            lhs = ""
+            rhs = ""
             operator = '^'
-            lhs1 = None
+            lhs1 = ""
             for child in children:
                 if _isIdentifier_(child):
                     continue
@@ -1026,7 +1058,10 @@ class my_visit2(Java8Visitor):
                 else:
                     sys.exit("Type error: andExpression don't take string or char.")
             elif (lhsType in ['int','float'] and rhsType in ['float']) or (rhsType in ['int','float'] and lhsType in ['float']):
-                #generate a tac for typecast.
+                if lhsType == 'int' and rhsType == 'float':
+                    tac.emit(str(lhs1),str(lhs1),'','(float)')
+                elif rhsType == 'int' and rhsType == 'float':
+                    tac.emit(str(rhs),str(rhs),'','(float)')
                 self.andExpressionType = 'float'
             else:
                 print("Type Error in andExpression")
@@ -1052,9 +1087,9 @@ class my_visit2(Java8Visitor):
             self.andExpressionFL = self.equalityExpressionFL
             self.andExpressionType = self.equalityExpressionType
         elif childCount == 3:
-            lhs = None
-            rhs = None
-            lhs1 = None
+            lhs = ""
+            rhs = ""
+            lhs1 = ""
             operator = '&'
             for child in children:
                 if _isIdentifier_(child):
@@ -1067,6 +1102,7 @@ class my_visit2(Java8Visitor):
                     lhsType = self.andExpressionType
                 elif parser.ruleNames[child.getRuleIndex()] == 'equalityExpression':
                     self.visit(child)
+                    rhs = self.equalityExpression
                     rhsType = self.equalityExpression
             if lhsType == rhsType :
                 if not ((lhsType == 'char') or (lhsType == 'string')):
@@ -1074,7 +1110,10 @@ class my_visit2(Java8Visitor):
                 else:
                     sys.exit("Type error: andExpression don't take string or char.")
             elif (lhsType in ['int','float'] and rhsType in ['float']) or (rhsType in ['int','float'] and lhsType in ['float']):
-                #generate a tac for typecast.
+                if lhsType == 'int' and rhsType == 'float':
+                    tac.emit(str(lhs1),str(lhs1),'','(float)')
+                elif rhsType == 'int' and rhsType == 'float':
+                    tac.emit(str(rhs),str(rhs),'','(float)')
                 self.andExpressionType = 'float'
             else:
                 print("Type Error in andExpression")
@@ -1101,9 +1140,9 @@ class my_visit2(Java8Visitor):
             self.equalityExpressionFL = self.relationalExpressionFL
             self.equalityExpressionType = self.relationalExpressionType
         elif childCount == 3:
-            lhs = None
-            rhs = None
-            lhs1 = None
+            lhs = ""
+            rhs = ""
+            lhs1 = ""
             for child in children:
                 if _isIdentifier_(child):
                     operator = child.getText()
@@ -1156,9 +1195,9 @@ class my_visit2(Java8Visitor):
             self.relationalExpressionFL = self.shiftExpressionFL
             self.relationalExpressionType = self.shiftExpressionType
         elif childCount == 3:
-            lhs = None
-            rhs = None
-            lhs1 = None
+            lhs = ""
+            rhs = ""
+            lhs1 = ""
             noTac = 0
             for child in children:
                 if _isIdentifier_(child):
@@ -1197,6 +1236,7 @@ class my_visit2(Java8Visitor):
             self.relationalExpression = dest
             tac.emit(str(dest),str(lhs1),str(rhs),str(operator))
             self.relationalExpressionFL = [len(tac.code)]
+            # to be handled for a = 2 > 3; case.
             tac.emit('ifgoto',dest,'eq0','')
             self.relationalExpressionTL = [len(tac.code)]
             tac.emit('goto','','','')
@@ -1218,9 +1258,9 @@ class my_visit2(Java8Visitor):
             self.shiftExpressionFL = self.additiveExpressionFL
             self.shiftExpressionType = self.additiveExpressionType
         elif childCount == 3:
-            lhs = None
-            rhs = None
-            lhs1 = None
+            lhs = ""
+            rhs = ""
+            lhs1 = ""
             for child in children:
                 if _isIdentifier_(child):
                     operator = child.getText()
@@ -1273,9 +1313,9 @@ class my_visit2(Java8Visitor):
             self.additiveExpressionFL = self.multiplicativeExpressionFL
             self.additiveExpressionType = self.multiplicativeExpressionType
         elif childCount == 3:
-            lhs = None
-            rhs = None
-            lhs1 = None
+            lhs = ""
+            rhs = ""
+            lhs1 = ""
             for child in children:
                 if _isIdentifier_(child):
                     operator = child.getText()
@@ -1296,11 +1336,14 @@ class my_visit2(Java8Visitor):
                         print("additiveExpression type can't have void operand.")
                     self.additiveExpressionType = lhsType
                 else:
-                    print("string concat malloc")
+                    print("stringConcat malloc")
                     pass
                     #tac for malloc of string concatenation.
             elif (lhsType in ['int','float'] and rhsType in ['float']) or (rhsType in ['int','float'] and lhsType in ['float']):
-                #Genrate a tac for type cast
+                if lhsType == 'int' and rhsType == 'float':
+                    tac.emit(str(lhs1),str(lhs1),'','(float)')
+                elif rhsType == 'int' and rhsType == 'float':
+                    tac.emit(str(rhs),str(rhs),'','(float)')
                 self.additiveExpressionType = 'float'
             else:
                 print("Type Error in additiveExpression")
@@ -1328,9 +1371,9 @@ class my_visit2(Java8Visitor):
             self.multiplicativeExpressionFL = self.unaryExpressionFL
             self.multiplicativeExpressionType = self.unaryExpressionType
         elif childCount == 3:
-            lhs = None
-            rhs = None
-            lhs1 = None
+            lhs = ""
+            rhs = ""
+            lhs1 = ""
             for child in children:
                 if _isIdentifier_(child):
                     operator = child.getText()
@@ -1353,7 +1396,10 @@ class my_visit2(Java8Visitor):
                 else:
                     sys.exit("Type error: multiplicativeExpression don't take string or char.")
             elif (lhsType in ['int','float'] and rhsType in ['float']) or (rhsType in ['int','float'] and lhsType in ['float']):
-                #generate a tac for typecast.
+                if lhsType == 'int' and rhsType == 'float':
+                    tac.emit(str(lhs1),str(lhs1),'','(float)')
+                elif rhsType == 'int' and rhsType == 'float':
+                    tac.emit(str(rhs),str(rhs),'','(float)')
                 self.multiplicativeExpressionType = 'float'
             else:
                 print("Type Error in multiplicativeExpression")
@@ -1387,8 +1433,8 @@ class my_visit2(Java8Visitor):
                 self.unaryExpression = self.unaryExpressionNotPlusMinus
                 self.unaryExpressionType = self.unaryExpressionNotPlusMinusType
         elif childCount == 2:
-            lhs = None
-            rhs = None
+            lhs = ""
+            rhs = ""
             operator = None
             dest = None
             for child in children:
@@ -1411,8 +1457,8 @@ class my_visit2(Java8Visitor):
         # preIncrementExpression : '++' unaryExpression
 		# 			   ;
         children = ctx.getChildren()
-        lhs = None
-        rhs = None
+        lhs = ""
+        rhs = ""
         operator = None
         dest = None
         for child in children:
@@ -1441,8 +1487,8 @@ class my_visit2(Java8Visitor):
         # preDecrementExpression : '--' unaryExpression
 		# 			   ;
         children = ctx.getChildren()
-        lhs = None
-        rhs = None
+        lhs = ""
+        rhs = ""
         operator = None
         dest = None
         for child in children:
@@ -1485,8 +1531,8 @@ class my_visit2(Java8Visitor):
                 self.unaryExpressionNotPlusMinus = self.castExpression
                 self.unaryExpressionNotPlusMinusType = self.castExpressionType
         elif childCount == 2:
-            lhs = None
-            rhs = None
+            lhs = ""
+            rhs = ""
             operator = None
             dest = None
             for child in children:
@@ -1508,8 +1554,8 @@ class my_visit2(Java8Visitor):
         # postfixExpression : postfix_Type_1 postfix_Type_2*
         #           ;
         children = ctx.getChildren()
-        lhs = None
-        rhs = None
+        lhs = ""
+        rhs = ""
         operator = None
         dest = None
         for child in children:
@@ -1564,9 +1610,8 @@ class my_visit2(Java8Visitor):
                 self.postfix_Type_1Type = self.primaryType
             elif parser.ruleNames[child.getRuleIndex()] == 'expressionName':
                 self.visit(child)
-                self.postfix_Type_1 = child.getText()
-                #to be given from symboltable.
-                self.postfix_Type_1Type = 'int'
+                self.postfix_Type_1 = self.expressionName
+                self.postfix_Type_1Type = self.expressionNameType
         return 1
 
     def visitCastExpression(self, ctx:Java8Parser.CastExpressionContext):
@@ -1576,8 +1621,8 @@ class my_visit2(Java8Visitor):
 		# 		;
         children = ctx.getChildren()
         operator = ""
-        lhs = None
-        rhs = None
+        lhs = ""
+        rhs = ""
         dest = None
         for child in children:
             if _isIdentifier_(child):
@@ -1667,7 +1712,6 @@ class my_visit2(Java8Visitor):
                         flag=1
                 else:
                     Literal = child.getText()
-                    # print(Literal,len(Literal))
                     if Literal[0] == '\'':
                         self.primaryNoNewArray_Type_1_PrType = 'char'
                     elif Literal[0] == '\"':
@@ -1681,7 +1725,9 @@ class my_visit2(Java8Visitor):
                             self.primaryNoNewArray_Type_1_PrType = Literal
                     else:
                         self.primaryNoNewArray_Type_1_PrType = 'int'
-                    self.primaryNoNewArray_Type_1_Pr = Literal
+                    dest = tac.getTemp()
+                    tac.emit(str(dest),str(Literal),'','=')
+                    self.primaryNoNewArray_Type_1_Pr = dest
                 continue
             elif parser.ruleNames[child.getRuleIndex()] == 'methodInvocation_Type_1_Pr':
                 self.visit(child)
@@ -1711,7 +1757,7 @@ class my_visit2(Java8Visitor):
                 self.primaryNoNewArray_Type_1_Pr = child.getText()
             elif parser.ruleNames[child.getRuleIndex()] == 'arrayAccess_Type_1_Pr':
                 self.visit(child)
-                #array type from SymbolTable or temp self.variable to be used for array type
+                #array type from SymbolTable or temp self. variable to be used for array type
                 self.primaryNoNewArray_Type_1_PrType = 'int'                
                 self.primaryNoNewArray_Type_1_Pr = child.getText()
             elif parser.ruleNames[child.getRuleIndex()] == 'methodReference_Type_1_Pr':
@@ -1729,7 +1775,7 @@ class my_visit2(Java8Visitor):
 		# 		  ;
         children = ctx.getChildren()
         lhs = ""
-        rhs = None
+        rhs = ""
         operator = ""
         dest = None
         for child in children:
@@ -1773,8 +1819,8 @@ class my_visit2(Java8Visitor):
         # postIncrementExpression : postfixExpression '++'
 		# 				;
         children = ctx.getChildren()
-        lhs = None
-        rhs = None
+        lhs = ""
+        rhs = ""
         operator = '++'
         dest = None
         for child in children:
@@ -1799,8 +1845,8 @@ class my_visit2(Java8Visitor):
         # postDecrementExpression : postfixExpression '--'
 		# 				;
         children = ctx.getChildren()
-        lhs = None
-        rhs = None
+        lhs = ""
+        rhs = ""
         operator = '--'
         dest = None
         for child in children:
