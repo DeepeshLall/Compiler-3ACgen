@@ -642,8 +642,8 @@ class my_visit2(Java8Visitor):
                     tac.emit(str(rhs),str(rhs),'',"("+str(lhsType)+")")
                 else:
                     pass
-        tac.emit(str(dest),str(lhs),str(rhs),str(operator))
-        #to be replaced by tac.emit for load and store.
+                tac.emit(str(dest),str(rhs),'',str(operator))
+                #to be replaced by tac.emit for load and store.
         return 1
 
     def visitVariableDeclaratorId(self, ctx:Java8Parser.VariableDeclaratorIdContext):
@@ -758,7 +758,7 @@ class my_visit2(Java8Visitor):
             tac.emit(str(rhs),str(rhs),'',"("+str(lhsType)+")")
         if operator == '=':
             dest = lhs
-            tac.emit(str(dest),str(lhs),str(rhs),str(operator))
+            tac.emit(str(dest),str(rhs),'',str(operator))
         else:
             operatorBeforeEqual = operator[:-1]
             dest = lhs
@@ -801,6 +801,7 @@ class my_visit2(Java8Visitor):
                 self.expressionNameType = ST.getType('variables',child.getText())
                 continue
             elif parser.ruleNames[child.getRuleIndex()] == 'ambiguousName':
+                # to be updated for object access.
                 self.visit(child)
                 self.expressionName = child.getText
                 self.expressionNameType = ST.getType('variables',child.getText())
@@ -876,7 +877,6 @@ class my_visit2(Java8Visitor):
         elif childCount == 3:
             lhs = ""
             rhs = ""
-            lhs1 = ""
             operator = None
             dest = None
             label = None
@@ -887,10 +887,7 @@ class my_visit2(Java8Visitor):
                 elif parser.ruleNames[child.getRuleIndex()] == 'conditionalOrExpression':
                     self.visit(child)
                     lhs = self.conditionalOrExpression
-                    lhs1 = tac.getTemp()
-                    tac.emit(str(lhs1),str(lhs1),str(lhs),'=')
                     lhsType = self.conditionalOrExpressionType
-                    # currently between to goto so not reached.
                 elif parser.ruleNames[child.getRuleIndex()] == 'conditionalAndExpression':
                     label = tac.newLabel()
                     tac.emit('label: ','','',label)
@@ -909,7 +906,8 @@ class my_visit2(Java8Visitor):
                 sys.exit("LHS type: "+str(lhsType)+" ,RHS type: "+str(rhsType))
             dest = tac.getTemp()
             self.conditionalOrExpression = dest
-            tac.emit(str(dest),str(lhs1),str(rhs),str(operator))
+            # Generated between a goto and lablel so skipped.
+            tac.emit(str(dest),str(lhs),str(rhs),str(operator))
             tac.backpatch(self.conditionalOrExpressionFL,label)
             self.conditionalOrExpressionTL = self.conditionalOrExpressionTL + self.conditionalAndExpressionTL
             self.conditionalOrExpressionFL = self.conditionalAndExpressionFL
@@ -931,7 +929,6 @@ class my_visit2(Java8Visitor):
         elif childCount == 3:
             lhs = ""
             rhs = ""
-            lhs1 = ""
             operator = None
             dest = None
             for child in children:
@@ -941,10 +938,7 @@ class my_visit2(Java8Visitor):
                 elif parser.ruleNames[child.getRuleIndex()] == 'conditionalAndExpression':
                     self.visit(child)
                     lhs = self.conditionalOrExpression
-                    lhs1 = tac.getTemp()
-                    tac.emit(str(lhs1),str(lhs1),str(lhs),'=')
                     lhsType = self.conditionalAndExpressionType
-                    # currently between to goto so not reached.
                 elif parser.ruleNames[child.getRuleIndex()] == 'inclusiveOrExpression':
                     label = tac.newLabel()
                     tac.emit('label: ','','',label)
@@ -963,7 +957,8 @@ class my_visit2(Java8Visitor):
                 sys.exit("LHS type: "+str(lhsType)+" ,RHS type: "+str(rhsType))
             dest = tac.getTemp()
             self.conditionalAndExpression = dest
-            tac.emit(str(dest),str(lhs1),str(rhs),str(operator))
+            # Generated between a goto and lablel so skipped.
+            tac.emit(str(dest),str(lhs),str(rhs),str(operator))
             tac.backpatch(self.conditionalAndExpressionTL,label)
             self.conditionalAndExpressionFL = self.conditionalAndExpressionFL + self.inclusiveOrExpression
             self.conditionalAndExpressionTL = self.inclusiveOrExpressionTL
@@ -985,7 +980,6 @@ class my_visit2(Java8Visitor):
         elif childCount == 3:
             lhs = ""
             rhs = ""
-            lhs1 = ""
             operator = '|'
             for child in children:
                 if _isIdentifier_(child):
@@ -993,8 +987,6 @@ class my_visit2(Java8Visitor):
                 elif parser.ruleNames[child.getRuleIndex()] == 'inclusiveOrExpression':
                     self.visit(child)
                     lhs = self.inclusiveOrExpression
-                    lhs1 = tac.getTemp()
-                    tac.emit(str(lhs1),str(lhs1),str(lhs),'=')
                     lhsType = self.inclusiveOrExpressionType
                 elif parser.ruleNames[child.getRuleIndex()] == 'exclusiveOrExpression':
                     self.visit(child)
@@ -1007,7 +999,7 @@ class my_visit2(Java8Visitor):
                     sys.exit("Type error: inclusiveOrExpression don't take string or char.")
             elif (lhsType in ['int','float'] and rhsType in ['float']) or (rhsType in ['int','float'] and lhsType in ['float']):
                 if lhsType == 'int' and rhsType == 'float':
-                    tac.emit(str(lhs1),str(lhs1),'','(float)')
+                    tac.emit(str(lhs),str(lhs),'','(float)')
                 elif rhsType == 'int' and rhsType == 'float':
                     tac.emit(str(rhs),str(rhs),'','(float)')
                 self.inclusiveOrExpressionType = 'float'
@@ -1016,7 +1008,7 @@ class my_visit2(Java8Visitor):
                 sys.exit("LHS type: "+str(lhsType)+" ,RHS type: "+str(rhsType))
             dest = tac.getTemp()
             self.inclusiveOrExpression = dest
-            tac.emit(str(dest),str(lhs1),str(rhs),str(operator))
+            tac.emit(str(dest),str(lhs),str(rhs),str(operator))
             self.inclusiveOrExpressionTL = []
             self.inclusiveOrExpressionFL = []
         return 1
@@ -1038,15 +1030,12 @@ class my_visit2(Java8Visitor):
             lhs = ""
             rhs = ""
             operator = '^'
-            lhs1 = ""
             for child in children:
                 if _isIdentifier_(child):
                     continue
                 elif parser.ruleNames[child.getRuleIndex()] == 'exclusiveOrExpression':
                     self.visit(child)
                     lhs = self.exclusiveOrExpression
-                    lhs1 = tac.getTemp()
-                    tac.emit(str(lhs1),str(lhs1),str(lhs),'=')
                     lhsType = self.exclusiveOrExpressionType
                 elif parser.ruleNames[child.getRuleIndex()] == 'andExpression':
                     self.visit(child)
@@ -1059,7 +1048,7 @@ class my_visit2(Java8Visitor):
                     sys.exit("Type error: andExpression don't take string or char.")
             elif (lhsType in ['int','float'] and rhsType in ['float']) or (rhsType in ['int','float'] and lhsType in ['float']):
                 if lhsType == 'int' and rhsType == 'float':
-                    tac.emit(str(lhs1),str(lhs1),'','(float)')
+                    tac.emit(str(lhs),str(lhs),'','(float)')
                 elif rhsType == 'int' and rhsType == 'float':
                     tac.emit(str(rhs),str(rhs),'','(float)')
                 self.andExpressionType = 'float'
@@ -1068,7 +1057,7 @@ class my_visit2(Java8Visitor):
                 sys.exit("LHS type: "+str(lhsType)+" ,RHS type: "+str(rhsType))
             dest = tac.getTemp()
             self.exclusiveOrExpression = dest
-            tac.emit(str(dest),str(lhs1),str(rhs),str(operator)) 
+            tac.emit(str(dest),str(lhs),str(rhs),str(operator)) 
             self.exclusiveOrExpressionTL = []
             self.exclusiveOrExpressionFL = []
         return 1
@@ -1089,7 +1078,6 @@ class my_visit2(Java8Visitor):
         elif childCount == 3:
             lhs = ""
             rhs = ""
-            lhs1 = ""
             operator = '&'
             for child in children:
                 if _isIdentifier_(child):
@@ -1097,8 +1085,6 @@ class my_visit2(Java8Visitor):
                 elif parser.ruleNames[child.getRuleIndex()] == 'andExpression':
                     self.visit(child)
                     lhs = self.andExpression
-                    lhs1 = tac.getTemp()
-                    tac.emit(str(lhs1),str(lhs1),str(lhs),'=')
                     lhsType = self.andExpressionType
                 elif parser.ruleNames[child.getRuleIndex()] == 'equalityExpression':
                     self.visit(child)
@@ -1111,7 +1097,7 @@ class my_visit2(Java8Visitor):
                     sys.exit("Type error: andExpression don't take string or char.")
             elif (lhsType in ['int','float'] and rhsType in ['float']) or (rhsType in ['int','float'] and lhsType in ['float']):
                 if lhsType == 'int' and rhsType == 'float':
-                    tac.emit(str(lhs1),str(lhs1),'','(float)')
+                    tac.emit(str(lhs),str(lhs),'','(float)')
                 elif rhsType == 'int' and rhsType == 'float':
                     tac.emit(str(rhs),str(rhs),'','(float)')
                 self.andExpressionType = 'float'
@@ -1120,7 +1106,7 @@ class my_visit2(Java8Visitor):
                 sys.exit("LHS type: "+str(lhsType)+" ,RHS type: "+str(rhsType))
             dest = tac.getTemp()
             self.andExpression = dest
-            tac.emit(str(dest),str(lhs1),str(rhs),str(operator)) 
+            tac.emit(str(dest),str(lhs),str(rhs),str(operator)) 
             self.andExpressionTL = []
             self.andExpressionFL = []
         return 1
@@ -1142,7 +1128,6 @@ class my_visit2(Java8Visitor):
         elif childCount == 3:
             lhs = ""
             rhs = ""
-            lhs1 = ""
             for child in children:
                 if _isIdentifier_(child):
                     operator = child.getText()
@@ -1150,8 +1135,6 @@ class my_visit2(Java8Visitor):
                 elif parser.ruleNames[child.getRuleIndex()] == 'equalityExpression':
                     self.visit(child)
                     lhs = self.equalityExpression
-                    lhs1 = tac.getTemp()
-                    tac.emit(str(lhs1),str(lhs1),str(lhs),'=')
                     lhsType = self.equalityExpressionType
                 elif parser.ruleNames[child.getRuleIndex()] == 'relationalExpression':
                     self.visit(child)
@@ -1170,11 +1153,13 @@ class my_visit2(Java8Visitor):
                 sys.exit("LHS type: "+str(lhsType)+" ,RHS type: "+str(rhsType))
             dest = tac.getTemp()
             self.equalityExpression = dest
-            tac.emit(str(dest),str(lhs1),str(rhs),str(operator))
+            tac.emit(str(dest),str(lhs),str(rhs),str(operator))
+            label_temp = tac.newLabel()
             self.equalityExpressionFL = [len(tac.code)]
-            tac.emit('ifgoto',dest,'eq0','')
+            tac.emit('ifgoto',dest,'eq0',label_temp)
             self.equalityExpressionTL = [len(tac.code)]
-            tac.emit('goto','','','')
+            tac.emit('goto','','',label_temp)
+            tac.emit('label: ','','',label_temp)
         return 1
 
     def visitRelationalExpression(self, ctx:Java8Parser.RelationalExpressionContext):
@@ -1197,7 +1182,6 @@ class my_visit2(Java8Visitor):
         elif childCount == 3:
             lhs = ""
             rhs = ""
-            lhs1 = ""
             noTac = 0
             for child in children:
                 if _isIdentifier_(child):
@@ -1206,8 +1190,6 @@ class my_visit2(Java8Visitor):
                 elif parser.ruleNames[child.getRuleIndex()] == 'relationalExpression':
                     self.visit(child)
                     lhs = self.relationalExpression
-                    lhs1 = tac.getTemp()
-                    tac.emit(str(lhs1),str(lhs1),str(lhs),'=')
                     lhsType = self.relationalExpressionType
                 elif parser.ruleNames[child.getRuleIndex()] == 'shiftExpression':
                     self.visit(child)
@@ -1221,7 +1203,6 @@ class my_visit2(Java8Visitor):
                     noTac = 1
             if lhsType == rhsType :
                 if not ((lhsType == 'char') or (lhsType == 'string')):
-                    #considered relationExpression when containing > , < , >= or <= or 'instanceof' return a boolean. 
                     self.relationalExpressionType = 'boolean'
                 else:
                     sys.exit("Type error in relationalExpression, don't accept char or string for shift.")
@@ -1234,12 +1215,13 @@ class my_visit2(Java8Visitor):
                 return 1
             dest = tac.getTemp()
             self.relationalExpression = dest
-            tac.emit(str(dest),str(lhs1),str(rhs),str(operator))
+            tac.emit(str(dest),str(lhs),str(rhs),str(operator))
+            label_temp = tac.newLabel()
             self.relationalExpressionFL = [len(tac.code)]
-            # to be handled for a = 2 > 3; case.
-            tac.emit('ifgoto',dest,'eq0','')
+            tac.emit('ifgoto',dest,'eq0',label_temp)
             self.relationalExpressionTL = [len(tac.code)]
-            tac.emit('goto','','','')
+            tac.emit('goto','','',label_temp)
+            tac.emit('label: ','','',label_temp)
         return 1
 
     def visitShiftExpression(self, ctx:Java8Parser.ShiftExpressionContext):
@@ -1260,7 +1242,6 @@ class my_visit2(Java8Visitor):
         elif childCount == 3:
             lhs = ""
             rhs = ""
-            lhs1 = ""
             for child in children:
                 if _isIdentifier_(child):
                     operator = child.getText()
@@ -1269,8 +1250,6 @@ class my_visit2(Java8Visitor):
                 elif parser.ruleNames[child.getRuleIndex()] == 'shiftExpression':
                     self.visit(child)
                     lhs = self.shiftExpression
-                    lhs1 = tac.getTemp()
-                    tac.emit(str(lhs1),str(lhs1),str(lhs),'=')
                     lhsType = self.shiftExpressionType
                 elif parser.ruleNames[child.getRuleIndex()] == 'additiveExpression':
                     self.visit(child)
@@ -1293,7 +1272,7 @@ class my_visit2(Java8Visitor):
                 sys.exit("LHS type: "+str(lhsType)+" ,RHS type: "+str(rhsType))
             dest = tac.getTemp()
             self.shiftExpression = dest
-            tac.emit(str(dest),str(lhs1),str(rhs),str(operator)) 
+            tac.emit(str(dest),str(lhs),str(rhs),str(operator)) 
             self.shiftExpressionTL = []
             self.shiftExpressionFL = []
         return 1
@@ -1315,7 +1294,6 @@ class my_visit2(Java8Visitor):
         elif childCount == 3:
             lhs = ""
             rhs = ""
-            lhs1 = ""
             for child in children:
                 if _isIdentifier_(child):
                     operator = child.getText()
@@ -1323,8 +1301,6 @@ class my_visit2(Java8Visitor):
                 elif parser.ruleNames[child.getRuleIndex()] == 'additiveExpression':
                     self.visit(child)
                     lhs = self.additiveExpression
-                    lhs1 = tac.getTemp()
-                    tac.emit(str(lhs1),str(lhs1),str(lhs),'=')
                     lhsType =  self.additiveExpressionType
                 elif parser.ruleNames[child.getRuleIndex()] == 'multiplicativeExpression':
                     self.visit(child)
@@ -1341,7 +1317,7 @@ class my_visit2(Java8Visitor):
                     #tac for malloc of string concatenation.
             elif (lhsType in ['int','float'] and rhsType in ['float']) or (rhsType in ['int','float'] and lhsType in ['float']):
                 if lhsType == 'int' and rhsType == 'float':
-                    tac.emit(str(lhs1),str(lhs1),'','(float)')
+                    tac.emit(str(lhs),str(lhs),'','(float)')
                 elif rhsType == 'int' and rhsType == 'float':
                     tac.emit(str(rhs),str(rhs),'','(float)')
                 self.additiveExpressionType = 'float'
@@ -1350,7 +1326,7 @@ class my_visit2(Java8Visitor):
                 sys.exit("LHS type: "+str(lhsType)+" ,RHS type: "+str(rhsType))
             dest = tac.getTemp()
             self.additiveExpression = dest
-            tac.emit(str(dest),str(lhs1),str(rhs),str(operator)) 
+            tac.emit(str(dest),str(lhs),str(rhs),str(operator)) 
             self.additiveExpressionTL = []
             self.additiveExpressionFL = []
         return 1
@@ -1373,7 +1349,6 @@ class my_visit2(Java8Visitor):
         elif childCount == 3:
             lhs = ""
             rhs = ""
-            lhs1 = ""
             for child in children:
                 if _isIdentifier_(child):
                     operator = child.getText()
@@ -1381,8 +1356,6 @@ class my_visit2(Java8Visitor):
                 elif parser.ruleNames[child.getRuleIndex()] == 'multiplicativeExpression':
                     self.visit(child)
                     lhs = self.multiplicativeExpression
-                    lhs1 = tac.getTemp()
-                    tac.emit(str(lhs1),str(lhs1),str(lhs),'=')
                     lhsType = self.multiplicativeExpressionType
                 elif parser.ruleNames[child.getRuleIndex()] == 'unaryExpression':
                     self.visit(child)
@@ -1397,7 +1370,7 @@ class my_visit2(Java8Visitor):
                     sys.exit("Type error: multiplicativeExpression don't take string or char.")
             elif (lhsType in ['int','float'] and rhsType in ['float']) or (rhsType in ['int','float'] and lhsType in ['float']):
                 if lhsType == 'int' and rhsType == 'float':
-                    tac.emit(str(lhs1),str(lhs1),'','(float)')
+                    tac.emit(str(lhs),str(lhs),'','(float)')
                 elif rhsType == 'int' and rhsType == 'float':
                     tac.emit(str(rhs),str(rhs),'','(float)')
                 self.multiplicativeExpressionType = 'float'
@@ -1406,7 +1379,7 @@ class my_visit2(Java8Visitor):
                 sys.exit("LHS type: "+str(lhsType)+" ,RHS type: "+str(rhsType))
             dest = tac.getTemp()
             self.multiplicativeExpression = dest
-            tac.emit(str(dest),str(lhs1),str(rhs),str(operator))
+            tac.emit(str(dest),str(lhs),str(rhs),str(operator))
             self.multiplicativeExpressionTL = []
             self.multiplicativeExpressionFL = []
         return 1
@@ -1480,7 +1453,7 @@ class my_visit2(Java8Visitor):
             operator_2 = '='
             rhs = dest
             dest = lhs
-            tac.emit(str(dest),str(lhs),str(rhs),str(operator_2))
+            tac.emit(str(dest),str(rhs),'',str(operator_2))
         return 1
 
     def visitPreDecrementExpression(self, ctx:Java8Parser.PreDecrementExpressionContext):
@@ -1510,7 +1483,7 @@ class my_visit2(Java8Visitor):
             operator_2 = '='
             rhs = dest
             dest = lhs
-            tac.emit(str(dest),str(lhs),str(rhs),str(operator_2))
+            tac.emit(str(dest),str(rhs),'',str(operator_2))
         return 1
 
     def visitUnaryExpressionNotPlusMinus(self, ctx:Java8Parser.UnaryExpressionNotPlusMinusContext):
