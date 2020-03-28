@@ -1,0 +1,105 @@
+// Symbol Table
+digraph {
+	0 [label=0]
+	1 [label="{
+    \"scope_name\": \"start\",
+    \"variables\": {},
+    \"methods\": {},
+    \"classes\": {
+        \"a\": {
+            \"type\": null,
+            \"dimension\": null,
+            \"modifiers\": [
+                \"public\"
+            ]
+        }
+    },
+    \"type\": \"start\",
+    \"parent\": 0
+}"]
+	0 -> 1
+	2 [label="{
+    \"scope_name\": \"a\",
+    \"variables\": {
+        \"a\": {
+            \"type\": \"int\",
+            \"dimension\": \"40\",
+            \"modifiers\": []
+        },
+        \"b\": {
+            \"type\": \"int\",
+            \"dimension\": \"40\",
+            \"modifiers\": []
+        }
+    },
+    \"methods\": {
+        \"main\": {
+            \"type\": \"void\",
+            \"dimension\": [
+                \"Stringargs[]\"
+            ],
+            \"modifiers\": [
+                \"public\",
+                \"static\"
+            ]
+        },
+        \"func1\": {
+            \"type\": \"int\",
+            \"dimension\": [],
+            \"modifiers\": [
+                \"public\"
+            ]
+        },
+        \"func2\": {
+            \"type\": \"int\",
+            \"dimension\": [],
+            \"modifiers\": [
+                \"public\"
+            ]
+        }
+    },
+    \"classes\": {},
+    \"type\": \"start\",
+    \"parent\": 1
+}"]
+	1 -> 2
+	3 [label="{
+    \"scope_name\": \"main\",
+    \"variables\": {
+        \"args[]\": {
+            \"type\": \"String\",
+            \"dimension\": \"40\",
+            \"modifiers\": []
+        }
+    },
+    \"methods\": {},
+    \"classes\": {},
+    \"type\": \"start\",
+    \"parent\": 2
+}"]
+	2 -> 3
+	4 [label="{
+    \"scope_name\": \"func1\",
+    \"variables\": {},
+    \"methods\": {},
+    \"classes\": {},
+    \"type\": \"start\",
+    \"parent\": 2
+}"]
+	2 -> 4
+	5 [label="{
+    \"scope_name\": \"func2\",
+    \"variables\": {
+        \"f\": {
+            \"type\": \"int\",
+            \"dimension\": \"40\",
+            \"modifiers\": []
+        }
+    },
+    \"methods\": {},
+    \"classes\": {},
+    \"type\": \"start\",
+    \"parent\": 2
+}"]
+	2 -> 5
+}

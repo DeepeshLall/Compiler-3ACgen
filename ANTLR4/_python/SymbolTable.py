@@ -37,7 +37,7 @@ class SymbolTable:
                 'modifiers' : modifiers
             }
         else:
-            sys.exit('Scope Error : ' + name + ' already present in current scope')
+            sys.exit('Scope Error : ' + str(name) + ' already present in current scope')
         if key == 'methods':
             self.SymbolTableFunction[self.func]['type'] = type
             self.SymbolTableFunction[self.func]['input'] = dimension
@@ -72,6 +72,7 @@ class SymbolTable:
             if name in self.SymbolTable[scope_curr][key]:
                 return self.SymbolTable[scope_curr][key][name]['type']
             scope_curr = self.SymbolTable[scope_curr]['parent']
+        sys.exit(key+" : " + name+" not defined.")
         return None
     
     def inc_scope(self,name=None):
@@ -82,7 +83,7 @@ class SymbolTable:
             self.func = name
             self.offset = 0
         self.SymbolTable.append({
-                'scope_name' : 'start',
+                'scope_name' : self.func,
                 'variables' : {},
                 'methods' : {},
                 'classes': {},
@@ -92,5 +93,15 @@ class SymbolTable:
         self.new_s +=1
         self.scope = self.new_s
     
+    def inc_scope_minor(self,name=None):
+        if name:
+            self.SymbolTableFunction[name] = {
+                'variables' : {},
+                }
+            self.func = name
+            self.offset = 0
+        self.new_s +=1
+        self.scope = self.new_s
+
     def dec_scope(self):
         self.scope = self.SymbolTable[self.scope]['parent']
