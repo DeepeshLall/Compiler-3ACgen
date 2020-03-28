@@ -11,6 +11,7 @@ public class RecursionExampleDirectory
 		// d = fib(a) + fib(b);
 		int val = 0;
 		val = ++val + ++val;
+		val = (float) val;
 		// for (int i =0 ; i < a ; i++ ){
 			if(a==val || a>2){
 				System.out.println( "Hey I am string." );

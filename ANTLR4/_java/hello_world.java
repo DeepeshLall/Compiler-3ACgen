@@ -2,20 +2,22 @@ public class RecursionExampleDirectory
 {	
     public static void main(String[] args){
         int a=1,b=2;
-        float c=a+2,d=4.2;
+        char c=a+2.0,d=4.2;
 		// int[][] arr;
-		
+		short e;
+		// c = e;
 		// a/=c;
 		// c=a+b*c-d;
 		// d = fib(a) + fib(b);
-		// int val = 0;
-		// val = ++val + ++val;
+		int val = 0;
+		val = ++val + ++val;
+		val = (float) val;
 		// for (int i =0 ; i < a ; i++ ){
 			if(a==val || a>2){
 				System.out.println( "Hey I am string." );
 				b=3;
 			}else{
-				a = b;
+				d = b;
 			}
 			// a=2;
 			// break;

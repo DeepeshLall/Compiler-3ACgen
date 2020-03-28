@@ -1630,7 +1630,7 @@ class my_visit2(Java8Visitor):
                 continue
             elif parser.ruleNames[child.getRuleIndex()] == 'primitiveType':
                 self.visit(child)
-                operator = child.getText()
+                operator = operator + child.getText()
                 self.castExpressionType = child.getText()
             elif parser.ruleNames[child.getRuleIndex()] == 'referenceType':
                 self.visit(child)
