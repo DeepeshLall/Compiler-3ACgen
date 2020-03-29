@@ -1,3 +1,7 @@
-This Branch file are for generating 3ac code in the my_visit2.py file in _python folder.
+This Branch have Symbol table functioning updated to latest, supporting Method Call records and Nd array access records in Symbol Table upon declaration in respective scope.
 
-The function are already overriden and are use for emiting tac code.
+Method parameters are present in method's scope.
+
+Local variable declared before and outside a method is considered in scope and else if declared after the method declaration it's not present in that particular method's scope.
+
+Methods are present globally in parent scope.
