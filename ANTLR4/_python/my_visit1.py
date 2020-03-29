@@ -1,4 +1,3 @@
-# Generated from Java8.g4 by ANTLR 4.5.1
 import antlr4
 if __name__ is not None and "." in __name__:
     from .Java8Parser import Java8Parser
@@ -36,6 +35,11 @@ class my_visit1(Java8Visitor):
         self.fieldModifier = [] # Modifier List for Field declaration. 
         self.MethodBlock=1 # If 1 then that block is not directly inside a method and to be used to increase Scope.
         self.inFormalList=0 # if 1 then we are inside Formal list.
+        self.unannType = "void"
+        self.unannPrimitiveType = "void"
+        self.unannReferenceType = "void"
+        self.unannArrayType ="void"
+        self.dimsNo = 0 # no of dims inside a formal parameter.
 
     def visitNormalclassDeclaration(self, ctx:Java8Parser.NormalclassDeclarationContext):
         classid=None
@@ -104,8 +108,71 @@ class my_visit1(Java8Visitor):
         return 1
 
     def visitFormalParameter(self, ctx:Java8Parser.FormalParameterContext):
-        self.MethodParameter.append(ctx.getText())
+        self.dimsNo = 0
+        self.visitChildren(ctx)
+        self.MethodParameter.append(self.unannType)
+        return 1
+
+    def visitUnannType(self, ctx:Java8Parser.UnannTypeContext):
+        children = ctx.getChildren()
+        for child in children:
+            if parser.ruleNames[child.getRuleIndex()] == 'unannReferenceType':
+                self.visit(child)
+                self.unannType = self.unannReferenceType+"_"+str(self.dimsNo)
+            elif parser.ruleNames[child.getRuleIndex()] == 'unannPrimitiveType':
+                self.visit(child)
+                self.unannType = self.unannPrimitiveType+"_"+str(self.dimsNo)
+        return 1
+
+    def visitUnannPrimitiveType(self, ctx:Java8Parser.UnannPrimitiveTypeContext):
+        self.unannPrimitiveType = ctx.getText()
         return self.visitChildren(ctx)
+
+    def visitUnannReferenceType(self, ctx:Java8Parser.UnannReferenceTypeContext):
+        # unannReferenceType  :  unannclassOrInterfaceType
+		# 			|  unannTypeVariable
+		# 			|  unannArrayType
+		# 			;
+        children = ctx.getChildren()
+        for child in children:
+            if parser.ruleNames[child.getRuleIndex()] == 'unannArrayType':
+                self.visit(child)
+                self.unannReferenceType = self.unannArrayType
+            else:
+                self.visit(child)
+                self.unannReferenceType = child.getText()
+        return 1
+
+    def visitUnannArrayType(self, ctx:Java8Parser.UnannArrayTypeContext):
+        # unannArrayType  :  unannPrimitiveType dims
+		#    |  unannclassOrInterfaceType dims
+		#    |  unannTypeVariable dims
+		#    ;
+        children = ctx.getChildren()
+        for child in children:
+            if parser.ruleNames[child.getRuleIndex()] == 'unannPrimitiveType':
+                self.visit(child)
+                self.unannArrayType = child.getText()
+            elif parser.ruleNames[child.getRuleIndex()] == 'unannclassOrInterfaceType':
+                self.visit(child)
+                self.unannArrayType = child.getText()
+            elif parser.ruleNames[child.getRuleIndex()] == 'unannTypeVariable':
+                self.visit(child)
+                self.unannArrayType = child.getText()
+            elif parser.ruleNames[child.getRuleIndex()] == 'dims':
+                self.visit(child)
+        return 1
+
+    def visitDims(self, ctx:Java8Parser.DimsContext):
+        # self.dimsNo = self.dimsNo + ctx.getChildCount() // 2
+        children = ctx.getChildren()
+        for child in children:
+            if _isIdentifier_(child):
+                if child.getText() == '[':
+                    self.dimsNo = self.dimsNo + 1
+            else:
+                self.visit(child)
+        return 1
 
     def visitBlock(self, ctx:Java8Parser.BlockContext):
         if(self.blockFlag==0 or self.MethodBlock==0):
@@ -134,7 +201,6 @@ class my_visit1(Java8Visitor):
             ST.dec_scope()
             # print("Decreased scope to :"+str(ST.scope))
             return 1
-            
 
     def visitWhileStatement(self, ctx:Java8Parser.WhileStatementContext):
         self.level+=1
@@ -219,7 +285,6 @@ class my_visit1(Java8Visitor):
         # print("Decreased scope to :"+str(ST.scope))
         self.blockFlag=1
         return 1
-
 
     def visitIfThenElseStatementNoShortIf(self, ctx:Java8Parser.IfThenElseStatementNoShortIfContext):
         self.level+=1

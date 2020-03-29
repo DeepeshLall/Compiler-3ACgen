@@ -1,4 +1,5 @@
 import sys
+import warnings
 
 class SymbolTable:
     def __init__(self):
@@ -31,13 +32,14 @@ class SymbolTable:
         curr_scope = self.getScope(key, name)
 
         if curr_scope != self.scope or (key == 'method' and self.SymbolTable[self.scope][key][name]['modifiers'] == 'abs'):
+            # do consider the case of 'abs' later.
             self.SymbolTable[self.scope][key][name] = {
                 'type' : type,
                 'dimension' : dimension,
                 'modifiers' : modifiers
             }
         else:
-            sys.exit('Scope Error : ' + str(name) + ' already present in current scope')
+            warnings.warn('Scope Error : ' + str(name) + ' already present in current scope',Warning)
         if key == 'methods':
             self.SymbolTableFunction[self.func]['type'] = type
             self.SymbolTableFunction[self.func]['input'] = dimension
@@ -95,9 +97,6 @@ class SymbolTable:
     
     def inc_scope_minor(self,name=None):
         if name:
-            self.SymbolTableFunction[name] = {
-                'variables' : {},
-                }
             self.func = name
             self.offset = 0
         self.new_s +=1

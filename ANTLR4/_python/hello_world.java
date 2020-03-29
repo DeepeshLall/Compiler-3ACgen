@@ -1,25 +1,29 @@
 public class RecursionExampleDirectory
 {	
-    public static void main(String[] args){
+	int a=1,b=2;
+	protected int deep = a*b + (float)a;
+    public static void main(String[] args[][]){
         int a=1,b=2;
-        char c=a+2.0,d=4.2;
-		// int[][] arr;
-		short e;
+		char c=a+2.0,d=4.2;
+		// char a;
+		int[][] arr[];
+		int[] zrr[] = new int[2]; 
+		// short e;
 		// c = e;
 		// a/=c;
-		c=a+b*(int)c-(float)d;
-		d = fib(a - 1) + fib(b);
-		int val = 0;
-		val = ++val + ++val;
-		val = (float) val;
+		// c=a+b*(int)c-(float)d;
+		arr[b] = fib(a - 1,a) + fib(b,0);
+		// int val = 0;
+		// val = ++val + ++val;
+		// val = (float) val;
 		// for (int i =0 ; i < a ; i++ ){
-			if(a==val || a>2){
+			// if(a==val || a>2){
 				System.out.println( "Hey I am string." );
-				b=3;
-			}else{
-				d = b;
-			}
-			a=2>3;
+			// 	b=3;
+			// }else{
+			// 	d = b;
+			// }
+			// a=2>3;
 			// a=2;
 			// break;
 			// c=2;
@@ -28,7 +32,7 @@ public class RecursionExampleDirectory
 		// a++;
 		// System.out.println( r.getSize(d) );
 	
-		// int[] zrr = new int[2]; 
+		// int[] zrr[] = new int[2]; 
 
 		// arr = new int[5]; 
 		
@@ -43,9 +47,9 @@ public class RecursionExampleDirectory
 		// arr[2][3] = 3;
     }
 
-	// public static int fib(int n)
-	// {	int result = 0;
-	// 	result = fib(n-1) + fib(n-2);
-	// 	return result;
-	// }
+	public static int fib(int n, int m)
+	{	int result = 0;
+		result = fib(n-1,n) + fib(n-2,n);
+		return result;
+	}
 }

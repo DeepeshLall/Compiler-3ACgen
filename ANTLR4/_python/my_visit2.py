@@ -1,6 +1,6 @@
-# Generated from Java8.g4 by ANTLR 4.5.1
 import antlr4
 import sys
+import warnings
 if __name__ is not None and "." in __name__:
     from .Java8Lexer import Java8Lexer
     from .Java8Parser import Java8Parser
@@ -57,6 +57,8 @@ class my_visit2(Java8Visitor):
         self.conditionExpression = None # it contain the return temporary for expression after conditionalExpression.
         self.assignment = None # it contain the return temporary for expression after assignment.
         self.LeftHandSide = None # it contains the temporary for leftHandSide in assignment
+        self.dimsNo = 0 # no of dims to set dimension
+        self.dimensionTemp = 0 # store dimension for self.typeSizeList before variable Declarator id
 
         #contains temporary register in case of operand reduction at that named non terminal node in parse tree.
         self.conditionalOrExpression = None 
@@ -126,6 +128,10 @@ class my_visit2(Java8Visitor):
         self.postIncrementExpressionTL = []
 
         #Type variable for each node to access the type of that non terminal before leaving it.
+        self.unannType = "void"
+        self.unannPrimitiveType = "void"
+        self.unannReferenceType = "void"
+        self.unannArrayType ="void"
         self.variableInitializerType = 'void'
         self.expressionType = 'void'
         self.assignmentExpressionType = 'void'
@@ -214,6 +220,7 @@ class my_visit2(Java8Visitor):
         self.formalTypeSizeList=[]
         self.formalType=None
         self.formalModifier=[]
+        self.dimsNo = 0
         self.visitChildren(ctx)
         for i in range(len(self.formalTypeList)):
             ST.Add('variables',str(self.formalTypeList[i]),str(self.formalTypeSizeList[i]),self.formalType,self.formalModifier)
@@ -265,7 +272,6 @@ class my_visit2(Java8Visitor):
             ST.dec_scope()
             # print("Decreased scope to :"+str(ST.scope))
             return 1
-            
 
     def visitWhileStatement(self, ctx:Java8Parser.WhileStatementContext):
         # whileStatement  :  'while' '(' expression ')' statement
@@ -499,7 +505,6 @@ class my_visit2(Java8Visitor):
         self.blockFlag=1
         return 1
 
-
     def visitIfThenElseStatementNoShortIf(self, ctx:Java8Parser.IfThenElseStatementNoShortIfContext):
         # ifThenElseStatementNoShortIf  :  'if' '(' expression ')' statementNoShortIf 'else' statementNoShortIf 
 		# 			 ;
@@ -557,6 +562,7 @@ class my_visit2(Java8Visitor):
         self.typeSizeList=[]
         self.type=""
         self.variableModifier=[]
+        self.dimsNo = 0
         self.visitChildren(ctx)
         # print("Adding entry to Symbol Table: "+str(str(self.type)+" "+str(self.typeList)+" "+str(self.level)+" "+str(ST.scope)))
         for i in range(len(self.typeList)):
@@ -568,6 +574,7 @@ class my_visit2(Java8Visitor):
         self.typeSizeList=[]
         self.type=""
         self.fieldModifier=[]
+        self.dimsNo = 0
         self.visitChildren(ctx)
         # print("Adding entry to Symbol Table: "+str(str(self.type)+" "+str(self.typeList)+" "+str(self.level)+" "+str(ST.scope)))
         for i in range(len(self.typeList)):
@@ -585,36 +592,69 @@ class my_visit2(Java8Visitor):
         return self.visitChildren(ctx)
 
     def visitUnannType(self, ctx:Java8Parser.UnannTypeContext):
-        self.type=ctx.getText()
+        children = ctx.getChildren()
+        for child in children:
+            if parser.ruleNames[child.getRuleIndex()] == 'unannReferenceType':
+                self.visit(child)
+                self.unannType = self.unannReferenceType
+            elif parser.ruleNames[child.getRuleIndex()] == 'unannPrimitiveType':
+                self.visit(child)
+                self.unannType = self.unannPrimitiveType
+        self.type = self.unannType
         if self.inFormalList == 1:
             self.formalType=self.type
+        self.dimensionTemp = self.dimsNo
+        return 1
+
+    def visitUnannPrimitiveType(self, ctx:Java8Parser.UnannPrimitiveTypeContext):
+        self.unannPrimitiveType = ctx.getText()
         return self.visitChildren(ctx)
 
-    def PrintSymbolTable(self):
-        print(ST.SymbolTable)
-        print()
-        print("+----------------------------------------------------------------+")
-        print()
-        print("function , variable , modifiers , type , dimension")
-        for a in ST.SymbolTableFunction:
-            for b in ST.SymbolTableFunction[a]['variables']:
-                print(str(a) + " , " + str(b) +" , " + str(ST.SymbolTableFunction[a]['variables'][b]['modifiers']) + " , " + str(ST.SymbolTableFunction[a]['variables'][b]['type'])+" , "+str(ST.SymbolTableFunction[a]['variables'][b]['dimension']))
-    
-    def getSymbolTable(self):
-        return ST.SymbolTable
+    def visitUnannReferenceType(self, ctx:Java8Parser.UnannReferenceTypeContext):
+        # unannReferenceType  :  unannclassOrInterfaceType
+		# 			|  unannTypeVariable
+		# 			|  unannArrayType
+		# 			;
+        children = ctx.getChildren()
+        for child in children:
+            if parser.ruleNames[child.getRuleIndex()] == 'unannArrayType':
+                self.visit(child)
+                self.unannReferenceType = self.unannArrayType
+            else:
+                self.visit(child)
+                self.unannReferenceType = child.getText()
+        return 1
 
-    def printSymbolTableGraph(self):
-        dot = Digraph(comment="Symbol Table")
-        for i in range(0,len(ST.SymbolTable)):
-            dot.node(str(i),json.dumps(ST.SymbolTable[i],indent=4))
-            if i == 0:
-                continue
-            dot.edge(str(ST.SymbolTable[i]["parent"]), str(i))
-        dot.render('graph',view=True)
-        print()
-        print("+----------------------------------------------------------------+")
-        print()
-        print(dot)
+    def visitUnannArrayType(self, ctx:Java8Parser.UnannArrayTypeContext):
+        # unannArrayType  :  unannPrimitiveType dims
+		#    |  unannclassOrInterfaceType dims
+		#    |  unannTypeVariable dims
+		#    ;
+        children = ctx.getChildren()
+        for child in children:
+            if parser.ruleNames[child.getRuleIndex()] == 'unannPrimitiveType':
+                self.visit(child)
+                self.unannArrayType = child.getText()
+            elif parser.ruleNames[child.getRuleIndex()] == 'unannclassOrInterfaceType':
+                self.visit(child)
+                self.unannArrayType = child.getText()
+            elif parser.ruleNames[child.getRuleIndex()] == 'unannTypeVariable':
+                self.visit(child)
+                self.unannArrayType = child.getText()
+            elif parser.ruleNames[child.getRuleIndex()] == 'dims':
+                self.visit(child)
+        return 1
+
+    def visitDims(self, ctx:Java8Parser.DimsContext):
+        # self.dimsNo = self.dimsNo + ctx.getChildCount() // 2
+        children = ctx.getChildren()
+        for child in children:
+            if _isIdentifier_(child):
+                if child.getText() == '[':
+                    self.dimsNo = self.dimsNo + 1
+            else:
+                self.visit(child)
+        return 1
 
     def visitVariableDeclarator(self, ctx:Java8Parser.VariableDeclaratorContext):
         children = ctx.getChildren()
@@ -629,7 +669,6 @@ class my_visit2(Java8Visitor):
                 self.visit(child)
                 lhs = child.getText()
                 dest =lhs
-                # get  self.variableDeclaratorId from using symbolTable.
                 lhsType = self.type 
             elif parser.ruleNames[child.getRuleIndex()] == 'variableInitializer':
                 self.visit(child)
@@ -648,23 +687,20 @@ class my_visit2(Java8Visitor):
 
     def visitVariableDeclaratorId(self, ctx:Java8Parser.VariableDeclaratorIdContext):
         children = ctx.getChildren()
-        childCount = ctx.getChildCount()
-        self.typeSizeList.append(childCount-1)
+        temp = self.dimsNo
+        children = ctx.getChildren()
         for child in children:
             if _isIdentifier_(child):
                 self.typeList.append(child.getText())
-                continue
-            else:
-                pass
-        if self.inFormalList == 1:
-            if childCount > 1:
-                self.formalTypeSizeList.append(childCount-1)
-            for child in children:
-                if _isIdentifier_(child):
+                if self.inFormalList == 1:
                     self.formalTypeList.append(child.getText())
-                    continue
-                else:
-                    pass
+                continue
+            elif parser.ruleNames[child.getRuleIndex()] == 'dims':
+                self.visit(child)
+        self.typeSizeList.append(self.dimsNo)
+        if self.inFormalList == 1:
+            self.formalTypeSizeList.append(self.dimsNo)
+        self.dimsNo = temp
         return 1
 
     def visitVariableInitializer(self, ctx:Java8Parser.VariableInitializerContext):
@@ -1309,10 +1345,10 @@ class my_visit2(Java8Visitor):
             if lhsType == rhsType :
                 if not ((lhsType == 'char') or (lhsType == 'string')):
                     if lhsType == 'void':
-                        print("additiveExpression type can't have void operand.")
+                        warnings.warn("additiveExpression type can't have void operand.")
                     self.additiveExpressionType = lhsType
                 else:
-                    print("stringConcat malloc")
+                    warnings.warn("stringConcat malloc")
                     pass
                     #tac for malloc of string concatenation.
             elif (lhsType in ['int','float'] and rhsType in ['float']) or (rhsType in ['int','float'] and lhsType in ['float']):
@@ -1364,10 +1400,10 @@ class my_visit2(Java8Visitor):
             if lhsType == rhsType :
                 if not ((lhsType == 'char') or (lhsType == 'string')):
                     if lhsType == 'void':
-                        print("multiplicativeExpression type can't have void operand.")
+                        warnings.warn("multiplicativeExpression type can't have void operand.")
                     self.multiplicativeExpressionType = lhsType
                 else:
-                    sys.exit("Type error: multiplicativeExpression don't take string or char.")
+                    warnings.warn("Type error: multiplicativeExpression don't take string or char.")
             elif (lhsType in ['int','float'] and rhsType in ['float']) or (rhsType in ['int','float'] and lhsType in ['float']):
                 if lhsType == 'int' and rhsType == 'float':
                     tac.emit(str(lhs),str(lhs),'','(float)')
@@ -1631,8 +1667,8 @@ class my_visit2(Java8Visitor):
         tac.emit(str(dest),str(lhs),str(rhs),str(operator))
         return 1
 
-    #if self.primary_Type_2 is simply string added to self.primary_Type_1 for now for simplicity.
     def visitPrimary(self, ctx:Java8Parser.PrimaryContext):
+        #if self.primary_Type_2 is simply string added to self.primary_Type_1 for now for simplicity.
         # primary : primary_Type_1 primary_Type_2*
 		# ;
         children = ctx.getChildren()
@@ -1646,8 +1682,8 @@ class my_visit2(Java8Visitor):
                 self.primary = self.primary + child.getText()
         return 1
 
-    # for now arraycreationExpression is just taken as string.    
     def visitPrimary_Type_1(self, ctx:Java8Parser.Primary_Type_1Context):
+        # for now arraycreationExpression is just taken as string.
         # primary_Type_1  :  primaryNoNewArray_Type_1_Pr
 		# 		|  arraycreationExpression
 		# 		;
@@ -1751,6 +1787,7 @@ class my_visit2(Java8Visitor):
         rhs = ""
         operator = ""
         dest = None
+        method_name = ""
         for child in children:
             if _isIdentifier_(child):
                 self.visit(child)
@@ -1758,7 +1795,8 @@ class my_visit2(Java8Visitor):
                 continue
             elif parser.ruleNames[child.getRuleIndex()] == 'methodName':
                 self.visit(child)
-                operator = operator + child.getText()
+                method_name = child.getText()
+                operator = operator + method_name
             elif parser.ruleNames[child.getRuleIndex()] == 'argumentList':
                 self.visit(child)
                 lhs = self.argumentList
@@ -1769,7 +1807,8 @@ class my_visit2(Java8Visitor):
         dest = tac.getTemp()
         self.methodInvocation_Type_1_Pr = dest
         tac.emit(str(dest),str(lhs),str(rhs),str(operator))
-        self.methodInvocation_Type_1_Pr = 'int' #Hardcoded...to be found from symbolTable for return type.
+        self.methodInvocation_Type_1_PrType = ST.getType('methods',method_name)
+        # print(self.methodInvocation_Type_1_PrType)
         ## jump to Label of that function.
         ## Store the returned value in the dest register
         ## Think of how to go to visit(funtion)
