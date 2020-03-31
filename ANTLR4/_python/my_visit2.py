@@ -19,6 +19,7 @@ global tac
 tac = TAC()
 
 # This class defines a Overriden visitor for a parse tree produced by Java8Parser.
+# For now all datatype have been given 4 byte (x86-32 bit needed to  be handled for x86-64)
 
 def _isIdentifier_(ctx):
     if isinstance(ctx, antlr4.tree.Tree.TerminalNode):
@@ -45,7 +46,7 @@ class my_visit2(Java8Visitor):
         self.inFormalList=0 # if 1 then we are inside Formal list.
         self.formalTypeList=[] # Each element is id in formal Declaration 
         self.formalTypeSizeList=[] # type of respective indexed id in formalTypeList[]
-        self.formalType=None # type of formal Declaration
+        self.formalType=[] # type of formal Declaration list for method's argument
         self.formalModifier=[] # Modifier for formal decalaration
        
         self.dimsForArray=0 # if 1 then dims visitor are to be used for array in variableDeclaratorid visitor
@@ -81,8 +82,9 @@ class my_visit2(Java8Visitor):
         self.castExpression = None 
         self.primary_Type_1 = None 
         self.primaryNoNewArray_Type_1_Pr = None 
-        self.methodInvocation_Type_1_Pr = None 
-        self.argumentList = None 
+        self.methodInvocation_Type_1_Pr = None
+        self.methodInvocation = None
+        self.argumentList = []
         self.postDecrementExpression = None 
         self.postIncrementExpression = None  
         self.expressionName = None
@@ -159,7 +161,8 @@ class my_visit2(Java8Visitor):
         self.primary_Type_1Type = 'void'
         self.primaryNoNewArray_Type_1_PrType = 'void'
         self.methodInvocation_Type_1_PrType = 'void'
-        self.argumentListType = 'void'
+        self.methodInvocationType = 'void'
+        self.argumentListType = []
         self.postDecrementExpressionType = 'void'
         self.postIncrementExpressionType = 'void'
         self.expressionNameType = 'void'
@@ -218,18 +221,21 @@ class my_visit2(Java8Visitor):
         self.inFormalList=1
         self.formalTypeList=[]
         self.formalTypeSizeList=[]
-        self.formalType=None
+        self.formalType=[]
         self.formalModifier=[]
         self.dimsNo = 0
         self.visitChildren(ctx)
         for i in range(len(self.formalTypeList)):
-            ST.Add('variables',str(self.formalTypeList[i]),str(self.formalTypeSizeList[i]),self.formalType,self.formalModifier)
+            ST.Add('variables',str(self.formalTypeList[i]),str(self.formalTypeSizeList[i]),str(self.formalType[i]),self.formalModifier)
         self.inFormalList=0
         return 1
 
     def visitMethodBody(self, ctx:Java8Parser.MethodBodyContext):
         self.MethodBlock=0
+        tac.emit(str(ST.func),'','','')
+        tac.emit("BeginFunc",str(len(self.formalTypeList)*4),'','')
         self.visitChildren(ctx)
+        tac.emit("EndFunc",'','','')
         self.MethodBlock=1
         # print("Decreasing scope from :"+str(ST.scope))
         ST.dec_scope()
@@ -602,7 +608,7 @@ class my_visit2(Java8Visitor):
                 self.unannType = self.unannPrimitiveType
         self.type = self.unannType
         if self.inFormalList == 1:
-            self.formalType=self.type
+            self.formalType.append(self.type)
         self.dimensionTemp = self.dimsNo
         return 1
 
@@ -1783,48 +1789,178 @@ class my_visit2(Java8Visitor):
 		# 		  |  typeName '.' 'super' '.' typeArguments? Identifier '('argumentList? ')'    #NOT TO BE CONSIDERED
 		# 		  ;
         children = ctx.getChildren()
-        lhs = ""
-        rhs = ""
-        operator = ""
-        dest = None
+        argList = []
+        argTypeList = []
+        input_method = []
         method_name = ""
+        argType = 'void'
+        target = None
         for child in children:
             if _isIdentifier_(child):
                 self.visit(child)
-                operator = operator + child.getText()
                 continue
             elif parser.ruleNames[child.getRuleIndex()] == 'methodName':
                 self.visit(child)
                 method_name = child.getText()
-                operator = operator + method_name
             elif parser.ruleNames[child.getRuleIndex()] == 'argumentList':
                 self.visit(child)
-                lhs = self.argumentList
-                # check with list of type from symbolTable.
+                argList = self.argumentList
+                argTypeList = self.argumentListType
+            elif parser.ruleNames[child.getRuleIndex()] == 'typeArguments':
+                self.visit(child)
+                argType = 'void' # to be set w.r.t. self.typeArguments
+            elif parser.ruleNames[child.getRuleIndex()] == 'expressionName':
+                self.visit(child)
+                target = self.expressionName
+                if method_name == "":
+                    method_name = target
+            elif parser.ruleNames[child.getRuleIndex()] == 'typeName':
+                self.visit(child)
+                target = child.getText() # to be set w.r.t. self.typeName
+                if method_name == "":
+                    method_name = target
             else:
                 self.visit(child)
-                operator = operator + child.getText()
+        if not target:
+            if not ST.Search('methods',method_name):
+                self.methodInvocation_Type_1_PrType = 'void'
+                sys.exit(str(method_name)+' not declared in current scope.')
+            else:
+                self.methodInvocation_Type_1_PrType = ST.getType('methods',method_name)
+            method_scope = ST.getScope('methods',method_name)
+            input_method = ST.SymbolTable[method_scope]['methods'][method_name]['dimension']
+            if not len(input_method) == len(argTypeList):
+                sys.exit(str(method_name)+" is called with incorrect number of arguments.")
+            for (x,y) in zip(input_method,argTypeList):
+                if not x[:-2] == y:
+                    sys.exit(str(method_name)+' not called with correct argument type. clash of '+str(x)+' , '+str(y))
+        else:
+            self.methodInvocation_Type_1_PrType = 'undefined'
+        for x in reversed(argList):
+            tac.emit('push',x,'','')
+        tac.emit('call',str(method_name)+'_'+str(len(argList)),'','')
         dest = tac.getTemp()
-        self.methodInvocation_Type_1_Pr = dest
-        tac.emit(str(dest),str(lhs),str(rhs),str(operator))
-        self.methodInvocation_Type_1_PrType = ST.getType('methods',method_name)
-        # print(self.methodInvocation_Type_1_PrType)
-        ## jump to Label of that function.
-        ## Store the returned value in the dest register
-        ## Think of how to go to visit(funtion)
+        if not target:
+            if ST.SymbolTableFunction[method_name]['type'] == 'void':
+                tac.emit('pop',str(len(argList)*4),'','') # according to https://web.stanford.edu/class/archive/cs/cs143/cs143.1128/handouts/240%20TAC%20Examples.pdf
+                self.methodInvocation_Type_1_Pr = 'void'
+            else:
+                tac.emit(dest,'_ret_','','=')
+                tac.emit('pop',str(len(argList)*4),'','')
+                self.methodInvocation_Type_1_Pr = dest
+                # check for self.returnType (currently set to self.expressionType , expression inside func call) and self.methodInvocation_Type_1_PrType
+        else:
+            #case of System.out.println() in this case the number decide for offset of stack frame popped.
+            tac.emit('pop',str(len(argList)*4),'','')
+            self.methodInvocation_Type_1_Pr = 'void'
+        return 1
+
+    def visitMethodInvocation(self, ctx:Java8Parser.MethodInvocationContext):
+        # methodInvocation  :  methodName '(' argumentList? ')'
+		# 		  |  typeName '.' typeArguments? Identifier '(' argumentList? ')'
+		# 		  |  expressionName '.' typeArguments? Identifier '(' argumentList? ')'
+		# 		  |  primary '.' typeArguments? Identifier '(' argumentList? ')'
+		# 		  |  'super' '.' typeArguments? Identifier '(' argumentList? ')'
+		# 		  |  typeName '.' 'super' '.' typeArguments? Identifier '(' argumentList? ')'
+		# 		  ;
+        children = ctx.getChildren()
+        argList = []
+        argTypeList = []
+        input_method = []
+        method_name = ""
+        argType = 'void'
+        target = None
+        for child in children:
+            if _isIdentifier_(child):
+                self.visit(child)
+                continue
+            elif parser.ruleNames[child.getRuleIndex()] == 'methodName':
+                self.visit(child)
+                method_name = child.getText()
+            elif parser.ruleNames[child.getRuleIndex()] == 'argumentList':
+                self.visit(child)
+                argList = self.argumentList
+                argTypeList = self.argumentListType
+            elif parser.ruleNames[child.getRuleIndex()] == 'typeArguments':
+                self.visit(child)
+                argType = 'void' # to be set w.r.t. self.typeArguments
+            elif parser.ruleNames[child.getRuleIndex()] == 'expressionName':
+                self.visit(child)
+                target = self.expressionName
+                if method_name == "":
+                    method_name = target
+            elif parser.ruleNames[child.getRuleIndex()] == 'typeName':
+                self.visit(child)
+                target = child.getText() # to be set w.r.t. self.typeName
+                if method_name == "":
+                    method_name = target
+            elif parser.ruleNames[child.getRuleIndex()] == 'primary':
+                self.visit(child)
+                target = child.getText()
+            else:
+                self.visit(child)
+        if not target:
+            if not ST.Search('methods',method_name):
+                self.methodInvocationType = 'void'
+                sys.exit(str(method_name)+' not declared in current scope.')
+            else:
+                self.methodInvocationType = ST.getType('methods',method_name)
+            method_scope = ST.getScope('methods',method_name)
+            input_method = ST.SymbolTable[method_scope]['methods'][method_name]['dimension']
+            if not len(input_method) == len(argTypeList):
+                sys.exit(str(method_name)+" is called with incorrect number of arguments.")
+            for (x,y) in zip(input_method,argTypeList):
+                if not x[:-2] == y:
+                    sys.exit(str(method_name)+' not called with correct argument type. clash of '+str(x)+' , '+str(y))
+        else:
+            self.methodInvocationType = 'undefined'
+        for x in reversed(argList):
+            tac.emit('push',x,'','')
+        tac.emit('call',str(method_name)+'_'+str(len(argList)),'','')
+        dest = tac.getTemp()
+        if not target:
+            if ST.SymbolTableFunction[method_name]['type'] == 'void':
+                tac.emit('pop',str(len(argList)*4),'','') # according to https://web.stanford.edu/class/archive/cs/cs143/cs143.1128/handouts/240%20TAC%20Examples.pdf
+                self.methodInvocation = 'void'
+            else:
+                tac.emit(dest,'_ret_','','=')
+                tac.emit('pop',str(len(argList)*4),'','')
+                self.methodInvocation = dest
+                # check for self.returnType (currently set to self.expressionType , expression inside func call) and self.methodInvocationType
+        else:
+            #case of System.out.println() in this case the number decide for offset of stack frame popped.
+            tac.emit('pop',str(len(argList)*4),'','')
+            self.methodInvocation = 'void'
         return 1
 
     def visitArgumentList(self, ctx:Java8Parser.ArgumentListContext):
         # argumentList  :  expression (',' expression)*
 		# 	  ;
         children = ctx.getChildren()
+        self.argumentList = []
+        self.argumentListType = []
         for child in children:
-            self.visit(child)
-            self.argumentList = self.expression
-            self.argumentListType = self.expressionType
-            ## push each params for function call below.
-            ## Can make a list and pass to above node. or do things in this segment in parent one.
-            ## Add bytes for self.argumentListType and use it to pop that many bytes.
+            if _isIdentifier_(child):
+                continue
+            else:
+                self.visit(child)
+                temp = tac.getTemp()
+                tac.emit(str(temp),str(self.expression),"","=")
+                self.argumentList.append(temp)
+                self.argumentListType.append(self.expressionType)
+        return 1
+
+    def visitReturnStatement(self, ctx:Java8Parser.ReturnStatementContext):
+        children = ctx.getChildren()
+        returnVal = ""
+        self.returnType = "void"
+        for child in children:
+            if _isIdentifier_(child):
+                pass
+            elif parser.ruleNames[child.getRuleIndex()] == 'expression':
+                self.returnType = self.expressionType
+                returnVal = self.expression
+        tac.emit("_ret_",returnVal,"","=")
         return 1
 
     def visitPostIncrementExpression(self, ctx:Java8Parser.PostIncrementExpressionContext):
@@ -1893,8 +2029,8 @@ class my_visit2(Java8Visitor):
         return 1
 
     def showTac(self):
-        print("SL.NO.   dest    op1    op2    operator")
+        print("SL.NO.            dest            op1            op2            operator")
         for i in range(len(tac.code)):
-            print(str(i) + "    " + str(tac.code[i][0]) + "   " + str(tac.code[i][1]) + "    " + str(tac.code[i][2]) + "    " + str(tac.code[i][3]))
+            print(str(i) + "            " + str(tac.code[i][0]) + "         " + str(tac.code[i][1]) + "             " + str(tac.code[i][2]) + "             " + str(tac.code[i][3]))
 
 del Java8Parser

@@ -43,6 +43,7 @@ class SymbolTable:
         if key == 'methods':
             self.SymbolTableFunction[self.func]['type'] = type
             self.SymbolTableFunction[self.func]['input'] = dimension
+            self.SymbolTableFunction[self.func]['offset'] = 0
         else:
             self.offset = self.offset + 4
             self.SymbolTableFunction[self.func]['variables'][name+"_"+str(self.scope)] = {

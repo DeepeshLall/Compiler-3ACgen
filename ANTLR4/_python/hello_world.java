@@ -12,7 +12,7 @@ public class RecursionExampleDirectory
 		// c = e;
 		// a/=c;
 		// c=a+b*(int)c-(float)d;
-		arr[b] = fib(a - 1,a) + fib(b,0);
+		arr[b] = fib(a - 1,(float) a) + fib(b,(float) 0);
 		// int val = 0;
 		// val = ++val + ++val;
 		// val = (float) val;
@@ -47,9 +47,9 @@ public class RecursionExampleDirectory
 		// arr[2][3] = 3;
     }
 
-	public static int fib(int n, int m)
+	public static int fib(int n, float m)
 	{	int result = 0;
-		result = fib(n-1,n) + fib(n-2,n);
+		result = fib(n-1,m) + fib(n-2,m);
 		return result;
 	}
 }
