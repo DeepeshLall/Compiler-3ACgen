@@ -368,6 +368,45 @@ class my_visit2(Java8Visitor):
         self.blockFlag=1
         return 1
 
+    def visitDoStatement(self, ctx:Java8Parser.DoStatementContext):
+        # doStatement  :  'do' statement 'while' '(' expression ')' ';'
+		# 	 ;
+        self.level+=1
+        # print("Increasing scope from :"+str(ST.scope))
+        ST.inc_scope_minor()
+        # print("Increased scope to :"+str(ST.scope))
+        self.blockFlag=0
+        children = ctx.getChildren()
+        l1 = tac.newLabel()
+        l2 = tac.newLabel()
+        l3 = tac.newLabel()
+        self.BreakList.append([])
+        self.ContinueList.append([])
+        for child in children:
+            if _isIdentifier_(child):
+                continue
+            elif parser.ruleNames[child.getRuleIndex()] == 'expression':
+                tac.emit('label :','', '', l1)
+                self.visit(child)
+                tac.backpatch(self.expressionTL,l2)
+                tac.backpatch(self.expressionFL,l3)
+            elif parser.ruleNames[child.getRuleIndex()] == 'statement':
+                tac.emit('label :','', '', l2)
+                self.visit(child)
+                tac.emit('goto','', '', l1)
+        tac.emit('label :','', '', l3)
+        tac.backpatch(self.BreakList[-1],l3)
+        tac.backpatch(self.ContinueList[-1],l1)
+        self.BreakList.pop()
+        self.ContinueList.pop()
+        self.level-=1
+        # print("Decreasing scope from :"+str(ST.scope))
+        ST.dec_scope()
+        # print("Decreased scope to :"+str(ST.scope))
+        self.blockFlag=1
+        return 1
+
+
     def visitBasicForStatement(self, ctx:Java8Parser.BasicForStatementContext):
         # basicForStatement  :  'for' '(' forInit? ';' expression? ';' forUpdate? ')' statement
 		# 		;
@@ -655,7 +694,7 @@ class my_visit2(Java8Visitor):
             elif parser.ruleNames[child.getRuleIndex()] == 'constantExpression':
                 self.visit(child)
                 exprVal = self.constantExpression
-                consExprType = self.constantExpressionType
+                consExprType = self.constantExpressionType # not checking it for now
             elif parser.ruleNames[child.getRuleIndex()] == 'enumconstantName':
                 self.visit(child)
                 exprVal = child.getText()
@@ -856,12 +895,12 @@ class my_visit2(Java8Visitor):
         return 1
 
     def visitLambdaParameters(self, ctx:Java8Parser.LambdaParametersContext):
-        ST.inc_scope_minor()
+        # ST.inc_scope_minor()
         return self.visitChildren(ctx)
 
     def visitLambdaBody(self, ctx:Java8Parser.LambdaBodyContext):
         self.visitChildren(ctx)
-        ST.dec_scope()
+        # ST.dec_scope()
         return 1
 
     def visitAssignmentExpression(self, ctx:Java8Parser.AssignmentExpressionContext):
