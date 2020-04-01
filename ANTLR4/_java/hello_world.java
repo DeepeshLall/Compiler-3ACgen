@@ -4,7 +4,7 @@ public class RecursionExampleDirectory
 	protected int deep = a*b + (float)a;
     public static void main(String[] args[][]){
         int a=1,b=2;
-		char c=a+2.0,d=4.2;
+		// char c=a+2.0,d=4.2;
 		// char a;
 		int[][] arr[];
 		int[] zrr[] = new int[2]; 
@@ -12,13 +12,13 @@ public class RecursionExampleDirectory
 		// c = e;
 		// a/=c;
 		// c=a+b*(int)c-(float)d;
-		arr[b] = fib(a - 1,a) + fib(b,0);
+		arr[b] = fib(a - 1,(float) a) + fib(b,(float) 0);
 		// int val = 0;
 		// val = ++val + ++val;
 		// val = (float) val;
 		// for (int i =0 ; i < a ; i++ ){
 			// if(a==val || a>2){
-				System.out.println( "Hey I am string." );
+				// System.out.println( "Hey I am string." );
 			// 	b=3;
 			// }else{
 			// 	d = b;
@@ -45,11 +45,24 @@ public class RecursionExampleDirectory
         // zrr[1] = 20; 
 
 		// arr[2][3] = 3;
+
+
+		int day = 4;
+		switch (day) {
+		case 1:
+			System.out.println("Monday");
+			break;
+		case 2:
+			System.out.println("Tuesday");
+			break;
+		default:
+			System.out.println("Other day");
+		}
     }
 
-	public static int fib(int n, int m)
+	public static int fib(int n, float m)
 	{	int result = 0;
-		result = fib(n-1,n) + fib(n-2,n);
+		result = fib(n-1,m) + fib(n-2,m);
 		return result;
 	}
 }

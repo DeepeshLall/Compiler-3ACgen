@@ -33,7 +33,8 @@ class TAC:
 
     def emit(self, lhs, rhs, rhs1, operator):
         rhs = str(rhs)
-        rhs1 = str(rhs1)
+        rhs1 = str(rhs1) # Currently only declared variable is increasing offset for Function in Symbol Table, 
+                        # need to be revised for function entry point for BeginFunc for "temp" as well
         self.code.append([lhs,rhs,rhs1,operator])
         # if 'temp' == rhs[0:5]:
         #     ind = int(rhs[4])

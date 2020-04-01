@@ -61,6 +61,9 @@ class my_visit2(Java8Visitor):
         self.dimsNo = 0 # no of dims to set dimension
         self.dimensionTemp = 0 # store dimension for self.typeSizeList before variable Declarator id
 
+        self.NextLabel = None # carry label for statement to be jumped at in switch case.
+        self.exitLabel = None #  label for exit point in switch case for break to be backpatched with.
+
         #contains temporary register in case of operand reduction at that named non terminal node in parse tree.
         self.conditionalOrExpression = None 
         self.conditionalAndExpression = None 
@@ -88,6 +91,8 @@ class my_visit2(Java8Visitor):
         self.postDecrementExpression = None 
         self.postIncrementExpression = None  
         self.expressionName = None
+        self.ConstExpression = None
+        self.constantExpression = None
 
         # False List of all the nonterminal having value to be backpatched.
         self.expressionFL = []
@@ -166,9 +171,11 @@ class my_visit2(Java8Visitor):
         self.postDecrementExpressionType = 'void'
         self.postIncrementExpressionType = 'void'
         self.expressionNameType = 'void'
+        self.constantExpressionType = 'void'
 
         self.BreakList = []
         self.ContinueList = []
+        self.MethodList = []
 
     def reinitializeSymbolTableScope(self):
         ST.func = 'start'
@@ -232,10 +239,16 @@ class my_visit2(Java8Visitor):
 
     def visitMethodBody(self, ctx:Java8Parser.MethodBodyContext):
         self.MethodBlock=0
+        self.MethodList.append([])
         tac.emit(str(ST.func),'','','')
+        self.MethodList[-1].append(len(tac.code))
         tac.emit("BeginFunc",str(len(self.formalTypeList)*4),'','')
         self.visitChildren(ctx)
+        # this part is according to https://web.stanford.edu/class/archive/cs/cs143/cs143.1128/handouts/240%20TAC%20Examples.pdf
+        for x in self.MethodList[-1]:
+            tac.code[x][1] = str(ST.SymbolTableFunction[ST.func]['offset'])
         tac.emit("EndFunc",'','','')
+        self.MethodList.pop()
         self.MethodBlock=1
         # print("Decreasing scope from :"+str(ST.scope))
         ST.dec_scope()
@@ -555,12 +568,107 @@ class my_visit2(Java8Visitor):
         ST.inc_scope_minor()
         # print("Increased scope to :"+str(ST.scope))
         self.blockFlag=0
-        self.visitChildren(ctx)
+        # self.visitChildren(ctx)
+        children = ctx.getChildren()
+        childCount = ctx.getChildCount()
+        self.ConstExpression = None
+        self.exitLabel = tac.newLabel()
+        exitLabel = self.exitLabel
+        self.BreakList.append([])
+        for child in children:
+            if _isIdentifier_(child):
+                pass
+            elif parser.ruleNames[child.getRuleIndex()] == 'expression':
+                self.visit(child)
+                self.ConstExpression = self.expression
+            elif parser.ruleNames[child.getRuleIndex()] == 'switchBlock':
+                self.visit(child)
+        tac.emit('label','','',exitLabel)
+        tac.backpatch(self.BreakList[-1],exitLabel)
         self.level-=1
         # print("Decreasing scope from :"+str(ST.scope))
         ST.dec_scope()
         # print("Decreased scope to :"+str(ST.scope))
         self.blockFlag=1
+        return 1
+
+    def visitSwitchBlock(self, ctx:Java8Parser.SwitchBlockContext):
+        # switchBlock  :  '{' switchBlockStatementGroup* switchLabel* '}'
+        children = ctx.getChildren()
+        counter = 0
+        self.NextLabel = None
+        for child in children:
+            counter += 1
+            if _isIdentifier_(child):
+                pass
+            elif parser.ruleNames[child.getRuleIndex()] == 'switchBlockStatementGroup':
+                nextLabel = tac.newLabel()
+                self.NextLabel = nextLabel
+                exitLabel = self.exitLabel
+                constExpr = self.ConstExpression
+                self.visit(child)
+                self.NextLabel = nextLabel
+                self.exitLabel = exitLabel
+                self.ConstExpression = constExpr
+                # tac.emit('goto','','',exitLabel)
+                tac.emit('label:','','',nextLabel)
+        return 1
+
+    def visitSwitchBlockStatementGroup(self, ctx:Java8Parser.SwitchBlockStatementGroupContext):
+        # switchBlockStatementGroup  :  switchLabels blockStatements
+		# 				   ;
+        children = ctx.getChildren()
+        for child in children:
+            if parser.ruleNames[child.getRuleIndex()] == 'switchLabels':
+                self.visit(child)
+            elif parser.ruleNames[child.getRuleIndex()] == 'blockStatements':
+                self.visit(child)
+        return 1
+
+    def visitSwitchLabels(self, ctx:Java8Parser.SwitchLabelsContext):
+        # switchLabels  :  switchLabel switchLabel*
+		# 	  ;
+        children = ctx.getChildren()
+        for child in children:
+            if _isIdentifier_(child):
+                pass
+            elif parser.ruleNames[child.getRuleIndex()] == 'switchLabel':
+                self.visit(child)
+        return 1
+
+    def visitSwitchLabel(self, ctx:Java8Parser.SwitchLabelContext):
+        # switchLabel  :  'case' constantExpression ':'
+		# 	 |  'case' enumconstantName ':'
+		# 	 |  'default' ':'
+		# 	 ;
+        children = ctx.getChildren()
+        emitTACflag = 0
+        exprVal = None
+        for child in children:
+            if _isIdentifier_(child):
+                if child.getText() == 'case':
+                    emitTACflag = 1
+                elif child.getText == 'default':
+                    emit.emitTACflag = 0
+                else:
+                    continue
+            elif parser.ruleNames[child.getRuleIndex()] == 'constantExpression':
+                self.visit(child)
+                exprVal = self.constantExpression
+                consExprType = self.constantExpressionType
+            elif parser.ruleNames[child.getRuleIndex()] == 'enumconstantName':
+                self.visit(child)
+                exprVal = child.getText()
+        if not emitTACflag == 0:
+            dest = tac.getTemp()
+            tac.emit(dest,exprVal,self.ConstExpression,'==')
+            tac.emit('ifgoto',dest,'eq0',self.NextLabel)
+        return 1
+
+    def visitConstantExpression(self, ctx:Java8Parser.ConstantExpressionContext):
+        self.visitChildren(ctx)
+        self.constantExpression = self.expression
+        self.constantExpressionType = self.expressionType
         return 1
 
     def visitLocalVariableDeclaration(self, ctx:Java8Parser.LocalVariableDeclarationContext):
