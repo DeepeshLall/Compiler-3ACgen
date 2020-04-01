@@ -28,6 +28,45 @@ def _isIdentifier_(ctx):
     else:
         return False
 
+def typeWiden(lhs,rhs,lhsType,rhsType):
+    if lhsType == 'int' and rhsType == 'float':
+        tac.emit(str(lhs),str(lhs),'','(float)')
+        retType = 'float'
+    elif rhsType == 'int' and lhsType == 'float':
+        tac.emit(str(rhs),str(rhs),'','(float)')
+        retType = 'float'
+    elif lhsType == 'int' and rhsType == 'double':
+        tac.emit(str(rhs),str(rhs),'','(double)')
+        retType = 'double'
+    elif rhsType == 'int' and lhsType == 'double':
+        tac.emit(str(rhs),str(rhs),'','(double)')
+        retType = 'double'
+    elif lhsType == 'double' and rhsType == 'float':
+        tac.emit(str(rhs),str(rhs),'','(double)')
+        retType = 'double'
+    elif rhsType == 'double' and lhsType == 'float':
+        tac.emit(str(rhs),str(rhs),'','(double)')
+        retType = 'double'
+    if lhsType == 'long' and rhsType == 'float':
+        tac.emit(str(lhs),str(lhs),'','(float)')
+        retType = 'float'
+    elif rhsType == 'long' and lhsType == 'float':
+        tac.emit(str(rhs),str(rhs),'','(float)')
+        retType = 'float'
+    elif lhsType == 'long' and rhsType == 'double':
+        tac.emit(str(rhs),str(rhs),'','(double)')
+        retType = 'double'
+    elif rhsType == 'long' and lhsType == 'double':
+        tac.emit(str(rhs),str(rhs),'','(double)')
+        retType = 'double'
+    elif lhsType == 'long' and rhsType == 'int':
+        tac.emit(str(rhs),str(rhs),'','(long)')
+        retType = 'long'
+    elif rhsType == 'long' and lhsType == 'int':
+        tac.emit(str(rhs),str(rhs),'','(long)')
+        retType = 'long'
+    return retType
+
 class my_visit2(Java8Visitor):
     def __init__(self):
         super().__init__()
@@ -713,25 +752,27 @@ class my_visit2(Java8Visitor):
     def visitLocalVariableDeclaration(self, ctx:Java8Parser.LocalVariableDeclarationContext):
         self.typeList=[]
         self.typeSizeList=[]
-        self.type=""
+        self.type="void"
         self.variableModifier=[]
         self.dimsNo = 0
         self.visitChildren(ctx)
         # print("Adding entry to Symbol Table: "+str(str(self.type)+" "+str(self.typeList)+" "+str(self.level)+" "+str(ST.scope)))
         for i in range(len(self.typeList)):
             ST.Add('variables',str(self.typeList[i]),str(self.typeSizeList[i]),self.type,self.variableModifier)
+        self.type = "void"
         return 1
         
     def visitFieldDeclaration(self, ctx:Java8Parser.FieldDeclarationContext):
         self.typeList=[]
         self.typeSizeList=[]
-        self.type=""
+        self.type="void"
         self.fieldModifier=[]
         self.dimsNo = 0
         self.visitChildren(ctx)
         # print("Adding entry to Symbol Table: "+str(str(self.type)+" "+str(self.typeList)+" "+str(self.level)+" "+str(ST.scope)))
         for i in range(len(self.typeList)):
             ST.Add('variables',str(self.typeList[i]),str(self.typeSizeList[i]),self.type,self.fieldModifier)
+        self.type = "void"
         return 1
 
     def visitFieldModifier(self, ctx:Java8Parser.FieldModifierContext):
@@ -849,7 +890,7 @@ class my_visit2(Java8Visitor):
                     self.formalTypeList.append(child.getText())
                 continue
             elif parser.ruleNames[child.getRuleIndex()] == 'dims':
-                self.visit(child)
+                self.visit(child) # After this the dimsNo is updated to new value. or not changed
         self.typeSizeList.append(self.dimsNo)
         if self.inFormalList == 1:
             self.formalTypeSizeList.append(self.dimsNo)
@@ -1038,9 +1079,9 @@ class my_visit2(Java8Visitor):
                     self.visit(child)
                     ifFalseType = self.conditionExpressionType
                     tac.emit('label: ','','',label3)
-            if predicateType in ['int','float','boolean'] and ifTruetype == ifFalseType:
+            if predicateType in ['int','long','float','boolean','double'] and ifTruetype == ifFalseType:
                 self.conditionExpressionType = ifTruetype
-            elif predicateType in ['int','float','boolean']:
+            elif predicateType in ['int','long','float','boolean','double']:
                 print("ifTrueType : "+str(ifTruetype)+" ifFalseType : "+str(ifFalseType))
                 sys.exit("ifTrue and ifFalse type of ternary operator are different.")
             else:
@@ -1084,11 +1125,11 @@ class my_visit2(Java8Visitor):
                     rhs = self.conditionalAndExpression
                     rhsType = self.inclusiveOrExpressionType
             if lhsType == rhsType :
-                if not ((lhsType == 'char') or (lhsType == 'string')  or (lhsType == 'int') or (lhsType == 'float')):
+                if lhsType == 'boolean':
                     self.conditionalOrExpressionType = 'boolean'
                 else:
-                    sys.exit("Type error in conditionalOrExpressionType, don't accept char or string for shift.")
-            elif (lhsType in ['int','float','boolean'] and rhsType in ['float','boolean']) or (rhsType in ['int','float','boolean'] and lhsType in ['float','boolean']):
+                    sys.exit("Type error in conditionalOrExpressionType, don't accept other than boolean")
+            elif (lhsType in ['int','long','float','boolean','double'] and rhsType in ['boolean']) or (rhsType in ['int','long','float','boolean','double'] and lhsType in ['boolean']):
                 self.conditionalOrExpressionType = 'boolean'
             else:
                 print("Type Error in conditionalOrExpression")
@@ -1135,11 +1176,11 @@ class my_visit2(Java8Visitor):
                     rhs = self.conditionalAndExpression
                     rhsType = self.inclusiveOrExpressionType
             if lhsType == rhsType :
-                if not ((lhsType == 'char') or (lhsType == 'string') or (lhsType == 'int') or (lhsType == 'float')):
+                if lhsType == 'boolean':
                     self.conditionalAndExpressionType = 'boolean'
                 else:
-                    sys.exit("Type error in conditionalAndExpression, don't accept char or string for shift.")
-            elif (lhsType in ['int','float','boolean'] and rhsType in ['float','boolean']) or (rhsType in ['int','float','boolean'] and lhsType in ['float','boolean']):
+                    sys.exit("Type error in conditionalAndExpression, don't accept other than boolean.")
+            elif (lhsType in ['int','long','float','boolean','double'] and rhsType in ['boolean']) or (rhsType in ['int','long','float','boolean','double'] and lhsType in ['boolean']):
                 self.conditionalAndExpressionType = 'boolean'
             else:
                 print("Type Error in conditionalAndExpression")
@@ -1182,16 +1223,12 @@ class my_visit2(Java8Visitor):
                     rhs = self.exclusiveOrExpression
                     rhsType = self.exclusiveOrExpressionType
             if lhsType == rhsType :
-                if not ((lhsType == 'char') or (lhsType == 'string')):
+                if not ((lhsType == 'char') or (lhsType == 'string') or (lhsType == 'boolean')):
                     self.inclusiveOrExpressionType = lhsType
                 else:
-                    sys.exit("Type error: inclusiveOrExpression don't take string or char.")
-            elif (lhsType in ['int','float'] and rhsType in ['float']) or (rhsType in ['int','float'] and lhsType in ['float']):
-                if lhsType == 'int' and rhsType == 'float':
-                    tac.emit(str(lhs),str(lhs),'','(float)')
-                elif rhsType == 'int' and rhsType == 'float':
-                    tac.emit(str(rhs),str(rhs),'','(float)')
-                self.inclusiveOrExpressionType = 'float'
+                    sys.exit("Type error: inclusiveOrExpression don't take string,bool or char.")
+            elif lhsType in ['int','long','float','double'] and rhsType in ['int','long','float','double']:
+                self.inclusiveOrExpressionType = typeWiden(lhs,rhs,lhsType,rhsType)
             else:
                 print("Type Error in inclusiveOrExpression")
                 sys.exit("LHS type: "+str(lhsType)+" ,RHS type: "+str(rhsType))
@@ -1231,16 +1268,12 @@ class my_visit2(Java8Visitor):
                     rhs = self.andExpression
                     rhsType = self.andExpressionType
             if lhsType == rhsType :
-                if not ((lhsType == 'char') or (lhsType == 'string')):
+                if not ((lhsType == 'char') or (lhsType == 'string') or (lhsType == 'boolean')):
                     self.andExpressionType = lhsType
                 else:
-                    sys.exit("Type error: andExpression don't take string or char.")
-            elif (lhsType in ['int','float'] and rhsType in ['float']) or (rhsType in ['int','float'] and lhsType in ['float']):
-                if lhsType == 'int' and rhsType == 'float':
-                    tac.emit(str(lhs),str(lhs),'','(float)')
-                elif rhsType == 'int' and rhsType == 'float':
-                    tac.emit(str(rhs),str(rhs),'','(float)')
-                self.andExpressionType = 'float'
+                    sys.exit("Type error: andExpression don't take string,bool or char.")
+            elif lhsType in ['int','long','float','double'] and rhsType in ['int','long','float','double']:
+                self.andExpressionType = typeWiden(lhs,rhs,lhsType,rhsType)
             else:
                 print("Type Error in andExpression")
                 sys.exit("LHS type: "+str(lhsType)+" ,RHS type: "+str(rhsType))
@@ -1280,16 +1313,12 @@ class my_visit2(Java8Visitor):
                     rhs = self.equalityExpression
                     rhsType = self.equalityExpression
             if lhsType == rhsType :
-                if not ((lhsType == 'char') or (lhsType == 'string')):
+                if not ((lhsType == 'char') or (lhsType == 'string') or (lhsType == 'boolean')):
                     self.andExpressionType = lhsType
                 else:
-                    sys.exit("Type error: andExpression don't take string or char.")
-            elif (lhsType in ['int','float'] and rhsType in ['float']) or (rhsType in ['int','float'] and lhsType in ['float']):
-                if lhsType == 'int' and rhsType == 'float':
-                    tac.emit(str(lhs),str(lhs),'','(float)')
-                elif rhsType == 'int' and rhsType == 'float':
-                    tac.emit(str(rhs),str(rhs),'','(float)')
-                self.andExpressionType = 'float'
+                    sys.exit("Type error: andExpression don't take string, bool or char.")
+            elif lhsType in ['int','long','float','double'] and rhsType in ['int','long','float','double']:
+                self.andExpressionType = typeWiden(lhs,rhs,lhsType,rhsType)
             else:
                 print("Type Error in andExpression")
                 sys.exit("LHS type: "+str(lhsType)+" ,RHS type: "+str(rhsType))
@@ -1330,12 +1359,12 @@ class my_visit2(Java8Visitor):
                     rhs = self.relationalExpression
                     rhsType = self.relationalExpressionType
             if lhsType == rhsType :
-                if not ((lhsType == 'char') or (lhsType == 'string')):
+                if not ((lhsType == 'char') or (lhsType == 'string') or (lhsType == 'boolean')):
                     #considered relationExpression when containing == or != return a boolean. 
                     self.equalityExpressionType = 'boolean'
                 else:
-                    sys.exit("Type error in relationalExpression, don't accept char or string for shift.")
-            elif (lhsType in ['int','float'] and rhsType in ['float','null']) or (rhsType in ['int','float','null'] and lhsType in ['float']):
+                    sys.exit("Type error in relationalExpression, don't accept char,bool or string for comparison.")
+            elif (lhsType in ['int','long','float','double'] and rhsType in ['int','long','float','double']):
                 self.equalityExpressionType = 'boolean'
             else:
                 print("Type Error in relationalExpression")
@@ -1391,11 +1420,11 @@ class my_visit2(Java8Visitor):
                     rhsType = child.getText()
                     noTac = 1
             if lhsType == rhsType :
-                if not ((lhsType == 'char') or (lhsType == 'string')):
+                if not ((lhsType == 'char') or (lhsType == 'string') or (lhsType == 'boolean')):
                     self.relationalExpressionType = 'boolean'
                 else:
-                    sys.exit("Type error in relationalExpression, don't accept char or string for shift.")
-            elif (lhsType in ['int','float'] and rhsType in ['float']) or (rhsType in ['int','float'] and lhsType in ['float']):
+                    sys.exit("Type error in relationalExpression, don't accept char or string for comparision.")
+            elif (lhsType in ['int','long','float','double'] and rhsType in ['int','long','float','double']):
                 self.relationalExpressionType = 'boolean'
             else:
                 print("Type Error in relationalExpression")
@@ -1445,17 +1474,17 @@ class my_visit2(Java8Visitor):
                     rhs = self.additiveExpression
                     rhsType = self.additiveExpressionType
             if lhsType == rhsType :
-                if not ((lhsType == 'char') or (lhsType == 'string')):
-                    if lhsType == 'float':
+                if not ((lhsType == 'char') or (lhsType == 'string') or lhsType == 'boolean'):
+                    if lhsType == 'float' or lhsType == 'double':
                         sys.exit("Cant use shift operator in JAVA.")
                     else:
-                        self.shiftExpressionType = 'int'
+                        self.shiftExpressionType = lhsType
                 else:
-                    sys.exit("Type error in shiftExpression, don't accept char or string for shift.")
-            elif (lhsType in ['int','float'] and rhsType in ['float']) or (rhsType in ['int','float'] and lhsType in ['float']):
-                if rhsType == 'float' or rhsType == 'float':
+                    sys.exit("Type error in shiftExpression, don't accept char, boolean or string for shift.")
+            elif (lhsType in ['int','long','float','double'] and rhsType in ['int','long','float','double']):
+                if rhsType == 'float' or rhsType == 'double':
                     sys.exit("Cant shift by floating value. Type Error in shiftExpression.")
-                self.shiftExpressionType = 'int'
+                self.shiftExpressionType = lhsType
             else:
                 print("Type Error in shiftExpression")
                 sys.exit("LHS type: "+str(lhsType)+" ,RHS type: "+str(rhsType))
@@ -1504,12 +1533,8 @@ class my_visit2(Java8Visitor):
                     warnings.warn("stringConcat malloc")
                     pass
                     #tac for malloc of string concatenation.
-            elif (lhsType in ['int','float'] and rhsType in ['float']) or (rhsType in ['int','float'] and lhsType in ['float']):
-                if lhsType == 'int' and rhsType == 'float':
-                    tac.emit(str(lhs),str(lhs),'','(float)')
-                elif rhsType == 'int' and rhsType == 'float':
-                    tac.emit(str(rhs),str(rhs),'','(float)')
-                self.additiveExpressionType = 'float'
+            elif lhsType in ['int','long','float','double'] and rhsType in ['int','long','float','double']:
+                self.additiveExpressionType = typeWiden(lhs,rhs,lhsType,rhsType)
             else:
                 print("Type Error in additiveExpression")
                 sys.exit("LHS type: "+str(lhsType)+" ,RHS type: "+str(rhsType))
@@ -1557,12 +1582,8 @@ class my_visit2(Java8Visitor):
                     self.multiplicativeExpressionType = lhsType
                 else:
                     warnings.warn("Type error: multiplicativeExpression don't take string or char.")
-            elif (lhsType in ['int','float'] and rhsType in ['float']) or (rhsType in ['int','float'] and lhsType in ['float']):
-                if lhsType == 'int' and rhsType == 'float':
-                    tac.emit(str(lhs),str(lhs),'','(float)')
-                elif rhsType == 'int' and rhsType == 'float':
-                    tac.emit(str(rhs),str(rhs),'','(float)')
-                self.multiplicativeExpressionType = 'float'
+            elif lhsType in ['int','float','double'] and rhsType in ['int','long','float','double']:
+                self.multiplicativeExpressionType = typeWiden(lhs,rhs,lhsType,rhsType)
             else:
                 print("Type Error in multiplicativeExpression")
                 sys.exit("LHS type: "+str(lhsType)+" ,RHS type: "+str(rhsType))
@@ -1606,7 +1627,7 @@ class my_visit2(Java8Visitor):
                 elif parser.ruleNames[child.getRuleIndex()] == 'unaryExpression':
                     self.visit(child)
                     lhs = self.unaryExpression
-                    if not self.unaryExpressionType in ['int','float','boolean','null']:
+                    if not self.unaryExpressionType in ['int','long','float','boolean','null','double']:
                         sys.exit("Type error in unaryExpression.")
             dest = tac.getTemp()
             self.unaryExpression = dest
@@ -1630,7 +1651,7 @@ class my_visit2(Java8Visitor):
             elif parser.ruleNames[child.getRuleIndex()] == 'unaryExpression':
                 self.visit(child)
                 lhs = self.unaryExpression
-                if not self.unaryExpressionType in ['int','float','boolean','null']:
+                if not self.unaryExpressionType in ['int','long','float','boolean','null','double']:
                     sys.exit("Type error in preIncrementExpression.")
                 self.preIncrementExpressionType = self.unaryExpressionType
         dest = tac.getTemp()
@@ -1660,7 +1681,7 @@ class my_visit2(Java8Visitor):
             elif parser.ruleNames[child.getRuleIndex()] == 'unaryExpression':
                 self.visit(child)
                 lhs = self.unaryExpression
-                if not self.unaryExpressionType in ['int','float','boolean','null']:
+                if not self.unaryExpressionType in ['int','long','float','boolean','null','double']:
                     sys.exit("Type error in preDecrementExpression.")
                 self.preDecrementExpressionType = self.unaryExpressionType
         dest = tac.getTemp()
@@ -1704,7 +1725,7 @@ class my_visit2(Java8Visitor):
                 elif parser.ruleNames[child.getRuleIndex()] == 'unaryExpression':
                     self.visit(child)
                     lhs = self.unaryExpression
-                    if not self.unaryExpressionType in ['int','float','boolean','null']:
+                    if not self.unaryExpressionType in ['int','float','boolean','null','double']:
                         sys.exit("Type error in unaryExpressionNotPlusMinus.")
                     self.unaryExpressionNotPlusMinusType = self.unaryExpressionType
             dest = tac.getTemp()
@@ -1734,7 +1755,7 @@ class my_visit2(Java8Visitor):
                 #                         ;
                 # pure_postfix_increment  :  '++'
                 #                         ;
-                if not self.postfixExpressionType in ['int','float','boolean','null']:
+                if not self.postfixExpressionType in ['int','long','float','boolean','null','double']:
                     sys.exit("Type error in postfixExpression.")
                 self.visit(child)
                 operator = child.getText()
@@ -1796,7 +1817,7 @@ class my_visit2(Java8Visitor):
                 self.castExpressionType = child.getText()
             elif parser.ruleNames[child.getRuleIndex()] == 'referenceType':
                 self.visit(child)
-                operator = child.getText()
+                operator = operator + child.getText()
                 #can be done for self.refrenceType.
                 self.castExpressionType = child.getText()
             elif parser.ruleNames[child.getRuleIndex()] == 'additionalBound':
@@ -1879,14 +1900,20 @@ class my_visit2(Java8Visitor):
                     elif Literal[0] == '\"':
                         self.primaryNoNewArray_Type_1_PrType = 'string'
                     elif Literal.find('.') == 1:
-                        self.primaryNoNewArray_Type_1_PrType = 'float'
+                        if self.type == 'double':
+                            self.primaryNoNewArray_Type_1_PrType = 'double'
+                        else:
+                            self.primaryNoNewArray_Type_1_PrType = 'float'
                     elif Literal == "null" or Literal == 'true' or Literal == 'false':
                         if Literal == 'true' or Literal == 'false':
                             self.primaryNoNewArray_Type_1_PrType = 'boolean'
                         else:
                             self.primaryNoNewArray_Type_1_PrType = Literal
                     else:
-                        self.primaryNoNewArray_Type_1_PrType = 'int'
+                        if self.type == 'long':
+                            self.primaryNoNewArray_Type_1_PrType = 'long'
+                        else:
+                            self.primaryNoNewArray_Type_1_PrType = 'int'
                     dest = tac.getTemp()
                     tac.emit(str(dest),str(Literal),'','=')
                     self.primaryNoNewArray_Type_1_Pr = dest
@@ -2125,7 +2152,7 @@ class my_visit2(Java8Visitor):
                 self.visit(child)
                 lhs = self.postfixExpression
                 lhsType = self.postfixExpressionType
-        if not lhsType in ['int','float']:
+        if not lhsType in ['int','long','float','double']:
             sys.exit("Type Error in postIncrementExpression.")
         self.postIncrementExpressionType = lhsType
         dest = tac.getTemp()
@@ -2152,7 +2179,7 @@ class my_visit2(Java8Visitor):
                 self.visit(child)
                 lhs = self.postfixExpression
                 lhsType = self.postfixExpressionType
-        if not lhsType in ['int','float']:
+        if not lhsType in ['int','long','float','double']:
             sys.exit("Type Error in postDecrementExpression.")
         self.postDecrementExpressionType = lhsType
         dest = tac.getTemp()

@@ -45,6 +45,10 @@ class SymbolTable:
             self.SymbolTableFunction[self.func]['input'] = dimension
             self.SymbolTableFunction[self.func]['offset'] = 0
         else:
+            # if type == 'double' or type == 'long':
+            #     self.offset = self.offset + 8
+            # else:
+            #     self.offset = self.offset + 4
             self.offset = self.offset + 4
             self.SymbolTableFunction[self.func]['offset'] = self.offset
             self.SymbolTableFunction[self.func]['variables'][name+"_"+str(self.scope)] = {

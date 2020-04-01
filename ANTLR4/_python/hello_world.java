@@ -4,8 +4,10 @@ public class RecursionExampleDirectory {
 	// int a=1,b=2;
 	// protected int deep = a*b + (float)a;
 	public static void main(String[] args[][]) {
-		// int a=1,b=2;
-		// char c=a+2.0,d=4.2;
+		int a=1,b=2;
+		double myvar = 2.1, newVar = 2;
+		char c=a+2.0,d=4.2;
+		a = 2 + 3*b + myvar * 2.5;
 		// char a;
 		// int[][] arr[];
 		// int[] zrr[] = new int[2];
@@ -58,11 +60,11 @@ public class RecursionExampleDirectory {
 		// default:
 		// System.out.println("Other day");
 		// }
-		int i=0;
-		do {
-			out.println(i);
-			i--;
-	   }while(i>1);
+	// 	int i=0;
+	// 	do {
+	// 		out.println(i);
+	// 		i--;
+	//    }while(i>1);
 
     }
 
