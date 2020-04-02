@@ -4,12 +4,14 @@ public class RecursionExampleDirectory {
 	// int a=1,b=2;
 	// protected int deep = a*b + (float)a;
 	public static void main(String[] args[][]) {
-		// int a=1,b=2;
-		double myvar = 2.0;
+		int a=1,b=2;
+		// double myvar = 2.1, newVar = 2;
 		// char c=a+2.0,d=4.2;
+		// a = 2 + 3*b + myvar * 2.5;
 		// char a;
-		// int[][] arr[];
-		// int[] zrr[] = new int[2];
+		int[][] arr[];
+		int[] zrr[] = new int[a][b];
+		int l[]={{33,3},{4,5}};
 		// short e;
 		// c = e;
 		// a/=c;
@@ -43,10 +45,10 @@ public class RecursionExampleDirectory {
 
 		// char myChar = 'a';
 		// String myString = "MyString";
-		// arr[0] = 10;
-		// zrr[1] = 20;
+		arr[0] = 10;
+		zrr[1] = 20;
 
-		// arr[2][3] = 3;
+		arr[2][3] = arr[1];
 
 		// int day = 4;
 		// switch (day) {

@@ -67,6 +67,18 @@ def typeWiden(lhs,rhs,lhsType,rhsType):
         retType = 'long'
     return retType
 
+def giveType(typeNeeded):
+    retVal = None
+    if typeNeeded == 'int' or typeNeeded == 'float':
+        retVal = 4
+    elif typeNeeded == 'double' or typeNeeded == 'long':
+        retVal = 8
+    elif typeNeeded == 'char':
+        retVal = 1
+    else:
+        retVal = None
+    return retVal
+
 class my_visit2(Java8Visitor):
     def __init__(self):
         super().__init__()
@@ -103,6 +115,8 @@ class my_visit2(Java8Visitor):
         self.NextLabel = None # carry label for statement to be jumped at in switch case.
         self.exitLabel = None #  label for exit point in switch case for break to be backpatched with.
 
+        self.sizeOfType = None # for storing offset by variable type i.e. sizeof(type) in array access
+
         #contains temporary register in case of operand reduction at that named non terminal node in parse tree.
         self.conditionalOrExpression = None 
         self.conditionalAndExpression = None 
@@ -132,6 +146,9 @@ class my_visit2(Java8Visitor):
         self.expressionName = None
         self.ConstExpression = None
         self.constantExpression = None
+        self.arraycreationExpression = None
+        self.dimExpr = None
+        self.dimExprs = None
 
         # False List of all the nonterminal having value to be backpatched.
         self.expressionFL = []
@@ -211,6 +228,7 @@ class my_visit2(Java8Visitor):
         self.postIncrementExpressionType = 'void'
         self.expressionNameType = 'void'
         self.constantExpressionType = 'void'
+        self.arraycreationExpressionType = 'void'
 
         self.BreakList = []
         self.ContinueList = []
@@ -1869,9 +1887,126 @@ class my_visit2(Java8Visitor):
                 self.primary_Type_1Type = self.primaryNoNewArray_Type_1_PrType
             elif parser.ruleNames[child.getRuleIndex()] == 'arraycreationExpression':
                 self.visit(child)
-                self.primary_Type_1 = child.getText()
+                self.primary_Type_1 = self.arraycreationExpression
                 # needed to be seen from Symbol Table or temp self variable.
-                self.primary_Type_1Type = 'int'
+                self.primary_Type_1Type = self.arraycreationExpressionType
+        return 1
+
+    def visitArraycreationExpression(self, ctx:Java8Parser.ArraycreationExpressionContext):
+        # arraycreationExpression  :  'new' primitiveType dimExprs dims?
+		# 				 |  'new' classOrInterfaceType dimExprs dims?
+		# 				 |  'new' primitiveType dims arrayInitializer
+		# 				 |  'new' classOrInterfaceType dims arrayInitializer
+		# 				 ;
+        children = ctx.getChildren()
+        childCount = ctx.getChildCount()
+        for child in children:
+            if _isIdentifier_(child):
+                pass
+            elif parser.ruleNames[child.getRuleIndex()] == 'primitiveType':
+                typeNeeded = self.type
+                self.arraycreationExpressionType = typeNeeded
+                self.sizeOfType = giveType(typeNeeded)
+                self.visit(child)
+                # Dimension check left as it can store pointer if dimension is less else garbage get stored.
+                if typeNeeded != child.getText():
+                    print("Expected Type : "+str(typeNeeded)+" Type Defined : "+child.getText())
+                    sys.exit("Type mismatch in array creation.")
+                else:
+                    pass # Let typeNeeded in self.type dervie rest of array.
+            elif parser.ruleNames[child.getRuleIndex()] == 'dimExprs':
+                self.visit(child)
+                self.arraycreationExpression = self.dimExprs
+            elif parser.ruleNames[child.getRuleIndex()] == 'classOrInterfaceType':
+                self.visit(child)
+            elif parser.ruleNames[child.getRuleIndex()] == 'dims':
+                self.visit(child)
+            elif parser.ruleNames[child.getRuleIndex()] == 'arrayInitializer':
+                self.visit(child)
+        return 1
+
+    def visitDimExprs(self, ctx:Java8Parser.DimExprsContext):
+        # dimExprs  :  dimExpr dimExpr*
+		#   ;
+        children = ctx.getChildren()
+        childCount = ctx.getChildCount()
+        firstTimeflag = 0
+        temp1 = tac.getTemp()
+        temp2 = tac.getTemp()
+        returnList = []
+        temp_return = tac.getTemp()
+        falseList = []
+        exitLabel = tac.newLabel()
+        lastLabel = exitLabel
+        falseLabel = exitLabel
+        labelList = []
+        for child in children:
+            if parser.ruleNames[child.getRuleIndex()] == 'dimExpr':
+                if firstTimeflag == 0: # first time
+                    firstTimeflag = 1
+                    self.visit(child)
+                    tac.emit(str(temp1),str(self.dimExpr),'','=')
+                    tac.emit(str(temp2),str(temp1),str(self.sizeOfType),'*')
+                    tac.emit('push',str(temp2),'','')
+                    tac.emit('','','','malloc')
+                    tac.emit(temp_return,'_ret_','','')
+                    temp_returnFunc = tac.getTemp()
+                    tac.emit(temp_returnFunc,temp_return,'','=')
+                    self.dimExprs = temp_returnFunc
+                    returnList.append(temp_return)
+                else: # Not first time
+                    label = tac.newLabel()
+                    temp_limit = tac.getTemp()
+                    tac.emit(temp_limit,temp_return,temp2,'+')
+                    tac.emit('label: ','','',label)
+                    temp_conditional = tac.getTemp()
+                    tac.emit(temp_conditional,temp_return,temp_limit,"<")
+                    tac.emit('ifgoto',temp_conditional,'eq0',falseLabel)
+                    falseLabel = tac.newLabel()
+                    self.visit(child)
+                    exitLabel = label
+                    labelList.append(label)
+                    temp1 = tac.getTemp()
+                    temp2 = tac.getTemp()
+                    temp_return = tac.getTemp()
+                    tac.emit(str(temp1),str(self.dimExpr),'','=')
+                    tac.emit(str(temp2),str(temp1),str(self.sizeOfType),'*')
+                    tac.emit('push',str(temp2),'','')
+                    tac.emit('','','','malloc')
+                    tac.emit(temp_return,'_ret_','','')
+                    temp_returnFunc = tac.getTemp()
+                    tac.emit(temp_returnFunc,temp_return,'','=')
+                    returnList.append(temp_return)
+                    falseList.append(falseLabel)
+        revReturnList = list(reversed(returnList))
+        revLabelList = list(reversed(labelList))
+        revFalseList = list(reversed(falseList))
+        for i in range(len(returnList)-1):
+            if i != 0 :
+                tac.emit('label: ','','',revFalseList[i])
+            else:
+                pass
+            tac.emit(str(revReturnList[i+1]),str(revReturnList[i]),'','store')
+            tac.emit(str(revReturnList[i+1]),str(revReturnList[i+1]),str(self.sizeOfType),'+')
+            tac.emit('goto','','',str(revLabelList[i]))
+        if len(returnList) > 1:
+            tac.emit('label: ','','',lastLabel)
+        return 1
+
+    def visitDimExpr(self, ctx:Java8Parser.DimExprContext):
+        # dimExpr  :  annotation* '[' expression ']'
+		#  ;
+        children = ctx.getChildren()
+        for child in children:
+            if _isIdentifier_(child):
+                pass
+            elif parser.ruleNames[child.getRuleIndex()] == 'expression':
+                self.visit(child)
+                self.dimExpr = self.expression
+                if self.expressionType != 'int':
+                    sys.exit("Given index is needed to be integer Type.")
+            else:
+                pass
         return 1
 
     def visitPrimaryNoNewArray_Type_1_Pr(self, ctx:Java8Parser.PrimaryNoNewArray_Type_1_PrContext):
