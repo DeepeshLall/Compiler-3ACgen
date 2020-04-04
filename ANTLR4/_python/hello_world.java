@@ -9,9 +9,9 @@ public class RecursionExampleDirectory {
 		// char c=a+2.0,d=4.2;
 		// a = 2 + 3*b + myvar * 2.5;
 		// char a;
-		int[][] arr[];
-		int[] zrr[] = new int[a][2][b];
-		// int l[]={{33,3},{4,5}};
+		// int[][] arr[];
+		// int[] zrr[] = new int[a][b];
+		int l[][]={{33,3},{4,5}};
 		// short e;
 		// c = e;
 		// a/=c;

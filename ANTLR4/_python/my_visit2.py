@@ -112,6 +112,8 @@ class my_visit2(Java8Visitor):
         self.dimsNo = 0 # no of dims to set dimension
         self.dimensionTemp = 0 # store dimension for self.typeSizeList before variable Declarator id
 
+        self.dimsCheck = 0 # To check the dimsNo is equal to it or not if yes then variableInitializer should get reduced to expression.
+
         self.NextLabel = None # carry label for statement to be jumped at in switch case.
         self.exitLabel = None #  label for exit point in switch case for break to be backpatched with.
 
@@ -149,6 +151,8 @@ class my_visit2(Java8Visitor):
         self.arraycreationExpression = None
         self.dimExpr = None
         self.dimExprs = None
+        self.arrayInitializer = None
+        self.variableInitializerList = None
 
         # False List of all the nonterminal having value to be backpatched.
         self.expressionFL = []
@@ -229,6 +233,8 @@ class my_visit2(Java8Visitor):
         self.expressionNameType = 'void'
         self.constantExpressionType = 'void'
         self.arraycreationExpressionType = 'void'
+        self.arrayInitializerType = 'void'
+        self.variableInitializerListType = 'void'
 
         self.BreakList = []
         self.ContinueList = []
@@ -299,6 +305,7 @@ class my_visit2(Java8Visitor):
         self.MethodList.append([])
         tac.emit(str(ST.func),'','','')
         self.MethodList[-1].append(len(tac.code))
+        # Only for declared variable not including temps.
         tac.emit("BeginFunc",str(len(self.formalTypeList)*4),'','')
         self.visitChildren(ctx)
         # this part is according to https://web.stanford.edu/class/archive/cs/cs143/cs143.1128/handouts/240%20TAC%20Examples.pdf
@@ -874,6 +881,7 @@ class my_visit2(Java8Visitor):
         rhs = ""
         dest = None
         operator = '='
+        temp = self.dimsNo
         for child in children:
             if _isIdentifier_(child):
                 continue
@@ -895,11 +903,11 @@ class my_visit2(Java8Visitor):
                     pass
                 tac.emit(str(dest),str(rhs),'',str(operator))
                 #to be replaced by tac.emit for load and store.
+        self.dimsNo = temp
         return 1
 
     def visitVariableDeclaratorId(self, ctx:Java8Parser.VariableDeclaratorIdContext):
         children = ctx.getChildren()
-        temp = self.dimsNo
         children = ctx.getChildren()
         for child in children:
             if _isIdentifier_(child):
@@ -912,20 +920,77 @@ class my_visit2(Java8Visitor):
         self.typeSizeList.append(self.dimsNo)
         if self.inFormalList == 1:
             self.formalTypeSizeList.append(self.dimsNo)
-        self.dimsNo = temp
         return 1
 
     def visitVariableInitializer(self, ctx:Java8Parser.VariableInitializerContext):
+        # variableInitializer  :  expression
+		# 			 |  arrayInitializer
+		# 			 ;
         children = ctx.getChildren()
-        #currently arraycreation is given text.
         for child in children:
-            self.visit(child)
-        if parser.ruleNames[child.getRuleIndex()] == 'expression':
-            self.variableInitializer = self.expression
-            self.variableInitializerType = self.expressionType
-        else:
-            self.variableInitializer = ctx.getText()
-            self.variableInitializerType = 'int:arraycreation' #Hardcoded..needed to be stored in self.arraycreationType
+            if parser.ruleNames[child.getRuleIndex()] == 'expression' and self.dimsCheck == self.dimsNo and self.dimsNo > 0:
+                self.visit(child)
+                self.variableInitializerType = self.expressionType
+                if self.expressionType != self.type:
+                    warnings.warn("Incorrect type stored in the Array.")
+                if self.dimsCheck > 0:
+                    temp = tac.getTemp()
+                    tac.emit('push',giveType(self.type),'','')
+                    tac.emit('','','','malloc')
+                    tac.emit(temp,'_ret_','','=')
+                    tac.emit(temp,self.expression,'','store')
+                    self.variableInitializer = temp
+                else:
+                    self.variableInitializer = self.expression
+            elif parser.ruleNames[child.getRuleIndex()] == 'arrayInitializer':
+                self.dimsCheck += 1
+                self.visit(child)
+                self.dimsCheck -= 1
+                self.variableInitializer = self.arrayInitializer
+                self.variableInitializerType = self.arrayInitializerType
+            elif parser.ruleNames[child.getRuleIndex()] == 'expression':
+                if self.dimsCheck > 0:
+                    sys.exit("Incorrect expression assignment to Array dimensions")
+                self.visit(child)
+                self.variableInitializer = self.expression
+                self.variableInitializerType = self.expressionType
+        return 1
+
+    def visitArrayInitializer(self, ctx:Java8Parser.ArrayInitializerContext):
+        # arrayInitializer  :  '{' variableInitializerList? (',')? '}'
+		# 		  ;
+        children = ctx.getChildren()
+        for child in children:
+            if _isIdentifier_(child):
+                pass
+            elif parser.ruleNames[child.getRuleIndex()] == 'variableInitializerList':
+                self.visit(child)
+                self.arrayInitializer = self.variableInitializerList
+                self.arrayInitializerType = self.variableInitializerListType                
+        return 1
+
+    def visitVariableInitializerList(self, ctx:Java8Parser.VariableInitializerListContext):
+        # variableInitializerList  :  variableInitializer (',' variableInitializer)*
+		# 				 ;
+        children = ctx.getChildren()
+        isFirstTime = 1
+        for child in children:
+            if _isIdentifier_(child):
+                pass
+            elif parser.ruleNames[child.getRuleIndex()] == 'variableInitializer':
+                self.visit(child)
+                if isFirstTime == 1:
+                    temp = tac.getTemp()
+                    temp2 = tac.getTemp()
+                    tac.emit(str(temp),str(self.variableInitializer),'','=')
+                    tac.emit(str(temp2),str(temp),'','=')
+                    tac.emit(str(temp),str(temp),giveType(self.type),'+')
+                    self.variableInitializerList = temp2
+                    self.variableInitializerListType = self.variableInitializerType
+                    isFirstTime = 0
+                    continue
+                tac.emit(str(temp),str(self.variableInitializer),'','=')
+                tac.emit(str(temp),str(temp),giveType(self.type),'+')
         return 1
 
     def visitExpression(self, ctx:Java8Parser.ExpressionContext):
@@ -1875,7 +1940,6 @@ class my_visit2(Java8Visitor):
         return 1
 
     def visitPrimary_Type_1(self, ctx:Java8Parser.Primary_Type_1Context):
-        # for now arraycreationExpression is just taken as string.
         # primary_Type_1  :  primaryNoNewArray_Type_1_Pr
 		# 		|  arraycreationExpression
 		# 		;
@@ -1949,7 +2013,7 @@ class my_visit2(Java8Visitor):
                     tac.emit(str(temp2),str(temp1),str(self.sizeOfType),'*')
                     tac.emit('push',str(temp2),'','')
                     tac.emit('','','','malloc')
-                    tac.emit(temp_return,'_ret_','','')
+                    tac.emit(temp_return,'_ret_','','=')
                     temp_returnFunc = tac.getTemp()
                     tac.emit(temp_returnFunc,temp_return,'','=')
                     self.dimExprs = temp_returnFunc
@@ -1973,7 +2037,7 @@ class my_visit2(Java8Visitor):
                     tac.emit(str(temp2),str(temp1),str(self.sizeOfType),'*')
                     tac.emit('push',str(temp2),'','')
                     tac.emit('','','','malloc')
-                    tac.emit(temp_return,'_ret_','','')
+                    tac.emit(temp_return,'_ret_','','=')
                     temp_returnFunc = tac.getTemp()
                     tac.emit(temp_returnFunc,temp_return,'','=')
                     returnList.append(temp_return)
@@ -2050,13 +2114,16 @@ class my_visit2(Java8Visitor):
                         else:
                             self.primaryNoNewArray_Type_1_PrType = 'int'
                     dest = tac.getTemp()
+                    # if self.dimsCheck > 0:
+                    #     tac.emit(str(dest),str(Literal),'','store')
+                    # else:
+                    #     tac.emit(str(dest),str(Literal),'','=')
                     tac.emit(str(dest),str(Literal),'','=')
                     self.primaryNoNewArray_Type_1_Pr = dest
                 continue
             elif parser.ruleNames[child.getRuleIndex()] == 'methodInvocation_Type_1_Pr':
                 self.visit(child)
-                # Assuming for now method return type inside expression is int
-                self.primaryNoNewArray_Type_1_PrType = 'int'
+                self.primaryNoNewArray_Type_1_PrType = self.methodInvocation_Type_1_PrType
                 self.primaryNoNewArray_Type_1_Pr = self.methodInvocation_Type_1_Pr
             elif flag == 1 and parser.ruleNames[child.getRuleIndex()] == 'expression':
                 self.visit(child)
