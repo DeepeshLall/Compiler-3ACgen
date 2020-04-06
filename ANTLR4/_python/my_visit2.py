@@ -119,6 +119,8 @@ class my_visit2(Java8Visitor):
 
         self.sizeOfType = None # for storing offset by variable type i.e. sizeof(type) in array access
 
+        self.isArrayAssignment = 0 # if the Assignment is of array or not i.e. lhs is array or not. Default = not.
+
         #contains temporary register in case of operand reduction at that named non terminal node in parse tree.
         self.conditionalOrExpression = None 
         self.conditionalAndExpression = None 
@@ -153,6 +155,14 @@ class my_visit2(Java8Visitor):
         self.dimExprs = None
         self.arrayInitializer = None
         self.variableInitializerList = None
+        self.variableDeclaratorId = None
+        self.assignmentArrayName = None
+        self.arrayAccess_Type_2 = None
+        self.arrayAccess_Type_1 = None
+        self.arrayAcecss = None
+        self.arrayAccess_Type_1_Pr_Type_2 = None
+        self.arrayAccess_Type_1_Pr_Type_1 = None
+        self.arrayAccess_Type_1_Pr = None
 
         # False List of all the nonterminal having value to be backpatched.
         self.expressionFL = []
@@ -235,6 +245,9 @@ class my_visit2(Java8Visitor):
         self.arraycreationExpressionType = 'void'
         self.arrayInitializerType = 'void'
         self.variableInitializerListType = 'void'
+        self.assignmentArrayNameType = 'void'
+        self.arrayAcecssType = 'void'
+        self.arrayAccess_Type_1_PrType = 'void'
 
         self.BreakList = []
         self.ContinueList = []
@@ -887,7 +900,7 @@ class my_visit2(Java8Visitor):
                 continue
             elif parser.ruleNames[child.getRuleIndex()] == 'variableDeclaratorId':
                 self.visit(child)
-                lhs = child.getText()
+                lhs = self.variableDeclaratorId
                 dest =lhs
                 lhsType = self.type 
             elif parser.ruleNames[child.getRuleIndex()] == 'variableInitializer':
@@ -912,6 +925,7 @@ class my_visit2(Java8Visitor):
         for child in children:
             if _isIdentifier_(child):
                 self.typeList.append(child.getText())
+                self.variableDeclaratorId = child.getText()
                 if self.inFormalList == 1:
                     self.formalTypeList.append(child.getText())
                 continue
@@ -1069,13 +1083,26 @@ class my_visit2(Java8Visitor):
             if ((lhsType == 'short' or lhsType == 'byte') and (rhsType == 'char')) or ((rhsType == 'short' or rhsType == 'byte') and (lhsType == 'char')):
                 sys.exit("Type widening not possible in assignment. lhsType = "+lhsType+" , rhsType = "+rhsType)
             tac.emit(str(rhs),str(rhs),'',"("+str(lhsType)+")")
-        if operator == '=':
-            dest = lhs
-            tac.emit(str(dest),str(rhs),'',str(operator))
+        if self.isArrayAssignment == 1:
+            self.isArrayAssignment = 0
+            if operator == '=':
+                dest = lhs
+                tac.emit(str(dest),str(rhs),'','store')
+            else:
+                operatorBeforeEqual = operator[:-1]
+                dest = lhs
+                temp1 = tac.getTemp()
+                tac.emit(str(temp1),str(lhs),'','load')
+                tac.emit(str(temp1),str(temp1),str(rhs),str(operatorBeforeEqual))
+                tac.emit(str(dest),str(temp1),'','store')
         else:
-            operatorBeforeEqual = operator[:-1]
-            dest = lhs
-            tac.emit(str(dest),str(lhs),str(rhs),str(operatorBeforeEqual))
+            if operator == '=':
+                dest = lhs
+                tac.emit(str(dest),str(rhs),'',str(operator))
+            else:
+                operatorBeforeEqual = operator[:-1]
+                dest = lhs
+                tac.emit(str(dest),str(lhs),str(rhs),str(operatorBeforeEqual))
         self.assignment = dest
         self.assignmentTL =[]
         self.assignmentFL = []
@@ -1094,13 +1121,14 @@ class my_visit2(Java8Visitor):
                 self.LeftHandSide = self.expressionName
                 self.LeftHandSideType = self.expressionNameType
             elif parser.ruleNames[child.getRuleIndex()] == 'arrayAccess':
+                self.isArrayAssignment = 1
                 self.visit(child)
-                self.LeftHandSide = child.getText() # need to be replaced by self.arrayAccess
-                self.leftHandSideType = 'int' #HARDCODED.
+                self.LeftHandSide = self.arrayAcecss
+                self.LeftHandSideType = self.arrayAcecssType
             elif parser.ruleNames[child.getRuleIndex()] == 'fieldAccess':
                 self.visit(child)
                 self.LeftHandSide = child.getText() # need to be replaced by self.fieldAccess
-                self.leftHandSideType = 'int' #HARDCODED.
+                self.LeftHandSideType = 'int' #HARDCODED.
         return 1
 
     def visitExpressionName(self, ctx:Java8Parser.ExpressionNameContext):
@@ -1121,6 +1149,82 @@ class my_visit2(Java8Visitor):
 
         return 1
 
+    def visitArrayAccess(self, ctx:Java8Parser.ArrayAccessContext):
+        # arrayAcecss  :  arrayAccess_Type_1 arrayAccess_Type_2*
+		# 	 ;
+        children = ctx.getChildren()
+        child_count = ctx.getChildCount()
+        temp1 = None
+        counter = 0
+        for child in children:
+            if parser.ruleNames[child.getRuleIndex()] == 'arrayAccess_Type_1':
+                self.visit(child)
+                t1 = self.arrayAccess_Type_1
+                self.arrayAcecssType = self.assignmentArrayNameType
+                array_var = self.assignmentArrayName
+                width = giveType(self.arrayAcecssType)
+                temp = tac.getTemp()
+                temp1 = tac.getTemp()
+                tac.emit(str(temp),str(t1),str(width),'*')
+                tac.emit(str(temp),str(temp),str(array_var),'+')
+                tac.emit(str(temp1),str(temp),'','load')
+            elif parser.ruleNames[child.getRuleIndex()] == 'arrayAccess_Type_2':
+                self.visit(child)
+                t = self.arrayAccess_Type_2
+                temp_rec = temp1
+                temp1 = tac.getTemp()
+                temp = tac.getTemp()
+                tac.emit(str(temp),str(t),str(width),'*')
+                tac.emit(str(temp),str(temp),str(temp_rec),'+')
+                if counter+1 == child_count:
+                    temp1 = temp
+                else:
+                    tac.emit(str(temp1),str(temp),'','load')
+            counter += 1
+        self.arrayAcecss = temp1
+        return 1
+
+    def visitArrayAccess_Type_1(self, ctx:Java8Parser.ArrayAccess_Type_1Context):
+        # arrayAccess_Type_1  :  expressionName '[' expression ']'
+		# 			|  primaryNoNewArray_Type_2_Aa '[' expression ']'
+		# 			;
+        children = ctx.getChildren()
+        for child in children:
+            if _isIdentifier_(child):
+                pass
+            elif parser.ruleNames[child.getRuleIndex()] == 'expressionName':
+                self.visit(child)
+                self.assignmentArrayName = self.expressionName
+                self.assignmentArrayNameType = self.expressionNameType
+            elif parser.ruleNames[child.getRuleIndex()] == 'expression':
+                self.visit(child)
+                t1 = self.expression
+                idx_type = self.expressionType
+                if idx_type != 'int':
+                    sys.exit("Index not integer in assignment of array in LHS for array : "+str(self.assignmentArrayName))
+                self.arrayAccess_Type_1 = t1
+            elif parser.ruleNames[child.getRuleIndex()] == 'primaryNoNewArray_Type_2_Aa':
+                self.visit(child)
+        return 1
+
+    def visitArrayAccess_Type_2(self, ctx:Java8Parser.ArrayAccess_Type_2Context):
+        # arrayAccess_Type_2  :  primaryNoNewArray_Type_2_Aa '[' expression ']'
+		# 			;
+        children = ctx.getChildren()
+        for child in children:
+            if _isIdentifier_(child):
+                pass
+            elif parser.ruleNames[child.getRuleIndex()] == 'expression':
+                self.visit(child)
+                t1 = self.expression
+                idx_type = self.expressionType
+                if idx_type != 'int':
+                    sys.exit("Index not integer in assignment of array in LHS for array : "+str(self.assignmentArrayName))
+                self.arrayAccess_Type_2 = t1
+            elif parser.ruleNames[child.getRuleIndex()] == 'primaryNoNewArray_Type_2_Aa':
+                self.visit(child)
+        return 1
+
     def visitConditionalExpression(self, ctx:Java8Parser.ConditionalExpressionContext):
         # conditionalExpression : conditionalOrExpression
 		# 			  | conditionalOrExpression '?' expression ':' conditionalExpression
@@ -1136,7 +1240,6 @@ class my_visit2(Java8Visitor):
             self.conditionExpressionFL =  self.conditionalOrExpressionFL
             self.conditionExpressionType = self.conditionalOrExpressionType
         elif childCount == 5:
-            #for now in this case there's no tac for ternary jump or labels.
             ifTruetype = 'void'
             ifFalseType = 'void'
             label1 = tac.newLabel()
@@ -2148,13 +2251,91 @@ class my_visit2(Java8Visitor):
                 self.primaryNoNewArray_Type_1_Pr = child.getText()
             elif parser.ruleNames[child.getRuleIndex()] == 'arrayAccess_Type_1_Pr':
                 self.visit(child)
-                #array type from SymbolTable or temp self. variable to be used for array type
-                self.primaryNoNewArray_Type_1_PrType = 'int'                
-                self.primaryNoNewArray_Type_1_Pr = child.getText()
+                # Just return the type not cross-check the dimension and return pointer.
+                self.primaryNoNewArray_Type_1_PrType = self.arrayAccess_Type_1_PrType
+                self.primaryNoNewArray_Type_1_Pr = self.arrayAccess_Type_1_Pr
             elif parser.ruleNames[child.getRuleIndex()] == 'methodReference_Type_1_Pr':
                 self.visit(child)
                 self.primaryNoNewArray_Type_1_PrType = 'int'                
                 self.primaryNoNewArray_Type_1_Pr = child.getText()
+        return 1
+
+    def visitArrayAccess_Type_1_Pr(self, ctx:Java8Parser.ArrayAccess_Type_1_PrContext):
+        # arrayAccess_Type_1_Pr  :  arrayAccess_Type_1_Pr_Type_1 	arrayAccess_Type_1_Pr_Type_2*
+		# 				;
+        children = ctx.getChildren()
+        child_count = ctx.getChildCount()
+        temp1 = None
+        counter = 0
+        for child in children:
+            if parser.ruleNames[child.getRuleIndex()] == 'arrayAccess_Type_1_Pr_Type_1':
+                self.visit(child)
+                t1 = self.arrayAccess_Type_1_Pr_Type_1
+                self.arrayAccess_Type_1_PrType = self.assignmentArrayNameType
+                array_var = self.assignmentArrayName
+                width = giveType(self.arrayAcecssType)
+                temp = tac.getTemp()
+                temp1 = tac.getTemp()
+                tac.emit(str(temp),str(t1),str(width),'*')
+                tac.emit(str(temp),str(temp),str(array_var),'+')
+                tac.emit(str(temp1),str(temp),'','load')
+            elif parser.ruleNames[child.getRuleIndex()] == 'arrayAccess_Type_1_Pr_Type_2':
+                self.visit(child)
+                t = self.arrayAccess_Type_1_Pr_Type_2
+                temp_rec = temp1
+                temp1 = tac.getTemp()
+                temp = tac.getTemp()
+                tac.emit(str(temp),str(t),str(width),'*')
+                tac.emit(str(temp),str(temp),str(temp_rec),'+')
+                if counter+1 == child_count:
+                    temp1 = temp
+                else:
+                    tac.emit(str(temp1),str(temp),'','load')
+            counter += 1
+        temp_ret = tac.getTemp()
+        tac.emit(str(temp_ret),str(temp1),'','load')
+        self.arrayAccess_Type_1_Pr = temp_ret
+        return 1
+
+    def visitArrayAccess_Type_1_Pr_Type_1(self, ctx:Java8Parser.ArrayAccess_Type_1_Pr_Type_1Context):
+        # arrayAccess_Type_1_Pr_Type_1  :  primaryNoNewArray_Type_1_1_1_Pr_Aa_Pr '[' expression ']'
+		# 					  |  expressionName '[' expression ']'
+		# 						;
+        children = ctx.getChildren()
+        for child in children:
+            if _isIdentifier_(child):
+                pass
+            elif parser.ruleNames[child.getRuleIndex()] == 'expressionName':
+                self.visit(child)
+                self.assignmentArrayName = self.expressionName
+                self.assignmentArrayNameType = self.expressionNameType
+            elif parser.ruleNames[child.getRuleIndex()] == 'expression':
+                self.visit(child)
+                t1 = self.expression
+                idx_type = self.expressionType
+                if idx_type != 'int':
+                    sys.exit("Index not integer in assignment of array in LHS for array : "+str(self.assignmentArrayName))
+                self.arrayAccess_Type_1_Pr_Type_1 = t1
+            elif parser.ruleNames[child.getRuleIndex()] == 'primaryNoNewArray_Type_1_1_1_Pr_Aa_Pr':
+                self.visit(child)
+        return 1
+
+    def visitArrayAccess_Type_1_Pr_Type_2(self, ctx:Java8Parser.ArrayAccess_Type_1_Pr_Type_2Context):
+        # arrayAccess_Type_1_Pr_Type_2  :  primaryNoNewArray_Type_1_2_1_Pr_Aa_Pr '[' expression ']' 
+		# 						;
+        children = ctx.getChildren()
+        for child in children:
+            if _isIdentifier_(child):
+                pass
+            elif parser.ruleNames[child.getRuleIndex()] == 'expression':
+                self.visit(child)
+                t1 = self.expression
+                idx_type = self.expressionType
+                if idx_type != 'int':
+                    sys.exit("Index not integer in assignment of array in LHS for array : "+str(self.assignmentArrayName))
+                self.arrayAccess_Type_1_Pr_Type_2 = t1
+            elif parser.ruleNames[child.getRuleIndex()] == 'primaryNoNewArray_Type_1_2_1_Pr_Aa_Pr':
+                self.visit(child)
         return 1
 
     def visitMethodInvocation_Type_1_Pr(self, ctx:Java8Parser.MethodInvocation_Type_1_PrContext):
