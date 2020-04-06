@@ -40,7 +40,8 @@ def main():
     # print()
     # print("+----------------------------------------------------------------+")
     # print()
-    visitor2.showTac()
+    visitor2.showTacNoType()
+    # visitor2.showTac()
  
 if __name__ == '__main__':
     main()

@@ -1,6 +1,7 @@
 import antlr4
 import sys
 import warnings
+import re
 if __name__ is not None and "." in __name__:
     from .Java8Lexer import Java8Lexer
     from .Java8Parser import Java8Parser
@@ -726,7 +727,6 @@ class my_visit2(Java8Visitor):
                 self.NextLabel = nextLabel
                 self.exitLabel = exitLabel
                 self.ConstExpression = constExpr
-                # tac.emit('goto','','',exitLabel)
                 tac.emit('label:','','',nextLabel)
         return 1
 
@@ -777,7 +777,7 @@ class my_visit2(Java8Visitor):
                 exprVal = child.getText()
         if not emitTACflag == 0:
             dest = tac.getTemp()
-            tac.emit(dest,exprVal,self.ConstExpression,'==')
+            tac.emit(dest,exprVal,self.ConstExpression,'==::'+str(consExprType))
             tac.emit('ifgoto',dest,'eq0',self.NextLabel)
         return 1
 
@@ -914,7 +914,7 @@ class my_visit2(Java8Visitor):
                     tac.emit(str(rhs),str(rhs),'',"("+str(lhsType)+")")
                 else:
                     pass
-                tac.emit(str(dest),str(rhs),'',str(operator))
+                tac.emit(str(dest),str(rhs),'',str(operator)+"::"+str(lhsType))
                 #to be replaced by tac.emit for load and store.
         self.dimsNo = temp
         return 1
@@ -996,15 +996,15 @@ class my_visit2(Java8Visitor):
                 if isFirstTime == 1:
                     temp = tac.getTemp()
                     temp2 = tac.getTemp()
-                    tac.emit(str(temp),str(self.variableInitializer),'','=')
-                    tac.emit(str(temp2),str(temp),'','=')
-                    tac.emit(str(temp),str(temp),giveType(self.type),'+')
+                    tac.emit(str(temp),str(self.variableInitializer),'','=::'+str(self.variableInitializerType))
+                    tac.emit(str(temp2),str(temp),'','=::'+str(self.variableInitializerType))
+                    tac.emit(str(temp),str(temp),giveType(self.type),'+::'+str(self.variableInitializerType))
                     self.variableInitializerList = temp2
                     self.variableInitializerListType = self.variableInitializerType
                     isFirstTime = 0
                     continue
-                tac.emit(str(temp),str(self.variableInitializer),'','=')
-                tac.emit(str(temp),str(temp),giveType(self.type),'+')
+                tac.emit(str(temp),str(self.variableInitializer),'','=::'+str(self.type))
+                tac.emit(str(temp),str(temp),giveType(self.type),'+::'+str(self.type))
         return 1
 
     def visitExpression(self, ctx:Java8Parser.ExpressionContext):
@@ -1098,11 +1098,11 @@ class my_visit2(Java8Visitor):
         else:
             if operator == '=':
                 dest = lhs
-                tac.emit(str(dest),str(rhs),'',str(operator))
+                tac.emit(str(dest),str(rhs),'',str(operator)+"::"+str(lhsType))
             else:
                 operatorBeforeEqual = operator[:-1]
                 dest = lhs
-                tac.emit(str(dest),str(lhs),str(rhs),str(operatorBeforeEqual))
+                tac.emit(str(dest),str(lhs),str(rhs),str(operatorBeforeEqual)+"::"+str(lhsType))
         self.assignment = dest
         self.assignmentTL =[]
         self.assignmentFL = []
@@ -1165,8 +1165,8 @@ class my_visit2(Java8Visitor):
                 width = giveType(self.arrayAcecssType)
                 temp = tac.getTemp()
                 temp1 = tac.getTemp()
-                tac.emit(str(temp),str(t1),str(width),'*')
-                tac.emit(str(temp),str(temp),str(array_var),'+')
+                tac.emit(str(temp),str(t1),str(width),'*::'+str(self.arrayAcecssType))
+                tac.emit(str(temp),str(temp),str(array_var),'+::'+str(self.arrayAcecssType))
                 tac.emit(str(temp1),str(temp),'','load')
             elif parser.ruleNames[child.getRuleIndex()] == 'arrayAccess_Type_2':
                 self.visit(child)
@@ -1174,8 +1174,8 @@ class my_visit2(Java8Visitor):
                 temp_rec = temp1
                 temp1 = tac.getTemp()
                 temp = tac.getTemp()
-                tac.emit(str(temp),str(t),str(width),'*')
-                tac.emit(str(temp),str(temp),str(temp_rec),'+')
+                tac.emit(str(temp),str(t),str(width),'*::'+str(self.arrayAcecssType))
+                tac.emit(str(temp),str(temp),str(temp_rec),'+::'+str(self.arrayAcecssType))
                 if counter+1 == child_count:
                     temp1 = temp
                 else:
@@ -1323,7 +1323,7 @@ class my_visit2(Java8Visitor):
             dest = tac.getTemp()
             self.conditionalOrExpression = dest
             # Generated between a goto and lablel so skipped.
-            tac.emit(str(dest),str(lhs),str(rhs),str(operator))
+            tac.emit(str(dest),str(lhs),str(rhs),str(operator)+"::"+str(self.conditionalOrExpressionType))
             tac.backpatch(self.conditionalOrExpressionFL,label)
             self.conditionalOrExpressionTL = self.conditionalOrExpressionTL + self.conditionalAndExpressionTL
             self.conditionalOrExpressionFL = self.conditionalAndExpressionFL
@@ -1374,7 +1374,7 @@ class my_visit2(Java8Visitor):
             dest = tac.getTemp()
             self.conditionalAndExpression = dest
             # Generated between a goto and lablel so skipped.
-            tac.emit(str(dest),str(lhs),str(rhs),str(operator))
+            tac.emit(str(dest),str(lhs),str(rhs),str(operator)+"::"+str(self.conditionalAndExpressionType))
             tac.backpatch(self.conditionalAndExpressionTL,label)
             self.conditionalAndExpressionFL = self.conditionalAndExpressionFL + self.inclusiveOrExpression
             self.conditionalAndExpressionTL = self.inclusiveOrExpressionTL
@@ -1420,7 +1420,7 @@ class my_visit2(Java8Visitor):
                 sys.exit("LHS type: "+str(lhsType)+" ,RHS type: "+str(rhsType))
             dest = tac.getTemp()
             self.inclusiveOrExpression = dest
-            tac.emit(str(dest),str(lhs),str(rhs),str(operator))
+            tac.emit(str(dest),str(lhs),str(rhs),str(operator)+"::"+str(self.inclusiveOrExpressionType))
             self.inclusiveOrExpressionTL = []
             self.inclusiveOrExpressionFL = []
         return 1
@@ -1455,17 +1455,17 @@ class my_visit2(Java8Visitor):
                     rhsType = self.andExpressionType
             if lhsType == rhsType :
                 if not ((lhsType == 'char') or (lhsType == 'string') or (lhsType == 'boolean')):
-                    self.andExpressionType = lhsType
+                    self.exclusiveOrExpressionType = lhsType
                 else:
                     sys.exit("Type error: andExpression don't take string,bool or char.")
             elif lhsType in ['int','long','float','double'] and rhsType in ['int','long','float','double']:
-                self.andExpressionType = typeWiden(lhs,rhs,lhsType,rhsType)
+                self.exclusiveOrExpressionType = typeWiden(lhs,rhs,lhsType,rhsType)
             else:
                 print("Type Error in andExpression")
                 sys.exit("LHS type: "+str(lhsType)+" ,RHS type: "+str(rhsType))
             dest = tac.getTemp()
             self.exclusiveOrExpression = dest
-            tac.emit(str(dest),str(lhs),str(rhs),str(operator)) 
+            tac.emit(str(dest),str(lhs),str(rhs),str(operator)+"::"+str(self.exclusiveOrExpressionType))
             self.exclusiveOrExpressionTL = []
             self.exclusiveOrExpressionFL = []
         return 1
@@ -1510,7 +1510,7 @@ class my_visit2(Java8Visitor):
                 sys.exit("LHS type: "+str(lhsType)+" ,RHS type: "+str(rhsType))
             dest = tac.getTemp()
             self.andExpression = dest
-            tac.emit(str(dest),str(lhs),str(rhs),str(operator)) 
+            tac.emit(str(dest),str(lhs),str(rhs),str(operator)+"::"+str(andExpressionType))
             self.andExpressionTL = []
             self.andExpressionFL = []
         return 1
@@ -1557,7 +1557,7 @@ class my_visit2(Java8Visitor):
                 sys.exit("LHS type: "+str(lhsType)+" ,RHS type: "+str(rhsType))
             dest = tac.getTemp()
             self.equalityExpression = dest
-            tac.emit(str(dest),str(lhs),str(rhs),str(operator))
+            tac.emit(str(dest),str(lhs),str(rhs),str(operator)+"::"+str(self.equalityExpressionType))
             label_temp = tac.newLabel()
             self.equalityExpressionFL = [len(tac.code)]
             tac.emit('ifgoto',dest,'eq0',label_temp)
@@ -1619,7 +1619,7 @@ class my_visit2(Java8Visitor):
                 return 1
             dest = tac.getTemp()
             self.relationalExpression = dest
-            tac.emit(str(dest),str(lhs),str(rhs),str(operator))
+            tac.emit(str(dest),str(lhs),str(rhs),str(operator)+"::"+str(self.relationalExpressionType))
             label_temp = tac.newLabel()
             self.relationalExpressionFL = [len(tac.code)]
             tac.emit('ifgoto',dest,'eq0',label_temp)
@@ -1676,7 +1676,7 @@ class my_visit2(Java8Visitor):
                 sys.exit("LHS type: "+str(lhsType)+" ,RHS type: "+str(rhsType))
             dest = tac.getTemp()
             self.shiftExpression = dest
-            tac.emit(str(dest),str(lhs),str(rhs),str(operator)) 
+            tac.emit(str(dest),str(lhs),str(rhs),str(operator)+"::"+str(self.shiftExpressionType))
             self.shiftExpressionTL = []
             self.shiftExpressionFL = []
         return 1
@@ -1726,7 +1726,7 @@ class my_visit2(Java8Visitor):
                 sys.exit("LHS type: "+str(lhsType)+" ,RHS type: "+str(rhsType))
             dest = tac.getTemp()
             self.additiveExpression = dest
-            tac.emit(str(dest),str(lhs),str(rhs),str(operator)) 
+            tac.emit(str(dest),str(lhs),str(rhs),str(operator)+"::"+str(self.additiveExpressionType))
             self.additiveExpressionTL = []
             self.additiveExpressionFL = []
         return 1
@@ -1775,7 +1775,7 @@ class my_visit2(Java8Visitor):
                 sys.exit("LHS type: "+str(lhsType)+" ,RHS type: "+str(rhsType))
             dest = tac.getTemp()
             self.multiplicativeExpression = dest
-            tac.emit(str(dest),str(lhs),str(rhs),str(operator))
+            tac.emit(str(dest),str(lhs),str(rhs),str(operator)+"::"+str(self.multiplicativeExpressionType))
             self.multiplicativeExpressionTL = []
             self.multiplicativeExpressionFL = []
         return 1
@@ -1817,7 +1817,7 @@ class my_visit2(Java8Visitor):
                         sys.exit("Type error in unaryExpression.")
             dest = tac.getTemp()
             self.unaryExpression = dest
-            tac.emit(str(dest),str(lhs),str(rhs),str(operator)) 
+            tac.emit(str(dest),str(lhs),str(rhs),str(operator)+"::"+str(self.unaryExpressionType)) 
         self.unaryExpressionTL = []
         self.unaryExpressionFL = []
         return 1
@@ -1845,11 +1845,11 @@ class my_visit2(Java8Visitor):
         if operator == '++':
             operator_1 = '+'
             rhs = '1'
-            tac.emit(str(dest),str(lhs),str(rhs),str(operator_1))
+            tac.emit(str(dest),str(lhs),str(rhs),str(operator_1)+"::"+str(self.preIncrementExpressionType))
             operator_2 = '='
             rhs = dest
             dest = lhs
-            tac.emit(str(dest),str(rhs),'',str(operator_2))
+            tac.emit(str(dest),str(rhs),'',str(operator_2)+"::"+str(self.preIncrementExpressionType))
         return 1
 
     def visitPreDecrementExpression(self, ctx:Java8Parser.PreDecrementExpressionContext):
@@ -1875,11 +1875,11 @@ class my_visit2(Java8Visitor):
         if operator == '--':
             operator_1 = '-'
             rhs = '1'
-            tac.emit(str(dest),str(lhs),str(rhs),str(operator_1))
+            tac.emit(str(dest),str(lhs),str(rhs),str(operator_1)+"::"+str(self.preDecrementExpressionType))
             operator_2 = '='
             rhs = dest
             dest = lhs
-            tac.emit(str(dest),str(rhs),'',str(operator_2))
+            tac.emit(str(dest),str(rhs),'',str(operator_2)+"::"+str(self.preDecrementExpressionType))
         return 1
 
     def visitUnaryExpressionNotPlusMinus(self, ctx:Java8Parser.UnaryExpressionNotPlusMinusContext):
@@ -1916,7 +1916,7 @@ class my_visit2(Java8Visitor):
                     self.unaryExpressionNotPlusMinusType = self.unaryExpressionType
             dest = tac.getTemp()
             self.unaryExpressionNotPlusMinus = dest
-            tac.emit(str(dest),str(lhs),str(rhs),str(operator)) 
+            tac.emit(str(dest),str(lhs),str(rhs),str(operator)+str(self.unaryExpressionNotPlusMinusType))
         return 1
 
     def visitPostfixExpression(self, ctx:Java8Parser.PostfixExpressionContext):
@@ -1949,20 +1949,20 @@ class my_visit2(Java8Visitor):
                     operator_1='+'
                     dest = tac.getTemp()
                     rhs = '1'
-                    tac.emit(str(dest),str(lhs),str(rhs),str(operator_1))
+                    tac.emit(str(dest),str(lhs),str(rhs),str(operator_1)+"::"+str(self.postfixExpressionType))
                     rhs = dest
                     dest = lhs
                     operator_2 = '='
-                    tac.emit(str(dest),str(lhs),str(rhs),str(operator_2))
+                    tac.emit(str(dest),str(lhs),str(rhs),str(operator_2)+"::"+str(self.postfixExpressionType))
                 elif operator == '--':
                     operator_1='-'
                     dest = tac.getTemp()
                     rhs = '1'
-                    tac.emit(str(dest),str(lhs),str(rhs),str(operator_1))
+                    tac.emit(str(dest),str(lhs),str(rhs),str(operator_1)+"::"+str(self.postfixExpressionType))
                     rhs = dest
                     dest = lhs
                     operator_2 = '='
-                    tac.emit(str(dest),str(lhs),str(rhs),str(operator_2))
+                    tac.emit(str(dest),str(lhs),str(rhs),str(operator_2)+"::"+str(self.postfixExpressionType))
                 lhs = dest
         self.postfixExpression = dest
         return 1
@@ -2024,7 +2024,7 @@ class my_visit2(Java8Visitor):
                 lhs = "Lambda Expression"
         dest = tac.getTemp()
         self.castExpression = dest
-        tac.emit(str(dest),str(lhs),str(rhs),str(operator))
+        tac.emit(str(dest),str(lhs),str(rhs),str(operator)+"::"+str(self.castExpressionType))
         return 1
 
     def visitPrimary(self, ctx:Java8Parser.PrimaryContext):
@@ -2217,11 +2217,7 @@ class my_visit2(Java8Visitor):
                         else:
                             self.primaryNoNewArray_Type_1_PrType = 'int'
                     dest = tac.getTemp()
-                    # if self.dimsCheck > 0:
-                    #     tac.emit(str(dest),str(Literal),'','store')
-                    # else:
-                    #     tac.emit(str(dest),str(Literal),'','=')
-                    tac.emit(str(dest),str(Literal),'','=')
+                    tac.emit(str(dest),str(Literal),'','=::'+str(self.primaryNoNewArray_Type_1_PrType))
                     self.primaryNoNewArray_Type_1_Pr = dest
                 continue
             elif parser.ruleNames[child.getRuleIndex()] == 'methodInvocation_Type_1_Pr':
@@ -2276,8 +2272,8 @@ class my_visit2(Java8Visitor):
                 width = giveType(self.arrayAcecssType)
                 temp = tac.getTemp()
                 temp1 = tac.getTemp()
-                tac.emit(str(temp),str(t1),str(width),'*')
-                tac.emit(str(temp),str(temp),str(array_var),'+')
+                tac.emit(str(temp),str(t1),str(width),'*::'+str(self.arrayAccess_Type_1_PrType))
+                tac.emit(str(temp),str(temp),str(array_var),'+::'+str(self.arrayAccess_Type_1_PrType))
                 tac.emit(str(temp1),str(temp),'','load')
             elif parser.ruleNames[child.getRuleIndex()] == 'arrayAccess_Type_1_Pr_Type_2':
                 self.visit(child)
@@ -2285,8 +2281,8 @@ class my_visit2(Java8Visitor):
                 temp_rec = temp1
                 temp1 = tac.getTemp()
                 temp = tac.getTemp()
-                tac.emit(str(temp),str(t),str(width),'*')
-                tac.emit(str(temp),str(temp),str(temp_rec),'+')
+                tac.emit(str(temp),str(t),str(width),'*::'+str(self.arrayAccess_Type_1_PrType))
+                tac.emit(str(temp),str(temp),str(temp_rec),'+::'+str(self.arrayAccess_Type_1_PrType))
                 if counter+1 == child_count:
                     temp1 = temp
                 else:
@@ -2502,7 +2498,7 @@ class my_visit2(Java8Visitor):
             else:
                 self.visit(child)
                 temp = tac.getTemp()
-                tac.emit(str(temp),str(self.expression),"","=")
+                tac.emit(str(temp),str(self.expression),"","=::"+str(self.expressionType))
                 self.argumentList.append(temp)
                 self.argumentListType.append(self.expressionType)
         return 1
@@ -2517,7 +2513,7 @@ class my_visit2(Java8Visitor):
             elif parser.ruleNames[child.getRuleIndex()] == 'expression':
                 self.returnType = self.expressionType
                 returnVal = self.expression
-        tac.emit("_ret_",returnVal,"","=")
+        tac.emit("_ret_",returnVal,"","=::"+str(self.returnType))
         return 1
 
     def visitPostIncrementExpression(self, ctx:Java8Parser.PostIncrementExpressionContext):
@@ -2539,8 +2535,8 @@ class my_visit2(Java8Visitor):
             sys.exit("Type Error in postIncrementExpression.")
         self.postIncrementExpressionType = lhsType
         dest = tac.getTemp()
-        tac.emit(str(dest),str(lhs),'1','+')
-        tac.emit(str(lhs),str(lhs),str(dest),'=')
+        tac.emit(str(dest),str(lhs),'1','+::'+str(self.postIncrementExpressionType))
+        tac.emit(str(lhs),str(lhs),str(dest),'=::'+str(self.postIncrementExpressionType))
         self.postIncrementExpression = lhs
         self.postIncrementExpressionTL = []
         self.postIncrementExpressionFL = []
@@ -2566,8 +2562,8 @@ class my_visit2(Java8Visitor):
             sys.exit("Type Error in postDecrementExpression.")
         self.postDecrementExpressionType = lhsType
         dest = tac.getTemp()
-        tac.emit(str(dest),str(lhs),'1','-')
-        tac.emit(str(lhs),str(lhs),str(dest),'=')
+        tac.emit(str(dest),str(lhs),'1','-::'+str(self.postDecrementExpressionType))
+        tac.emit(str(lhs),str(lhs),str(dest),'=::'+str(self.postDecrementExpressionType))
         self.postDecrementExpression = lhs
         self.postDecrementExpressionTL = []
         self.postDecrementExpressionFL = []
@@ -2589,5 +2585,13 @@ class my_visit2(Java8Visitor):
         print("SL.NO.            dest            op1            op2            operator")
         for i in range(len(tac.code)):
             print(str(i) + "            " + str(tac.code[i][0]) + "         " + str(tac.code[i][1]) + "             " + str(tac.code[i][2]) + "             " + str(tac.code[i][3]))
+
+    def showTacNoType(self):
+        print("SL.NO.            dest            op1            op2            operator")
+        for i in range(len(tac.code)):
+            if re.search("::",str(tac.code[i][3])):
+                print(str(i) + "            " + str(tac.code[i][0]) + "         " + str(tac.code[i][1]) + "             " + str(tac.code[i][2]) + "             " + str(str(tac.code[i][3]).partition("::")[0]))
+            else:
+                print(str(i) + "            " + str(tac.code[i][0]) + "         " + str(tac.code[i][1]) + "             " + str(tac.code[i][2]) + "             " + str(tac.code[i][3]))
 
 del Java8Parser
