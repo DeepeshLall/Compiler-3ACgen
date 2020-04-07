@@ -2087,9 +2087,12 @@ class my_visit2(Java8Visitor):
             elif parser.ruleNames[child.getRuleIndex()] == 'classOrInterfaceType':
                 self.visit(child)
             elif parser.ruleNames[child.getRuleIndex()] == 'dims':
-                self.visit(child)
+                # self.visit(child)
+                self.dimsCheck = child.getChildCount() // 2
             elif parser.ruleNames[child.getRuleIndex()] == 'arrayInitializer':
                 self.visit(child)
+                self.dimsCheck = 0
+                self.arraycreationExpression = self.arrayInitializer
         return 1
 
     def visitDimExprs(self, ctx:Java8Parser.DimExprsContext):

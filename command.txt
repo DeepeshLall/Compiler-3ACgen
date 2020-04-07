@@ -3,7 +3,7 @@ FOR _java:
 2. alias antlr4='java -Xmx500M -cp "/usr/local/lib/antlr-4.7.1-complete.jar:$CLASSPATH" org.antlr.v4.Tool'
 3. alias grun='java -Xmx500M -cp "/usr/local/lib/antlr-4.7.1-complete.jar:$CLASSPATH" org.antlr.v4.gui.TestRig'
 4. antlr4 Java8.g4
-5. javac Java8*.javac
+5. javac Java8*.java
 6. grun Java8 compilationUnit -gui hello_world.java
 
 FOR _python:
